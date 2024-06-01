@@ -1,0 +1,21 @@
+{
+  "name": "sdp",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "turbo": "^1.12.4"
+  },
+  "scripts": {
+    "dev": "turbo run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/NarminaKarimova/SDP"
+  },
+  "license": "ISC",
+  "workspaces": [
+    "apps/*"
+  ]
+}
+
+
