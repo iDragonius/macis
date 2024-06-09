@@ -18,35 +18,90 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_ad")
 
-  email    String @unique
+  email    String       @unique
   passowrd String
+  token    UserToken?
+  codes    UserCodes[]
+  profile  UserProfile?
 }
 
-model Client {
-  id                       String   @id @default(uuid())
-  createdAt                DateTime @default(now()) @map("created_at")
-  updatedAt                DateTime @updatedAt @map("updated_ad")
+model UserProfile {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_ad")
+  firstName   String?
+  lastName    String?
+  fatherName  String?
+  phoneNumber String?
+  gender      Gender   @default(MALE)
+  userId      String   @unique @map("user_id")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserToken {
+  id             String    @id @default(uuid())
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_ad")
+  refreshToken   String    @unique
+  expirationDate DateTime? @map("expiration_date")
+  isBlocked      Boolean   @default(false) @map("is_blocked")
+  userId         String    @unique @map("user_id")
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("users_tokens")
+}
+
+model UserCodes {
+  id             String    @id @default(uuid())
+  createdAt      DateTime  @default(now()) @map("created_at")
+  type           CodeType
+  code           String
+  expirationDate DateTime? @map("expiration_date")
+  attempts       Int       @default(0)
+  isUsed         Boolean   @default(false) @map("is_used")
+  userId         String    @map("user_id")
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique(fields: [userId, code, type], name: "codeId")
+  @@map("users_codes")
+}
+
+model Customer {
+  id                       String             @id @default(uuid())
+  createdAt                DateTime           @default(now()) @map("created_at")
+  updatedAt                DateTime           @updatedAt @map("updated_ad")
   company                  String?
   head                     String?
   contactNumber            String?
   companyEstablishmentDate String?
   curator                  String?
   ownersBirthday           String?
+  activeCustomer           ActiveCustomer?
+  lostCustomer             LostCustomer?
+  potentialCustomer        PotentialCustomer?
 }
 
-model ActiveClient {
-  id           String   @id @default(uuid())
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_ad")
+model ActiveCustomer {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_ad")
+
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  customerId String    @unique
+
   contractDate String?
   service      String?
   payment      String?
 }
 
 model LostCustomer {
-  id                     String   @id @default(uuid())
-  createdAt              DateTime @default(now()) @map("created_at")
-  updatedAt              DateTime @updatedAt @map("updated_ad")
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_ad")
+
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  customerId String    @unique
+
   service                String?
   termsOfPayment         String?
   contractDate           String?
@@ -54,12 +109,25 @@ model LostCustomer {
   terminationReason      String?
 }
 
-model PotentialClient {
+model PotentialCustomer {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_ad")
-  position  String?
-  source    String?
-  notes     String?
-  service   String?
+
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  customerId String    @unique
+
+  position String?
+  source   String?
+  notes    String?
+  service  String?
+}
+
+enum CodeType {
+  OTP
+}
+
+enum Gender {
+  MALE
+  FEMALE
 }
