@@ -21,51 +21,11 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Public()
-  @Post('/sign-up')
-  @HttpCode(HttpStatus.CREATED)
-  async signUp(@Body() data: AuthSignUpDto): Promise<{ success: boolean }> {
-    await this.authService.signUp(data);
-
-    return {
-      success: true,
-    };
-  }
-
-  @Public()
-  @Post('/sign-in')
-  @HttpCode(HttpStatus.CREATED)
-  async signIn(
-    @Body() data: AuthSignInDto,
-    @Ip() ip: string,
-  ): Promise<{ success: boolean }> {
-    return await this.authService.signIn(data, ip);
-  }
-  @Public()
-  @Post('/verify-otp')
-  @HttpCode(HttpStatus.CREATED)
-  async verifyOtp(@Body() data: AuthVerifyOtpDto): Promise<Tokens> {
-    return await this.authService.verifyOtp(data.email, String(data.code));
-  }
-
-  @Public()
   @Post('/logout')
   @HttpCode(HttpStatus.OK)
   async logout() {
     return {
       success: true,
     };
-  }
-
-  @Public()
-  @Post('/refresh')
-  @UseGuards(RtGuard)
-  @HttpCode(HttpStatus.OK)
-  async refreshTokens(
-    @GetCurrentUserId() userId: string,
-    @GetCurrentUser('refreshToken') refreshToken: string,
-  ): Promise<Tokens> {
-    const tokens = await this.authService.refreshTokens(userId, refreshToken);
-
-    return tokens;
   }
 }
