@@ -11,10 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { nanoid } from 'nanoid';
 import { EnvironmentEnum } from '../core/enums';
-import { AuthSignUpDto } from './dto/auth-sign-up.dto';
 import { Address } from '@nestjs-modules/mailer/dist/interfaces/send-mail-options.interface';
-import { MailService } from '../mail/mail.service';
-import { AuthSignInDto } from './dto/auth-sign-in.dto';
 
 export type SendMailDto = {
   from?: string | Address;
@@ -30,7 +27,6 @@ export class AuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private configService: ConfigService,
-    private mailService: MailService,
   ) {}
 
   hashData(data): Promise<string> {
