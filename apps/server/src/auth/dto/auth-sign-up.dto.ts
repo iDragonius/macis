@@ -12,7 +12,7 @@ export class AuthSignUpDto {
   @IsEmail()
   email: string;
 
-  @MinLength(8)
+  @MinLength(6)
   @IsString()
   password: string;
 

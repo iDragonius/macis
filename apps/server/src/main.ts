@@ -20,8 +20,8 @@ async function bootstrap() {
       exceptionFactory: (errors: ValidationError[]) => {
         const messages = errors.map((error) => {
           return {
-            error: `${error.property} has wrong value ${error.value}.`,
-            message: Object.values(error.constraints).join(''),
+            field: error.property,
+            message: Object.values(error.constraints)[0],
           };
         });
 
@@ -30,6 +30,7 @@ async function bootstrap() {
     }),
   );
 
+  app.setGlobalPrefix('/api');
   await app.listen(4000);
 }
 bootstrap();

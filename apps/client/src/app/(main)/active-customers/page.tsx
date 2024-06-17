@@ -34,56 +34,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
-const data: ActiveCustomer[] = [
-  {
-    id: "m5gr84i9",
-    company: "MACIS",
-    service: "test",
-    curator: "Test",
-    payment: "100$",
-    contactNumber: "+944513333333",
-    contractDate: "01.01.2024",
-    companyEstablishmentDate: "01.01.2024",
-    head: "Test",
-    ownersBirthday: "01.01.1990",
-  },
-  {
-    id: "m5gr844i9",
-    company: "MACIS",
-    service: "test",
-    curator: "Test",
-    payment: "100$",
-    contactNumber: "+944513333333",
-    contractDate: "01.01.2024",
-    companyEstablishmentDate: "01.01.2024",
-    head: "Test",
-    ownersBirthday: "01.01.1990",
-  },
-  {
-    id: "m5gr84i39",
-    company: "MACIS",
-    service: "test",
-    curator: "Test",
-    payment: "100$",
-    contactNumber: "+944513333333",
-    contractDate: "01.01.2024",
-    companyEstablishmentDate: "01.01.2024",
-    head: "Test",
-    ownersBirthday: "01.01.1990",
-  },
-  {
-    id: "m5gr84i92",
-    company: "MACIS",
-    service: "test",
-    curator: "Test",
-    payment: "100$",
-    contactNumber: "+944513333333",
-    contractDate: "01.01.2024",
-    companyEstablishmentDate: "01.01.2024",
-    head: "Test",
-    ownersBirthday: "01.01.1990",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { CustomerApi } from "@/lib/api/customer.api";
+import dayjs from "dayjs";
+import { formatDate } from "@/lib/utils";
+import { DataTable } from "@/components/ui/data-table";
+import Link from "next/link";
 
 export type ActiveCustomer = {
   id: string;
@@ -124,7 +80,16 @@ const columns: ColumnDef<ActiveCustomer>[] = [
   {
     accessorKey: "company",
     header: "Şirkət",
-    cell: ({ row }) => <div>{row.getValue("company")}</div>,
+    cell: ({ row }) => {
+      return (
+        <Link
+          href={`/company/${row.original.id}`}
+          className={"text-blue-700 font-medium"}
+        >
+          {row.getValue("company")}
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "head",
@@ -139,7 +104,7 @@ const columns: ColumnDef<ActiveCustomer>[] = [
   {
     accessorKey: "contractDate",
     header: "Müqavilə tarixi",
-    cell: ({ row }) => <div>{row.getValue("contractDate")}</div>,
+    cell: ({ row }) => <div>{formatDate(row.getValue("contractDate"))}</div>,
   },
   {
     accessorKey: "service",
@@ -154,12 +119,14 @@ const columns: ColumnDef<ActiveCustomer>[] = [
   {
     accessorKey: "ownersBirthday",
     header: "Sahibkarın doğum günü",
-    cell: ({ row }) => <div>{row.getValue("ownersBirthday")}</div>,
+    cell: ({ row }) => <div>{formatDate(row.getValue("ownersBirthday"))}</div>,
   },
   {
     accessorKey: "companyEstablishmentDate",
     header: "Şirkətin yaranma tarixi",
-    cell: ({ row }) => <div>{row.getValue("companyEstablishmentDate")}</div>,
+    cell: ({ row }) => (
+      <div>{formatDate(row.getValue("companyEstablishmentDate"))}</div>
+    ),
   },
   {
     accessorKey: "curator",
@@ -171,7 +138,7 @@ const columns: ColumnDef<ActiveCustomer>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const data = row.original;
 
       return (
         <DropdownMenu>
@@ -182,15 +149,11 @@ const columns: ColumnDef<ActiveCustomer>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
+            <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
+            <DropdownMenuItem>
+              <Link href={`/customers/${data.id}`}>Müştəriyə bax</Link>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>Sil</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -199,146 +162,15 @@ const columns: ColumnDef<ActiveCustomer>[] = [
 ];
 
 export default function ActiveCustomers() {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = useState({});
-
-  const table = useReactTable({
-    data,
-    columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
+  const { data, isLoading } = useQuery({
+    queryKey: ["active-customers"],
+    queryFn: CustomerApi.getActiveCustomers,
   });
 
   return (
     <div className={""}>
       <h1 className={"text-[32px] font-semibold"}>Aktiv müştərilər</h1>
-
-      <div className="w-full">
-        <div className="flex items-center py-4">
-          <Input
-            placeholder="Şirkətləri axtarın..."
-            value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-              table.getColumn("email")?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm"
-          />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                Sütunlar <ChevronDownIcon className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-        <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
-          </div>
-          <div className="space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Geri
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Növbəti
-            </Button>
-          </div>
-        </div>
-      </div>
+      <DataTable data={data?.data} columns={columns} />
     </div>
   );
 }

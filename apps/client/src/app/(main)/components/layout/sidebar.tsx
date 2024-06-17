@@ -3,7 +3,7 @@ import React, { FC, ReactNode } from "react";
 import { IconProps, Icons } from "@/components/icons";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 export interface SidebarProps {}
@@ -15,6 +15,10 @@ const Sidebar: FC<SidebarProps> = () => {
   const pathname = usePathname();
   const { push } = useRouter();
   const navigationData: NavigationProps[] = [
+    {
+      label: "Müştərilər",
+      url: `/customers`,
+    },
     {
       label: "Aktiv müştərilər",
       url: `/active-customers`,

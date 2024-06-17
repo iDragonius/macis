@@ -1,7 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 
 interface Error {
-  error: string;
+  field: string;
   message: string;
 }
 
