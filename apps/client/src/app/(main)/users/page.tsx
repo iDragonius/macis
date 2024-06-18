@@ -1,33 +1,35 @@
 "use client";
+import { PageTitle } from "@/components/ui/page-title";
+import { useQuery } from "@tanstack/react-query";
+import { UserApi } from "@/lib/api/user.api";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
+import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { DataTable } from "@/components/ui/data-table";
-import { useQuery } from "@tanstack/react-query";
-import { CustomerApi } from "@/lib/api/customer.api";
-import { getCustomerStatus } from "@/lib/utils";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { PageTitle } from "@/components/ui/page-title";
 
-export type Customer = {
+export type User = {
   id: string;
-  company: string;
-  head: string;
-  contactNumber: string;
-  status: string;
+  email: string;
+  profile: {
+    firstName: string;
+    gender: string;
+    lastName: string;
+    fatherName: string;
+    phoneNumber: string;
+  };
 };
 
-const columns: ColumnDef<Customer>[] = [
+const columns: ColumnDef<User>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -50,40 +52,34 @@ const columns: ColumnDef<Customer>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  {
-    accessorKey: "company",
-    header: "Şirkət",
-    cell: ({ row }) => {
-      return (
-        <Link
-          href={`/company/${row.original.id}`}
-          className={"text-blue-700 font-medium"}
-        >
-          {row.getValue("company")}
-        </Link>
-      );
-    },
-  },
-  {
-    accessorKey: "head",
-    header: "Rəhbər",
-    cell: ({ row }) => <div>{row.getValue("head")}</div>,
-  },
-  {
-    accessorKey: "contactNumber",
-    header: "Əlaqə nömrəsi",
-    cell: ({ row }) => <div>{row.getValue("contactNumber")}</div>,
-  },
 
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "email",
+    header: "Email",
+    cell: ({ row }) => <div>{row.getValue("email")}</div>,
+  },
+  {
+    accessorKey: "fullName",
+    header: "Ad",
     cell: ({ row }) => {
-      const status = getCustomerStatus(row.getValue("status"));
-      return <div>{status}</div>;
+      const fullName =
+        row?.original?.profile?.firstName +
+        " " +
+        row?.original?.profile?.lastName;
+
+      return <div>{fullName}</div>;
     },
   },
 
+  {
+    accessorKey: "phoneNumber",
+    header: "Telefon nömrəsi",
+    cell: ({ row }) => {
+      const phoneNumber = row?.original?.profile?.phoneNumber;
+
+      return <div>{phoneNumber}</div>;
+    },
+  },
   {
     id: "actions",
     enableHiding: false,
@@ -110,19 +106,19 @@ const columns: ColumnDef<Customer>[] = [
     },
   },
 ];
-export default function Customers() {
+export default function Users() {
   const { data } = useQuery({
-    queryKey: ["customers"],
-    queryFn: CustomerApi.getAllCustomers,
+    queryKey: ["users"],
+    queryFn: UserApi.getAllUsers,
   });
   const { push } = useRouter();
   return (
-    <div className={""}>
-      <div className={"flex items-center justify-between"}>
-        <PageTitle>Müştərilər</PageTitle>
-        <Button onClick={() => push("/customers/add")}>Yeni müştəri</Button>
+    <>
+      <div className={"flex justify-between items-center"}>
+        <PageTitle>İstifadəçilər</PageTitle>
+        <Button onClick={() => push("/users/add")}>Yeni istifadəçi</Button>
       </div>
       <DataTable data={data?.data} columns={columns} />
-    </div>
+    </>
   );
 }

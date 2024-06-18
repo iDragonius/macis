@@ -38,6 +38,7 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { CustomerApi } from "@/lib/api/customer.api";
 import { DataTable } from "@/components/ui/data-table";
+import { PageTitle } from "@/components/ui/page-title";
 
 export type PotentialCustomer = {
   id: string;
@@ -79,7 +80,7 @@ const columns: ColumnDef<PotentialCustomer>[] = [
     cell: ({ row }) => {
       return (
         <Link
-          href={`/company/${row.original.id}`}
+          href={`/customers/${row.original.id}`}
           className={"text-blue-700 font-medium"}
         >
           {row.getValue("company")}
@@ -152,7 +153,7 @@ export default function PotentialCustomers() {
 
   return (
     <div className={""}>
-      <h1 className={"text-[32px] font-semibold"}>Potensial müştərilər</h1>
+      <PageTitle>Potensial müştərilər</PageTitle>
 
       <DataTable data={data?.data} columns={columns} />
     </div>

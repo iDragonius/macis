@@ -1,4 +1,5 @@
 import api from "@/lib/api/index";
+import { CustomerDto, CustomerProps } from "@/lib/types";
 
 export const CustomerApi = {
   async getAllCustomers() {
@@ -27,5 +28,8 @@ export const CustomerApi = {
   },
   async createCustomer(data: any) {
     return await api.post("/customer", data);
+  },
+  async getCustomer(id: string) {
+    return await api.get<CustomerProps>(`/customer/${id}`);
   },
 };

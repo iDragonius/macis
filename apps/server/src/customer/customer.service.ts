@@ -117,8 +117,12 @@ export class CustomerService {
   async getPotentialCustomers() {}
   async getLostCustomers() {}
 
-  findOne(id: number) {
-    return `This action returns a #${id} customer`;
+  async getCustomer(id: string) {
+    return await this.prisma.customer.findUnique({
+      where: {
+        id,
+      },
+    });
   }
 
   update(id: number, updateCustomerDto: UpdateCustomerDto) {

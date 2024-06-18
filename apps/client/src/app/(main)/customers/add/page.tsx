@@ -15,24 +15,9 @@ import { Button } from "@/components/ui/button";
 import { CustomerApi } from "@/lib/api/customer.api";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-type CustomerDto = {
-  company: string;
-  head: string;
-  contactNumber: string;
-  status: CustomerStatus;
-  contractDate: string;
-  service: string;
-  payment: string;
-  ownersBirthday: string;
-  companyEstablishmentDate: string;
-  curator: string;
-  contractExpirationDate: string;
-  termsOfPayment: string;
-  terminationReason: string;
-  position: string;
-  source: string;
-  notes: string;
-};
+import { CustomerDto } from "@/lib/types";
+import { PageTitle } from "@/components/ui/page-title";
+
 export default function CustomerAdd() {
   const [data, setData] = useState<CustomerDto>({
     company: "",
@@ -102,10 +87,9 @@ export default function CustomerAdd() {
       });
     }
   }
-  console.log(data);
   return (
     <div>
-      <h1 className={"text-[32px] font-semibold"}>Yeni müştəri</h1>
+      <PageTitle>Yeni müştəri</PageTitle>
 
       <div>
         <h2 className={"text-[24px] font-medium mt-8"}>Ümumi məlumatlar</h2>

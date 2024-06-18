@@ -9,7 +9,6 @@ import { nanoid } from 'nanoid';
 import { EnvironmentEnum } from '../core/enums';
 import { Address } from '@nestjs-modules/mailer/dist/interfaces/send-mail-options.interface';
 import { AuthSignInDto } from './dto/auth-sign-in.dto';
-import { AuthSignUpDto } from './dto/auth-sign-up.dto';
 import { MailerService } from '@nestjs-modules/mailer';
 import { MailService } from '../mail/mail.service';
 import { SchedulerRegistry } from '@nestjs/schedule';
@@ -48,46 +47,9 @@ export class AuthService {
     if (!comparedPasswords) {
       throw new BadRequestException(ExceptionTypes.WRONG_PASSWORD);
     }
-    console.log(comparedPasswords);
     const tokens = await this.getTokens(user.id, user.email);
     await this.assignNewTokenToUser(tokens, user.id);
     return tokens;
-  }
-
-  async signUp(data: AuthSignUpDto): Promise<{
-    success: boolean;
-  }> {
-    const potentialExistingUser = await this.prisma.user.findUnique({
-      where: { email: data.email },
-    });
-    if (potentialExistingUser) {
-      throw new BadRequestException(ExceptionTypes.USER_ALREADY_EXIST);
-    }
-    const hashedPassword = await this.hashData(data.password);
-
-    const user = await this.prisma.user.create({
-      data: {
-        email: data.email,
-        password: hashedPassword,
-        profile: {
-          create: {
-            firstName: data.firstName,
-            lastName: data.lastName,
-          },
-        },
-      },
-    });
-    if (!user) {
-      throw new BadRequestException(ExceptionTypes.UNEXPECTED_ERROR);
-    }
-
-    return {
-      success: true,
-    };
-  }
-
-  hashData(data): Promise<string> {
-    return bcrypt.hash(data, 10);
   }
 
   async getTokens(userId: string, email: string): Promise<Tokens> {

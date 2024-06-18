@@ -40,6 +40,7 @@ import dayjs from "dayjs";
 import { formatDate } from "@/lib/utils";
 import { DataTable } from "@/components/ui/data-table";
 import Link from "next/link";
+import { PageTitle } from "@/components/ui/page-title";
 
 export type ActiveCustomer = {
   id: string;
@@ -83,7 +84,7 @@ const columns: ColumnDef<ActiveCustomer>[] = [
     cell: ({ row }) => {
       return (
         <Link
-          href={`/company/${row.original.id}`}
+          href={`/customers/${row.original.id}`}
           className={"text-blue-700 font-medium"}
         >
           {row.getValue("company")}
@@ -169,7 +170,8 @@ export default function ActiveCustomers() {
 
   return (
     <div className={""}>
-      <h1 className={"text-[32px] font-semibold"}>Aktiv müştərilər</h1>
+      <PageTitle>Aktiv müştərilər</PageTitle>
+
       <DataTable data={data?.data} columns={columns} />
     </div>
   );

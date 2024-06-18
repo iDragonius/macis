@@ -41,8 +41,8 @@ export class CustomerController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.customerService.findOne(+id);
+  getCustomer(@Param('id') id: string) {
+    return this.customerService.getCustomer(id);
   }
 
   @Patch(':id')

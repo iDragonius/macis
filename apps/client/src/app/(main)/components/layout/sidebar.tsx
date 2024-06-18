@@ -16,6 +16,10 @@ const Sidebar: FC<SidebarProps> = () => {
   const { push } = useRouter();
   const navigationData: NavigationProps[] = [
     {
+      label: "İstifadəçilər",
+      url: "/users",
+    },
+    {
       label: "Müştərilər",
       url: `/customers`,
     },
@@ -59,14 +63,14 @@ const Sidebar: FC<SidebarProps> = () => {
       label: "Görüş rədd qrafiki",
       url: `/potential-customers`,
     },
-    {
-      label: "Kurasiya zəngləri",
-      url: `/potential-customers`,
-    },
-    {
-      label: "Aylıq hədəf qrafiki",
-      url: `/potential-customers`,
-    },
+    // {
+    //   label: "Kurasiya zəngləri",
+    //   url: `/potential-customers`,
+    // },
+    // {
+    //   label: "Aylıq hədəf qrafiki",
+    //   url: `/potential-customers`,
+    // },
   ];
 
   return (
