@@ -1,6 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import { CustomerApi } from "@/lib/api/customer.api";
+import { PageTitle } from "@/components/ui/page-title";
 
 export default function Customer({ params }: { params: { id: string } }) {
   const { data } = useQuery({
@@ -10,7 +11,7 @@ export default function Customer({ params }: { params: { id: string } }) {
   return (
     <div>
       <div className={"flex justify-between items-center"}>
-        <h1 className={"text-[32px] font-semibold"}>{data?.data.company}</h1>
+        <PageTitle>{data?.data.company}</PageTitle>
       </div>
     </div>
   );

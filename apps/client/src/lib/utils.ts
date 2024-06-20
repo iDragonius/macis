@@ -20,3 +20,11 @@ export function getCustomerStatus(status: CustomerStatus): string {
     return "Potensial";
   }
 }
+
+export function formatField(field: any | null) {
+  if (field === null) {
+    return "Təyin edilməyib";
+  } else {
+    return field;
+  }
+}

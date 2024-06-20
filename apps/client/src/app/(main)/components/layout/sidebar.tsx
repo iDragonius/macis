@@ -5,6 +5,8 @@ import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { useQuery } from "@tanstack/react-query";
+import { UserApi } from "@/lib/api/user.api";
 
 export interface SidebarProps {}
 export type NavigationProps = {
@@ -14,6 +16,11 @@ export type NavigationProps = {
 const Sidebar: FC<SidebarProps> = () => {
   const pathname = usePathname();
   const { push } = useRouter();
+
+  const { data: user } = useQuery({
+    queryKey: ["me"],
+    queryFn: UserApi.me,
+  });
   const navigationData: NavigationProps[] = [
     {
       label: "İstifadəçilər",
@@ -36,33 +43,23 @@ const Sidebar: FC<SidebarProps> = () => {
       url: `/potential-customers`,
     },
     {
+      label: "Zəng qrafiki",
+      url: `/call-schedule`,
+    },
+    {
       label: "Günlük zəng qrafiki",
-      url: `/potential-customers`,
+      url: `/daily-call-schedule`,
     },
-    {
-      label: "Zəng təqibi",
-      url: `/potential-customers`,
-    },
-    {
-      label: "Zəng rədd qrafiki",
-      url: `/potential-customers`,
-    },
+
     {
       label: "Görüş qrafiki",
-      url: `/potential-customers`,
+      url: `/meeting-schedule`,
     },
     {
       label: "Günlük görüş qrafiki",
-      url: `/potential-customers`,
+      url: `/daily-meeting-schedule`,
     },
-    {
-      label: "Görüş təqib qrafiki",
-      url: `/potential-customers`,
-    },
-    {
-      label: "Görüş rədd qrafiki",
-      url: `/potential-customers`,
-    },
+
     // {
     //   label: "Kurasiya zəngləri",
     //   url: `/potential-customers`,
@@ -72,6 +69,12 @@ const Sidebar: FC<SidebarProps> = () => {
     //   url: `/potential-customers`,
     // },
   ];
+
+  function logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    push("/sign-in");
+  }
 
   return (
     <div
@@ -100,6 +103,7 @@ const Sidebar: FC<SidebarProps> = () => {
       </div>
       <div className={"flex flex-col gap-2"}>
         <button
+          onClick={logout}
           className={
             "flex justify-between items-center w-[228px] h-[52px] px-4 text-white hover:!text-blue-600 hover:bg-neutral-100 hover:text-neutral-600 trans rounded-[12px] group"
           }
@@ -114,7 +118,9 @@ const Sidebar: FC<SidebarProps> = () => {
             <h3
               className={"text-white text-[14px] font-semibold leading-[120%]"}
             >
-              Ruslan Rustamov
+              {user?.data?.profile?.firstName +
+                " " +
+                user?.data?.profile?.lastName}
             </h3>
             <p className={"text-white text-[13px] leading-[120%] "}>
               Super Admin

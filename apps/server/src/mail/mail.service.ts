@@ -9,14 +9,23 @@ export class MailService {
     private readonly configService: ConfigService,
   ) {}
 
-  async sendOtp(email: string, otp: number) {
-    const text = `Hello ${email}, this is your OTP: ${otp}`;
-    console.log('asdsad');
+  async sendUserCredentials({ fullName, email, password }) {
+    const html = `
+      <div>
+        <h3>Salam, ${fullName}!</h3>
+        <p>Sistemə daxil olmaq üçün email və şifəriniz:</p>
+        <hr/>
+        
+        <p style="font-weight: bold">Email: <span style="font-weight: normal">${email}</span></p>
+        <p style="font-weight: bold">Şifrə: <span style="font-weight: normal">${password}</span></p> 
+        </div>
+    
+    `;
     return await this.mailService.sendMail({
       to: email,
       from: this.configService.get<string>('MAIL_FROM'),
-      subject: 'OTP',
-      text,
+      subject: 'İstifadəçi məlumatları',
+      html,
     });
   }
 }

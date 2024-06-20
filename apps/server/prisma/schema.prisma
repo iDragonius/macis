@@ -89,31 +89,35 @@ model Customer {
 }
 
 model CallSchedule {
-  id                 String     @id @default(uuid())
-  createdAt          DateTime   @default(now()) @map("created_at")
-  updatedAt          DateTime   @updatedAt @map("updated_ad")
-  customer           Customer   @relation(fields: [customerId], references: [id])
+  id                 String      @id @default(uuid())
+  createdAt          DateTime    @default(now()) @map("created_at")
+  updatedAt          DateTime    @updatedAt @map("updated_ad")
+  customer           Customer    @relation(fields: [customerId], references: [id])
   customerId         String
   notes              String?
   contactDate        DateTime?
+  nextContactDate    DateTime?
   reasonForRejection String?
-  result             CallResult
+  result             CallResult?
 }
 
 model MeetingSchedule {
-  id                 String        @id @default(uuid())
-  createdAt          DateTime      @default(now()) @map("created_at")
-  updatedAt          DateTime      @updatedAt @map("updated_ad")
-  customer           Customer      @relation(fields: [customerId], references: [id])
+  id                 String         @id @default(uuid())
+  createdAt          DateTime       @default(now()) @map("created_at")
+  updatedAt          DateTime       @updatedAt @map("updated_ad")
+  customer           Customer       @relation(fields: [customerId], references: [id])
   customerId         String
   participant        String?
   contactNumber      String?
   position           String?
-  meetingTime        DateTime?
+  meetingTime        String?
+  meetingDate        DateTime?
   notes              String?
   contactDate        DateTime?
+  nextContactDate    DateTime?
+  nextMeetingDate    DateTime?
   reasonForRejection String?
-  result             MeetingResult
+  result             MeetingResult?
 }
 
 enum CodeType {

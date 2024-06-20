@@ -1,4 +1,7 @@
 import { CustomerStatus } from "@/lib/utils";
+import { Customer } from "@/app/(main)/customers/page";
+import { CallResultType } from "@/lib/api/call-schedule.api";
+import { MeetingResultType } from "@/lib/api/meeting-schedule.api";
 
 export type CustomerDto = {
   company: string;
@@ -52,3 +55,26 @@ export enum Gender {
   MALE = "MALE",
   FEMALE = "FEMALE",
 }
+
+export type CallProps = {
+  id: string;
+  customer: Customer;
+  contactDate: string;
+  nextContactDate: string;
+  reasonForRejection: string;
+  notes: string;
+  result: CallResultType | null;
+};
+
+export type MeetingProps = {
+  id: string;
+  customer: Customer;
+  contactDate: string;
+  meetingTime: string;
+  meetingDate: string;
+  nextContactDate: string;
+  nextMeetingDate: string;
+  reasonForRejection: string;
+  notes: string;
+  result: MeetingResultType | null;
+};

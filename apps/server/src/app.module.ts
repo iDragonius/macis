@@ -10,6 +10,8 @@ import { MailModule } from './mail/mail.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TasksService } from './core/services/tasks.service';
 import { UserModule } from './user/user.module';
+import { MeetingScheduleModule } from './meeting-schedule/meeting-schedule.module';
+import { CallScheduleModule } from './call-schedule/call-schedule.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { UserModule } from './user/user.module';
     MailModule,
     CustomerModule,
     UserModule,
+    MeetingScheduleModule,
+    CallScheduleModule,
   ],
   controllers: [],
   providers: [

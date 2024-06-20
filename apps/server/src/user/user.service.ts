@@ -3,13 +3,30 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { ExceptionTypes } from '../core/exceptions';
 import * as bcrypt from 'bcrypt';
+import { MailService } from '../mail/mail.service';
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private mailService: MailService,
+  ) {}
   async me(userId: string) {
     return await this.prisma.user.findUnique({
       where: {
         id: userId,
+      },
+      select: {
+        profile: {
+          select: {
+            firstName: true,
+            lastName: true,
+            fatherName: true,
+            phoneNumber: true,
+            gender: true,
+          },
+        },
+        id: true,
+        email: true,
       },
     });
   }
@@ -49,7 +66,11 @@ export class UserService {
     if (!user) {
       throw new BadRequestException(ExceptionTypes.UNEXPECTED_ERROR);
     }
-
+    this.mailService.sendUserCredentials({
+      fullName: data.firstName + ' ' + data.lastName,
+      email: data.email,
+      password: data.password,
+    });
     return {
       success: true,
     };

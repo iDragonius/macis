@@ -12,7 +12,7 @@ function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: Infinity,
+        staleTime: 0,
         refetchOnWindowFocus: false,
         refetchOnMount: "always",
       },
