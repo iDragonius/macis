@@ -61,7 +61,7 @@ export default function Add() {
             <SelectContent>
               {customers?.data.map((customer: any) => {
                 return (
-                  <SelectItem value={customer.id}>
+                  <SelectItem value={customer.id} key={customer.id}>
                     {customer.company}
                   </SelectItem>
                 );
