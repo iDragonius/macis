@@ -12,6 +12,7 @@ import { AuthSignInDto } from './dto/auth-sign-in.dto';
 import { MailerService } from '@nestjs-modules/mailer';
 import { MailService } from '../mail/mail.service';
 import { SchedulerRegistry } from '@nestjs/schedule';
+import { AuthSignUpDto } from './dto/auth-sign-up.dto';
 
 export type SendMailDto = {
   from?: string | Address;
@@ -52,6 +53,41 @@ export class AuthService {
     return tokens;
   }
 
+  async signUp(data: AuthSignUpDto): Promise<{
+    success: boolean;
+  }> {
+    const potentialExistingUser = await this.prisma.user.findUnique({
+      where: { email: data.email },
+    });
+    if (potentialExistingUser) {
+      throw new BadRequestException(ExceptionTypes.USER_ALREADY_EXIST);
+    }
+    const hashedPassword = await this.hashData(data.password);
+
+    const user = await this.prisma.user.create({
+      data: {
+        email: data.email,
+        password: hashedPassword,
+        profile: {
+          create: {
+            firstName: data.firstName,
+            lastName: data.lastName,
+          },
+        },
+      },
+    });
+    if (!user) {
+      throw new BadRequestException(ExceptionTypes.UNEXPECTED_ERROR);
+    }
+
+    return {
+      success: true,
+    };
+  }
+
+  hashData(data): Promise<string> {
+    return bcrypt.hash(data, 10);
+  }
   async getTokens(userId: string, email: string): Promise<Tokens> {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.sign(
