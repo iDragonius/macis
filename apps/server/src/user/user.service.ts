@@ -75,7 +75,13 @@ export class UserService {
       success: true,
     };
   }
-
+  async deleteUser(id: string) {
+    return await this.prisma.user.delete({
+      where: {
+        id,
+      },
+    });
+  }
   hashData(data): Promise<string> {
     return bcrypt.hash(data, 10);
   }
