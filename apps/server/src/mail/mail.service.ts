@@ -21,11 +21,16 @@ export class MailService {
         </div>
     
     `;
-    return await this.mailService.sendMail({
-      to: email,
-      from: this.configService.get<string>('MAIL_FROM'),
-      subject: 'İstifadəçi məlumatları',
-      html,
-    });
+
+    try {
+      return await this.mailService.sendMail({
+        to: email,
+        from: this.configService.get<string>('MAIL_FROM'),
+        subject: 'İstifadəçi məlumatları',
+        html,
+      });
+    } catch (error) {
+      console.error('Error sending mail:', error);
+    }
   }
 }
