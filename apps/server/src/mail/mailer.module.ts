@@ -18,9 +18,6 @@ import { ConfigService } from '@nestjs/config';
           },
           debug: true,
           logger: true,
-          tls: {
-            rejectUnauthorized: false,
-          },
         },
       }),
     }),
