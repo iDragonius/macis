@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MailerModule as CoreMailerModule } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
-import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 
 @Module({
   imports: [
@@ -17,6 +16,8 @@ import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
             user: configService.get<string>('MAIL_USER'),
             pass: configService.get<string>('MAIL_PASS'),
           },
+          debug: true,
+          logger: true,
           tls: {
             rejectUnauthorized: false,
           },
