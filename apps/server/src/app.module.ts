@@ -12,6 +12,7 @@ import { TasksService } from './core/services/tasks.service';
 import { UserModule } from './user/user.module';
 import { MeetingScheduleModule } from './meeting-schedule/meeting-schedule.module';
 import { CallScheduleModule } from './call-schedule/call-schedule.module';
+import { RolesGuard } from './core/guards/roles.guard';
 
 @Module({
   imports: [
@@ -32,9 +33,14 @@ import { CallScheduleModule } from './call-schedule/call-schedule.module';
       useClass: AtGuard,
     },
     {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+    {
       provide: APP_FILTER,
       useClass: ValidationFilter,
     },
+
     TasksService,
   ],
 })

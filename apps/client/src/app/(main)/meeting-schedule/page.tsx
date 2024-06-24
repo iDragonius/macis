@@ -61,7 +61,7 @@ const meetingColumns: ColumnDef<MeetingProps>[] = [
       const company = row.original.customer.company;
       return (
         <Link
-          href={`/company/${row.original.customer.id}`}
+          href={`/customers/${row.original.customer.id}`}
           className={"text-blue-700 font-medium"}
         >
           {formatField(company)}
@@ -152,7 +152,7 @@ const meetingColumns: ColumnDef<MeetingProps>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
 
-            <DropdownMenuItem>Sil</DropdownMenuItem>
+            {/*<DropdownMenuItem>Sil</DropdownMenuItem>*/}
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -189,7 +189,7 @@ const contractSignedMeetingColumns: ColumnDef<MeetingProps>[] = [
       const company = row.original.customer.company;
       return (
         <Link
-          href={`/company/${row.original.customer.id}`}
+          href={`/customers/${row.original.customer.id}`}
           className={"text-blue-700 font-medium"}
         >
           {formatField(company)}
@@ -259,7 +259,7 @@ const contractSignedMeetingColumns: ColumnDef<MeetingProps>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
 
-            <DropdownMenuItem>Sil</DropdownMenuItem>
+            {/*<DropdownMenuItem>Sil</DropdownMenuItem>*/}
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -296,7 +296,7 @@ const refusedMeetingColumns: ColumnDef<MeetingProps>[] = [
       const company = row.original.customer.company;
       return (
         <Link
-          href={`/company/${row.original.customer.id}`}
+          href={`/customers/${row.original.customer.id}`}
           className={"text-blue-700 font-medium"}
         >
           {formatField(company)}
@@ -373,7 +373,7 @@ const refusedMeetingColumns: ColumnDef<MeetingProps>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
 
-            <DropdownMenuItem>Sil</DropdownMenuItem>
+            {/*<DropdownMenuItem>Sil</DropdownMenuItem>*/}
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -410,7 +410,7 @@ const followedMeetingColumns: ColumnDef<MeetingProps>[] = [
       const company = row.original.customer.company;
       return (
         <Link
-          href={`/company/${row.original.customer.id}`}
+          href={`/customers/${row.original.customer.id}`}
           className={"text-blue-700 font-medium"}
         >
           {formatField(company)}
@@ -495,7 +495,7 @@ const followedMeetingColumns: ColumnDef<MeetingProps>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
 
-            <DropdownMenuItem>Sil</DropdownMenuItem>
+            {/*<DropdownMenuItem>Sil</DropdownMenuItem>*/}
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -514,7 +514,7 @@ export default function MeetingSchedule() {
   return (
     <div>
       <div className={"flex items-center justify-between"}>
-        <PageTitle>Zəng qrafiki</PageTitle>
+        <PageTitle>Görüş qrafiki</PageTitle>
         <div className={"flex items-center gap-4"}>
           <Select
             onValueChange={(value) => {
@@ -531,7 +531,6 @@ export default function MeetingSchedule() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="ALL">Hamısı</SelectItem>
-
               <SelectItem value="CONTRACT_SIGNED">Müqavilə bağlandı</SelectItem>
               <SelectItem value="WILL_BE_FOLLOWED">Təqib olunacaq</SelectItem>
               <SelectItem value="REFUSED">İtirilmiş</SelectItem>

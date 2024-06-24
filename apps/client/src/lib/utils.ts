@@ -1,6 +1,7 @@
 import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import dayjs from "dayjs";
+import { Role } from "@/lib/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -26,5 +27,15 @@ export function formatField(field: any | null) {
     return "Təyin edilməyib";
   } else {
     return field;
+  }
+}
+
+export function getRole(role: Role): string {
+  if (role === "USER") {
+    return "İzləyici";
+  } else if (role === "ADMIN") {
+    return "Admin";
+  } else {
+    return "Super Admin";
   }
 }

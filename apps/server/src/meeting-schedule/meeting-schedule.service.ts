@@ -4,6 +4,7 @@ import { UpdateMeetingScheduleDto } from './dto/update-meeting-schedule.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { ExceptionTypes } from '../core/exceptions';
 import { CallResult, MeetingResult } from '@prisma/client';
+import { ChangeMeetingResultDto } from './dto/change-meeting-result.dto';
 
 @Injectable()
 export class MeetingScheduleService {
@@ -60,6 +61,17 @@ export class MeetingScheduleService {
         meetingDate: {
           gte: new Date(formattedDate),
         },
+      },
+    });
+  }
+
+  async changeMeetingResult(data: ChangeMeetingResultDto, meetingId: string) {
+    return await this.prisma.meetingSchedule.update({
+      where: {
+        id: meetingId,
+      },
+      data: {
+        result: data.result,
       },
     });
   }

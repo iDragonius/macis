@@ -1,5 +1,6 @@
 import api from "@/lib/api/index";
 import { CustomerDto, CustomerProps } from "@/lib/types";
+import { CustomerStatus } from "@/lib/utils";
 
 export const CustomerApi = {
   async getAllCustomers() {
@@ -31,5 +32,11 @@ export const CustomerApi = {
   },
   async getCustomer(id: string) {
     return await api.get<CustomerProps>(`/customer/${id}`);
+  },
+  async deleteCustomer(id: string) {
+    return await api.delete(`/customer/${id}`);
+  },
+  async changeCustomerStatus(id: string, status: CustomerStatus) {
+    return await api.put(`/customer/status/${id}`, { status });
   },
 };

@@ -3,7 +3,7 @@ import React, { FC, ReactNode } from "react";
 import { IconProps, Icons } from "@/components/icons";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn, getRole } from "@/lib/utils";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { UserApi } from "@/lib/api/user.api";
@@ -122,8 +122,8 @@ const Sidebar: FC<SidebarProps> = () => {
                 " " +
                 user?.data?.profile?.lastName}
             </h3>
-            <p className={"text-white text-[13px] leading-[120%] "}>
-              Super Admin
+            <p className={"text-white text-[13px] leading-[120%] capitalize"}>
+              {getRole(user?.data?.role)}
             </p>
           </div>
         </div>

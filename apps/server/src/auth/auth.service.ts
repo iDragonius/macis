@@ -13,6 +13,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { MailService } from '../mail/mail.service';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { AuthSignUpDto } from './dto/auth-sign-up.dto';
+import { Role } from '@prisma/client';
 
 export type SendMailDto = {
   from?: string | Address;
@@ -48,7 +49,7 @@ export class AuthService {
     if (!comparedPasswords) {
       throw new BadRequestException(ExceptionTypes.WRONG_PASSWORD);
     }
-    const tokens = await this.getTokens(user.id, user.email);
+    const tokens = await this.getTokens(user.id, user.email, user.role);
     await this.assignNewTokenToUser(tokens, user.id);
     return tokens;
   }
@@ -88,19 +89,20 @@ export class AuthService {
   hashData(data): Promise<string> {
     return bcrypt.hash(data, 10);
   }
-  async getTokens(userId: string, email: string): Promise<Tokens> {
+  async getTokens(userId: string, email: string, role: Role): Promise<Tokens> {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.sign(
-        { sub: userId, email, jti: nanoid(10) },
+        { sub: userId, email, jti: nanoid(10), role },
         {
           secret: this.configService.get<string>(
             EnvironmentEnum.ACCESS_SECRET_KEY,
           ),
+
           expiresIn: 30 * 24 * 60 * 60,
         },
       ),
       this.jwtService.sign(
-        { sub: userId, email, jti: nanoid(10) },
+        { sub: userId, email, jti: nanoid(10), role },
         {
           secret: this.configService.get<string>(
             EnvironmentEnum.REFRESH_SECRET_KEY,

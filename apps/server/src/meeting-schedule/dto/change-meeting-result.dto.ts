@@ -1,4 +1,4 @@
-import { CallResult } from '@prisma/client';
+import { CallResult, MeetingResult } from '@prisma/client';
 import {
   IsDate,
   IsEnum,
@@ -8,8 +8,8 @@ import {
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 
-export class ChangeCallResultDto {
+export class ChangeMeetingResultDto {
   @IsNotEmpty()
-  @IsEnum(CallResult)
-  result: CallResult;
+  @IsEnum(MeetingResult)
+  result: MeetingResult;
 }

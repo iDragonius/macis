@@ -129,7 +129,11 @@ export class CustomerService {
     return `This action updates a #${id} customer`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} customer`;
+  async deleteCustomer(id: string) {
+    return await this.prisma.customer.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

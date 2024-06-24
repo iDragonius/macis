@@ -1,18 +1,12 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Ip,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
-import { GetCurrentUser, GetCurrentUserId, Public } from '../core/decorators';
+import { Public } from '../core/decorators';
 import { Tokens } from './types';
 import { AuthSignInDto } from './dto/auth-sign-in.dto';
 import { AuthSignUpDto } from './dto/auth-sign-up.dto';
+import { Roles } from '../core/decorators/roles.decorator';
+import { Role } from '../core/enums/role.enum';
 
 @Controller('auth')
 export class AuthController {
@@ -23,7 +17,7 @@ export class AuthController {
   async signIn(@Body() data: AuthSignInDto): Promise<Tokens> {
     return await this.authService.signIn(data);
   }
-  @Public()
+  @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   @Post('/sign-up')
   @HttpCode(HttpStatus.OK)
   async signUp(@Body() data: AuthSignUpDto) {

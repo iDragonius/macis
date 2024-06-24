@@ -49,11 +49,32 @@ export type UserDto = {
   phoneNumber: string;
   email: string;
   gender: Gender;
+  role: Role;
 };
 
 export enum Gender {
   MALE = "MALE",
   FEMALE = "FEMALE",
+}
+
+export enum Role {
+  USER = "USER",
+  ADMIN = "ADMIN",
+  SUPER_ADMIN = "SUPER_ADMIN",
+}
+
+export enum MeetingResult {
+  CONTRACT_SIGNED = "CONTRACT_SIGNED",
+  WILL_BE_FOLLOWED = "WILL_BE_FOLLOWED",
+  REFUSED = "REFUSED",
+  UNKNOWN = "UNKNOWN",
+}
+
+export enum CallResult {
+  WILL_BE_MEETING = "WILL_BE_MEETING",
+  WILL_BE_FOLLOWED = "WILL_BE_FOLLOWED",
+  REFUSED = "REFUSED",
+  UNKNOWN = "UNKNOWN",
 }
 
 export type CallProps = {
@@ -63,7 +84,7 @@ export type CallProps = {
   nextContactDate: string;
   reasonForRejection: string;
   notes: string;
-  result: CallResultType | null;
+  result: CallResultType;
 };
 
 export type MeetingProps = {
@@ -76,5 +97,5 @@ export type MeetingProps = {
   nextMeetingDate: string;
   reasonForRejection: string;
   notes: string;
-  result: MeetingResultType | null;
+  result: MeetingResultType;
 };

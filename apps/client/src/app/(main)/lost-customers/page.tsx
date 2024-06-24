@@ -52,111 +52,118 @@ export type LostCustomer = {
   contractExpirationDate: string;
 };
 
-const columns: ColumnDef<LostCustomer>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "company",
-    header: "Şirkət",
-    cell: ({ row }) => {
-      return (
-        <Link
-          href={`/customers/${row.original.id}`}
-          className={"text-blue-700 font-medium"}
-        >
-          {row.getValue("company")}
-        </Link>
-      );
-    },
-  },
-  {
-    accessorKey: "head",
-    header: "Rəhbər",
-    cell: ({ row }) => <div>{row.getValue("head")}</div>,
-  },
-  {
-    accessorKey: "contactNumber",
-    header: "Əlaqə nömrəsi",
-    cell: ({ row }) => <div>{row.getValue("contactNumber")}</div>,
-  },
-  {
-    accessorKey: "contractDate",
-    header: "Müqavilə tarixi",
-    cell: ({ row }) => <div>{row.getValue("contractDate")}</div>,
-  },
-  {
-    accessorKey: "contractExpirationDate",
-    header: "Müqavilənin bitmə tarixi",
-    cell: ({ row }) => <div>{row.getValue("contractExpirationDate")}</div>,
-  },
-  {
-    accessorKey: "service",
-    header: "Aldığı xidmət",
-    cell: ({ row }) => <div>{row.getValue("service")}</div>,
-  },
-  {
-    accessorKey: "termsOfPayment",
-    header: "Ödəniş şərtləri",
-    cell: ({ row }) => <div>{row.getValue("termsOfPayment")}</div>,
-  },
-  {
-    accessorKey: "terminationReason",
-    header: "Xitam səbəbi",
-    cell: ({ row }) => <div>{row.getValue("terminationReason")}</div>,
-  },
-
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const data = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
-            <DropdownMenuItem>
-              <Link href={`/customers/${data.id}`}>Müştəriyə bax</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>Sil</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
-
 export default function LostCustomers() {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["lost-customers"],
     queryFn: CustomerApi.getLostCustomers,
   });
+  const columns: ColumnDef<LostCustomer>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "company",
+      header: "Şirkət",
+      cell: ({ row }) => {
+        return (
+          <Link
+            href={`/customers/${row.original.id}`}
+            className={"text-blue-700 font-medium"}
+          >
+            {row.getValue("company")}
+          </Link>
+        );
+      },
+    },
+    {
+      accessorKey: "head",
+      header: "Rəhbər",
+      cell: ({ row }) => <div>{row.getValue("head")}</div>,
+    },
+    {
+      accessorKey: "contactNumber",
+      header: "Əlaqə nömrəsi",
+      cell: ({ row }) => <div>{row.getValue("contactNumber")}</div>,
+    },
+    {
+      accessorKey: "contractDate",
+      header: "Müqavilə tarixi",
+      cell: ({ row }) => <div>{row.getValue("contractDate")}</div>,
+    },
+    {
+      accessorKey: "contractExpirationDate",
+      header: "Müqavilənin bitmə tarixi",
+      cell: ({ row }) => <div>{row.getValue("contractExpirationDate")}</div>,
+    },
+    {
+      accessorKey: "service",
+      header: "Aldığı xidmət",
+      cell: ({ row }) => <div>{row.getValue("service")}</div>,
+    },
+    {
+      accessorKey: "termsOfPayment",
+      header: "Ödəniş şərtləri",
+      cell: ({ row }) => <div>{row.getValue("termsOfPayment")}</div>,
+    },
+    {
+      accessorKey: "terminationReason",
+      header: "Xitam səbəbi",
+      cell: ({ row }) => <div>{row.getValue("terminationReason")}</div>,
+    },
+
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const data = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <DotsHorizontalIcon className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
+              <DropdownMenuItem>
+                <Link href={`/customers/${data.id}`}>Müştəriyə bax</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  CustomerApi.deleteCustomer(row.original.id).then((res) => {
+                    refetch();
+                  });
+                }}
+              >
+                Sil
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
 
   return (
     <div className={""}>

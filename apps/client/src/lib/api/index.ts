@@ -12,10 +12,8 @@ api.interceptors.request.use(
   (config) => {
     if (localStorage.getItem("token")) {
       config.headers.Authorization = "Bearer " + localStorage.getItem("token");
-      return config;
-    } else {
-      return config;
     }
+    return config;
   },
   (error) => {
     return Promise.reject(error);
@@ -35,11 +33,16 @@ api.interceptors.response.use(
         },
       );
     } else {
-      toast.error(
-        ErrorMessages[error.response.data.message] ||
-          "Gözlənilməyən xəta baş verdi!",
-      );
+      if (error.response.status === 403) {
+        toast.error("Bu resursa icazəniz yoxdur!");
+      } else {
+        toast.error(
+          ErrorMessages[error.response.data.message] ||
+            "Gözlənilməyən xəta baş verdi!",
+        );
+      }
     }
+    return Promise.reject(error);
   },
 );
 

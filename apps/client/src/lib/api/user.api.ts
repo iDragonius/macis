@@ -12,4 +12,7 @@ export const UserApi = {
   async createUser(data: any) {
     return await api.post("/user", data);
   },
+  async deleteUser(id: string) {
+    return await api.delete(`/user/${id}`);
+  },
 };

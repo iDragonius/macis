@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  seed     = "prisma/seed.ts"
 }
 
 datasource db {
@@ -14,15 +15,15 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_ad")
-
-  email    String       @unique
-  password String
-  tokens   UserToken[]
-  codes    UserCodes[]
-  profile  UserProfile?
+  id        String       @id @default(uuid())
+  createdAt DateTime     @default(now()) @map("created_at")
+  updatedAt DateTime     @updatedAt @map("updated_ad")
+  role      Role         @default(USER)
+  email     String       @unique
+  password  String
+  tokens    UserToken[]
+  codes     UserCodes[]
+  profile   UserProfile?
 }
 
 model UserProfile {
@@ -92,20 +93,20 @@ model CallSchedule {
   id                 String      @id @default(uuid())
   createdAt          DateTime    @default(now()) @map("created_at")
   updatedAt          DateTime    @updatedAt @map("updated_ad")
-  customer           Customer    @relation(fields: [customerId], references: [id])
+  customer           Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
   customerId         String
   notes              String?
   contactDate        DateTime?
   nextContactDate    DateTime?
   reasonForRejection String?
-  result             CallResult?
+  result             CallResult? @default(UNKNOWN)
 }
 
 model MeetingSchedule {
-  id                 String         @id @default(uuid())
-  createdAt          DateTime       @default(now()) @map("created_at")
-  updatedAt          DateTime       @updatedAt @map("updated_ad")
-  customer           Customer       @relation(fields: [customerId], references: [id])
+  id                 String        @id @default(uuid())
+  createdAt          DateTime      @default(now()) @map("created_at")
+  updatedAt          DateTime      @updatedAt @map("updated_ad")
+  customer           Customer      @relation(fields: [customerId], references: [id], onDelete: Cascade)
   customerId         String
   participant        String?
   contactNumber      String?
@@ -117,7 +118,7 @@ model MeetingSchedule {
   nextContactDate    DateTime?
   nextMeetingDate    DateTime?
   reasonForRejection String?
-  result             MeetingResult?
+  result             MeetingResult @default(UNKNOWN)
 }
 
 enum CodeType {
@@ -135,14 +136,22 @@ enum CustomerStatus {
   LOST
 }
 
+enum Role {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
 enum MeetingResult {
   CONTRACT_SIGNED
   WILL_BE_FOLLOWED
   REFUSED
+  UNKNOWN
 }
 
 enum CallResult {
   WILL_BE_MEETING
   WILL_BE_FOLLOWED
   REFUSED
+  UNKNOWN
 }

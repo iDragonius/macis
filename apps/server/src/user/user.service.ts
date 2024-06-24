@@ -27,6 +27,7 @@ export class UserService {
         },
         id: true,
         email: true,
+        role: true,
       },
     });
   }

@@ -57,7 +57,7 @@ const callColumns: ColumnDef<CallProps>[] = [
       const company = row.original.customer.company;
       return (
         <Link
-          href={`/company/${row.original.customer.id}`}
+          href={`/customers/${row.original.customer.id}`}
           className={"text-blue-700 font-medium"}
         >
           {formatField(company)}
@@ -177,7 +177,7 @@ const followedCallColumns: ColumnDef<CallProps>[] = [
       const company = row.original.customer.company;
       return (
         <Link
-          href={`/company/${row.original.customer.id}`}
+          href={`/customers/${row.original.customer.id}`}
           className={"text-blue-700 font-medium"}
         >
           {formatField(company)}
@@ -284,7 +284,7 @@ const refusedCallColumns: ColumnDef<CallProps>[] = [
       const company = row.original.customer.company;
       return (
         <Link
-          href={`/company/${row.original.customer.id}`}
+          href={`/customers/${row.original.customer.id}`}
           className={"text-blue-700 font-medium"}
         >
           {formatField(company)}
@@ -392,7 +392,7 @@ const meetingCallColumns: ColumnDef<CallProps>[] = [
       const company = row.original.customer.company;
       return (
         <Link
-          href={`/company/${row.original.customer.id}`}
+          href={`/customers/${row.original.customer.id}`}
           className={"text-blue-700 font-medium"}
         >
           {formatField(company)}

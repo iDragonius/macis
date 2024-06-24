@@ -20,7 +20,7 @@ export class CallScheduleController {
   async createCall(@Body() data: CreateCallScheduleDto) {
     return await this.callScheduleService.createCall(data);
   }
-  @Patch(':id')
+  @Patch('/result/:id')
   async changeCallResult(
     @Body() data: ChangeCallResultDto,
     @Param('id') callId: string,

@@ -2,13 +2,16 @@ import React, { FC, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
+  FilterFn,
+  SortingFn,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
+  sortingFns,
   useReactTable,
+  SortingState,
   VisibilityState,
 } from "@tanstack/react-table";
 import {
@@ -28,45 +31,90 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
-
+import {
+  RankingInfo,
+  rankItem,
+  compareItems,
+} from "@tanstack/match-sorter-utils";
 interface DataTableProps {
   data: any[];
   columns: ColumnDef<any>[];
 }
 
+declare module "@tanstack/react-table" {
+  //add fuzzy filter to the filterFns
+  interface FilterFns {
+    fuzzy: FilterFn<unknown>;
+  }
+  interface FilterMeta {
+    itemRank: RankingInfo;
+  }
+}
+
+const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+  const itemRank = rankItem(row.getValue(columnId), value);
+
+  addMeta({
+    itemRank,
+  });
+
+  return itemRank.passed;
+};
+
+const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
+  let dir = 0;
+
+  if (rowA.columnFiltersMeta[columnId]) {
+    dir = compareItems(
+      rowA.columnFiltersMeta[columnId]?.itemRank!,
+      rowB.columnFiltersMeta[columnId]?.itemRank!,
+    );
+  }
+
+  return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
+};
 export const DataTable: FC<DataTableProps> = ({ data, columns }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+
+  const [globalFilter, setGlobalFilter] = useState<string>("");
+
   const table = useReactTable({
     data: data || [],
     columns,
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    filterFns: {
+      fuzzy: fuzzyFilter, //define as a filter function that can be used in column definitions
+    },
     state: {
-      sorting,
       columnFilters,
+      globalFilter,
+      sorting,
       columnVisibility,
       rowSelection,
     },
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: "fuzzy",
   });
   return (
     <div>
       <div className="w-full">
         <div className="flex items-center py-4">
           <Input
-            placeholder="Şirkətləri axtarın..."
-            value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-              table.getColumn("email")?.setFilterValue(event.target.value)
-            }
+            placeholder="Axtarış..."
+            value={globalFilter ?? ""}
+            onChange={(e) => {
+              setGlobalFilter(String(e.target.value));
+            }}
             className="max-w-sm"
           />
           <DropdownMenu>

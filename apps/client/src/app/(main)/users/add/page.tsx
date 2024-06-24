@@ -3,7 +3,7 @@ import { PageTitle } from "@/components/ui/page-title";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { Gender, UserDto } from "@/lib/types";
+import { Gender, Role, UserDto } from "@/lib/types";
 import {
   Select,
   SelectContent,
@@ -27,6 +27,7 @@ export default function Add() {
     repeatPassword: "",
     phoneNumber: "",
     email: "",
+    role: Role.USER,
   });
   const { push } = useRouter();
   function save() {
@@ -43,6 +44,7 @@ export default function Add() {
       phoneNumber: data.phoneNumber,
       password: data.password,
     }).then((res) => {
+      console.log(res);
       toast.success("Yeni istifadəçi uğurla yaradıldı!");
       push("/users");
     });
@@ -144,7 +146,27 @@ export default function Add() {
             </SelectContent>
           </Select>
         </div>
-
+        <div>
+          <Label>Rol</Label>
+          <Select
+            onValueChange={(value) =>
+              setData((prevState) => ({
+                ...prevState,
+                role: value as Role,
+              }))
+            }
+            value={data.role}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Rol" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="USER">İzləyici</SelectItem>
+              <SelectItem value="ADMIN">Admin</SelectItem>
+              <SelectItem value="SUPER_ADMIN">Super Admin</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         <div>
           <Label>Şifrə</Label>
           <Input

@@ -1,5 +1,9 @@
 import api from "@/lib/api/index";
-export type CallResultType = "REFUSED" | "WILL_BE_MEETING" | "WILL_BE_FOLLOWED";
+export type CallResultType =
+  | "REFUSED"
+  | "WILL_BE_MEETING"
+  | "WILL_BE_FOLLOWED"
+  | "UNKNOWN";
 
 export const CallScheduleApi = {
   async getAllCalls(result: CallResultType | null) {
@@ -14,5 +18,10 @@ export const CallScheduleApi = {
   },
   async createCall(data: any) {
     return await api.post("/call-schedule", data);
+  },
+  async changeCallResult(result: CallResultType | null, callId: string) {
+    return await api.patch(`/call-schedule/result/${callId}`, {
+      result,
+    });
   },
 };

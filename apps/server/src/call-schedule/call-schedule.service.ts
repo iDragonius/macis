@@ -33,42 +33,50 @@ export class CallScheduleService {
   }
 
   async changeCallResult(data: ChangeCallResultDto, callId: string) {
-    if (data.result === CallResult.REFUSED) {
-      await this.prisma.callSchedule.update({
-        where: {
-          id: callId,
-        },
-        data: {
-          reasonForRejection: data.reasonForRejection,
-          notes: data.notes,
-          contactDate: data.contactDate,
-          result: CallResult.REFUSED,
-        },
-      });
-    } else if (data.result === CallResult.WILL_BE_FOLLOWED) {
-      await this.prisma.callSchedule.update({
-        where: {
-          id: callId,
-        },
-        data: {
-          nextContactDate: data.nextContactDate,
-          notes: data.notes,
-          contactDate: data.contactDate,
-          result: CallResult.WILL_BE_FOLLOWED,
-        },
-      });
-    } else if (data.result === CallResult.WILL_BE_MEETING) {
-      await this.prisma.callSchedule.update({
-        where: {
-          id: callId,
-        },
-        data: {
-          notes: data.notes,
-          contactDate: data.contactDate,
-          result: CallResult.WILL_BE_MEETING,
-        },
-      });
-    }
+    return await this.prisma.callSchedule.update({
+      where: {
+        id: callId,
+      },
+      data: {
+        result: data.result,
+      },
+    });
+    // if (data.result === CallResult.REFUSED) {
+    //   await this.prisma.callSchedule.update({
+    //     where: {
+    //       id: callId,
+    //     },
+    //     data: {
+    //       reasonForRejection: data.reasonForRejection,
+    //       notes: data.notes,
+    //       contactDate: data.contactDate,
+    //       result: CallResult.REFUSED,
+    //     },
+    //   });
+    // } else if (data.result === CallResult.WILL_BE_FOLLOWED) {
+    //   await this.prisma.callSchedule.update({
+    //     where: {
+    //       id: callId,
+    //     },
+    //     data: {
+    //       nextContactDate: data.nextContactDate,
+    //       notes: data.notes,
+    //       contactDate: data.contactDate,
+    //       result: CallResult.WILL_BE_FOLLOWED,
+    //     },
+    //   });
+    // } else if (data.result === CallResult.WILL_BE_MEETING) {
+    //   await this.prisma.callSchedule.update({
+    //     where: {
+    //       id: callId,
+    //     },
+    //     data: {
+    //       notes: data.notes,
+    //       contactDate: data.contactDate,
+    //       result: CallResult.WILL_BE_MEETING,
+    //     },
+    //   });
+    // }
   }
 
   async getAllCalls(result?: CallResult) {

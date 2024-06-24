@@ -1,11 +1,11 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
   Put,
   Query,
 } from '@nestjs/common';
@@ -14,12 +14,15 @@ import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { ChangeCustomerStatusDto } from './dto/change-customer-status.dto';
 import { CustomerStatus } from '@prisma/client';
+import { Roles } from '../core/decorators/roles.decorator';
+import { Role } from '../core/enums/role.enum';
 
 @Controller('customer')
 export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
   @Post()
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   create(@Body() createCustomerDto: CreateCustomerDto) {
     return this.customerService.create(createCustomerDto);
   }
@@ -30,6 +33,7 @@ export class CustomerController {
   }
 
   @Put('/status/:id')
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   async changeCustomerStatus(
     @Body() changeCustomerStatusDto: ChangeCustomerStatusDto,
     @Param('id') id: string,
@@ -46,7 +50,8 @@ export class CustomerController {
   }
 
   @Patch(':id')
-  update(
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
+  updateCustomer(
     @Param('id') id: string,
     @Body() updateCustomerDto: UpdateCustomerDto,
   ) {
@@ -54,7 +59,8 @@ export class CustomerController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.customerService.remove(+id);
+  @Roles(Role.SUPER_ADMIN)
+  deleteCustomer(@Param('id') id: string) {
+    return this.customerService.deleteCustomer(id);
   }
 }
