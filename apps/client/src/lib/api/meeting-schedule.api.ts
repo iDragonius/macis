@@ -6,6 +6,11 @@ export type MeetingResultType =
   | "WILL_BE_FOLLOWED"
   | "UNKNOWN";
 
+export const MeetingTypes: Record<string, MeetingResultType> = {
+  refused: "REFUSED",
+  "contract-signed": "CONTRACT_SIGNED",
+  "will-be-followed": "WILL_BE_FOLLOWED",
+};
 export const MeetingScheduleApi = {
   async getAllMeetings(result: MeetingResultType | null) {
     return await api.get("/meeting-schedule", {

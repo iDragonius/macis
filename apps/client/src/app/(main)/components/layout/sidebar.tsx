@@ -47,6 +47,14 @@ const Sidebar: FC<SidebarProps> = () => {
       url: `/call-schedule`,
     },
     {
+      label: "Zəng rədd qrafiki",
+      url: `/call-schedule/refused`,
+    },
+    {
+      label: "Zəng təqib qrafiki",
+      url: `/call-schedule/will-be-followed`,
+    },
+    {
       label: "Günlük zəng qrafiki",
       url: `/daily-call-schedule`,
     },
@@ -54,6 +62,14 @@ const Sidebar: FC<SidebarProps> = () => {
     {
       label: "Görüş qrafiki",
       url: `/meeting-schedule`,
+    },
+    {
+      label: "Görüş rədd qrafiki",
+      url: `/meeting-schedule/refused`,
+    },
+    {
+      label: "Görüş təqib qrafiki",
+      url: `/meeting-schedule/will-be-followed`,
     },
     {
       label: "Günlük görüş qrafiki",

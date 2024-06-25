@@ -40,6 +40,7 @@ export default function Add() {
       lastName: data.lastName,
       fatherName: data.fatherName,
       gender: data.gender,
+      role: data.role,
       email: data.email,
       phoneNumber: data.phoneNumber,
       password: data.password,
@@ -50,6 +51,7 @@ export default function Add() {
     });
   }
 
+  console.log(data);
   return (
     <div>
       <PageTitle>Yeni istifadəçi</PageTitle>

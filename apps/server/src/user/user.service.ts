@@ -53,6 +53,7 @@ export class UserService {
       data: {
         email: data.email,
         password: hashedPassword,
+        role: data.role,
         profile: {
           create: {
             firstName: data.firstName,
