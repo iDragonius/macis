@@ -164,7 +164,7 @@ export default function Customer({ params }: { params: { id: string } }) {
           }
         >
           {information.map(([key, value]) => (
-            <div className={"flex gap-4 "}>
+            <div className={"flex gap-4 "} key={key}>
               <h3 className={"w-[200px] font-medium"}>{key}</h3>
               <p>{value}</p>
             </div>
