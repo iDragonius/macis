@@ -171,36 +171,36 @@ export default function MeetingSchedule() {
     <div>
       <div className={"flex items-center justify-between"}>
         <PageTitle>Görüş qrafiki</PageTitle>
-        {/*<div className={"flex items-center gap-4"}>*/}
-        {/*  <Select*/}
-        {/*    onValueChange={(value) => {*/}
-        {/*      if (value === "ALL") {*/}
-        {/*        setResult(null);*/}
-        {/*      } else {*/}
-        {/*        setResult(value as MeetingResultType);*/}
-        {/*      }*/}
-        {/*    }}*/}
-        {/*    value={result || "ALL"}*/}
-        {/*  >*/}
-        {/*    <SelectTrigger className={"w-[200px]"}>*/}
-        {/*      <SelectValue placeholder="" />*/}
-        {/*    </SelectTrigger>*/}
-        {/*    <SelectContent>*/}
-        {/*      <SelectItem value="ALL">Hamısı</SelectItem>*/}
-        {/*      <SelectItem value="CONTRACT_SIGNED">Müqavilə bağlandı</SelectItem>*/}
-        {/*      <SelectItem value="WILL_BE_FOLLOWED">Təqib olunacaq</SelectItem>*/}
-        {/*      <SelectItem value="REFUSED">İtirilmiş</SelectItem>*/}
-        {/*    </SelectContent>*/}
-        {/*  </Select>*/}
+        <div className={"flex items-center gap-4"}>
+          {/*<Select*/}
+          {/*  onValueChange={(value) => {*/}
+          {/*    if (value === "ALL") {*/}
+          {/*      setResult(null);*/}
+          {/*    } else {*/}
+          {/*      setResult(value as MeetingResultType);*/}
+          {/*    }*/}
+          {/*  }}*/}
+          {/*  value={result || "ALL"}*/}
+          {/*>*/}
+          {/*  <SelectTrigger className={"w-[200px]"}>*/}
+          {/*    <SelectValue placeholder="" />*/}
+          {/*  </SelectTrigger>*/}
+          {/*  <SelectContent>*/}
+          {/*    <SelectItem value="ALL">Hamısı</SelectItem>*/}
+          {/*    <SelectItem value="CONTRACT_SIGNED">Müqavilə bağlandı</SelectItem>*/}
+          {/*    <SelectItem value="WILL_BE_FOLLOWED">Təqib olunacaq</SelectItem>*/}
+          {/*    <SelectItem value="REFUSED">İtirilmiş</SelectItem>*/}
+          {/*  </SelectContent>*/}
+          {/*</Select>*/}
 
-        {/*  <Button*/}
-        {/*    onClick={() => {*/}
-        {/*      push("/meeting-schedule/add");*/}
-        {/*    }}*/}
-        {/*  >*/}
-        {/*    Yeni görüş*/}
-        {/*  </Button>*/}
-        {/*</div>*/}
+          <Button
+            onClick={() => {
+              push("/meeting-schedule/add");
+            }}
+          >
+            Yeni görüş
+          </Button>
+        </div>
       </div>
       <DataTable data={data?.data} columns={meetingColumns} />
     </div>

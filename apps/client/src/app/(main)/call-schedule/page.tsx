@@ -161,27 +161,27 @@ export default function CallSchedule() {
       <div className={"flex items-center justify-between"}>
         <PageTitle>Zəng qrafiki</PageTitle>
         <div className={"flex items-center gap-4"}>
-          <Select
-            onValueChange={(value) => {
-              if (value === "ALL") {
-                setResult(null);
-              } else {
-                setResult(value as CallResultType);
-              }
-            }}
-            value={result || "ALL"}
-          >
-            <SelectTrigger className={"w-[200px]"}>
-              <SelectValue placeholder="" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="ALL">Hamısı</SelectItem>
+          {/*<Select*/}
+          {/*  onValueChange={(value) => {*/}
+          {/*    if (value === "ALL") {*/}
+          {/*      setResult(null);*/}
+          {/*    } else {*/}
+          {/*      setResult(value as CallResultType);*/}
+          {/*    }*/}
+          {/*  }}*/}
+          {/*  value={result || "ALL"}*/}
+          {/*>*/}
+          {/*  <SelectTrigger className={"w-[200px]"}>*/}
+          {/*    <SelectValue placeholder="" />*/}
+          {/*  </SelectTrigger>*/}
+          {/*  <SelectContent>*/}
+          {/*    <SelectItem value="ALL">Hamısı</SelectItem>*/}
 
-              <SelectItem value="WILL_BE_MEETING">Görüşüləcək</SelectItem>
-              <SelectItem value="WILL_BE_FOLLOWED">Təqib olunacaq</SelectItem>
-              <SelectItem value="REFUSED">İtirilmiş</SelectItem>
-            </SelectContent>
-          </Select>
+          {/*    <SelectItem value="WILL_BE_MEETING">Görüşüləcək</SelectItem>*/}
+          {/*    <SelectItem value="WILL_BE_FOLLOWED">Təqib olunacaq</SelectItem>*/}
+          {/*    <SelectItem value="REFUSED">İtirilmiş</SelectItem>*/}
+          {/*  </SelectContent>*/}
+          {/*</Select>*/}
           <Button
             onClick={() => {
               push("/call-schedule/add");

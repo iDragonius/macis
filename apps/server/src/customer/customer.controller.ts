@@ -23,8 +23,8 @@ export class CustomerController {
 
   @Post()
   @Roles(Role.SUPER_ADMIN, Role.ADMIN)
-  create(@Body() createCustomerDto: CreateCustomerDto) {
-    return this.customerService.create(createCustomerDto);
+  async createCustomer(@Body() createCustomerDto: CreateCustomerDto) {
+    return this.customerService.createCustomer(createCustomerDto);
   }
 
   @Get()

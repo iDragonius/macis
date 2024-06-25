@@ -1,19 +1,18 @@
 import {
+  Body,
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
   Param,
-  Delete,
+  Patch,
+  Post,
   Query,
 } from '@nestjs/common';
 import { MeetingScheduleService } from './meeting-schedule.service';
 import { CreateMeetingScheduleDto } from './dto/create-meeting-schedule.dto';
-import { UpdateMeetingScheduleDto } from './dto/update-meeting-schedule.dto';
-import { CallResult, MeetingResult } from '@prisma/client';
-import { ChangeCallResultDto } from '../call-schedule/dto/change-call-result.dto';
+import { MeetingResult } from '@prisma/client';
 import { ChangeMeetingResultDto } from './dto/change-meeting-result.dto';
+import { Roles } from '../core/decorators/roles.decorator';
+import { Role } from '../core/enums/role.enum';
 
 @Controller('meeting-schedule')
 export class MeetingScheduleController {
@@ -22,6 +21,7 @@ export class MeetingScheduleController {
   ) {}
 
   @Post()
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   async createMeeting(@Body() data: CreateMeetingScheduleDto) {
     return await this.meetingScheduleService.createMeeting(data);
   }
@@ -37,6 +37,7 @@ export class MeetingScheduleController {
   }
 
   @Patch('/result/:id')
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   async changeCallResult(
     @Body() data: ChangeMeetingResultDto,
     @Param('id') meetingId: string,

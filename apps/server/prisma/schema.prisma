@@ -24,6 +24,7 @@ model User {
   tokens    UserToken[]
   codes     UserCodes[]
   profile   UserProfile?
+  customers Customer[]
 }
 
 model UserProfile {
@@ -65,15 +66,18 @@ model UserCodes {
 }
 
 model Customer {
-  id                       String    @id @default(uuid())
-  createdAt                DateTime  @default(now()) @map("created_at")
-  updatedAt                DateTime  @updatedAt @map("updated_ad")
-  company                  String    @unique
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_ad")
+  company   String   @unique
+
+  curator   User?   @relation(fields: [curatorId], references: [id])
+  curatorId String?
+
   head                     String
   position                 String?
   contactNumber            String?
   companyEstablishmentDate DateTime?
-  curator                  String?
   ownersBirthday           DateTime?
   contractDate             DateTime?
   contractExpirationDate   DateTime?

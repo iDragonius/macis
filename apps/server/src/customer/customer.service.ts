@@ -9,7 +9,7 @@ import { ChangeCustomerStatusDto } from './dto/change-customer-status.dto';
 @Injectable()
 export class CustomerService {
   constructor(private prisma: PrismaService) {}
-  async create(data: CreateCustomerDto) {
+  async createCustomer(data: CreateCustomerDto) {
     const potentialExistingCustomer = await this.prisma.customer.findUnique({
       where: { company: data.company },
     });
@@ -18,6 +18,17 @@ export class CustomerService {
       throw new BadRequestException(ExceptionTypes.CUSTOMER_ALREADY_EXIST);
     }
     if (data.status === 'ACTIVE') {
+      if (!data.curatorId) {
+        throw new BadRequestException();
+      }
+      const curator = await this.prisma.user.findUnique({
+        where: {
+          id: data.curatorId,
+        },
+      });
+      if (!curator) {
+        throw new BadRequestException(ExceptionTypes.CURATOR_NOT_FOUND);
+      }
       await this.prisma.customer.create({
         data: {
           status: data.status,
@@ -32,7 +43,7 @@ export class CustomerService {
 
           companyEstablishmentDate: data.companyEstablishmentDate,
           ownersBirthday: data.ownersBirthday,
-          curator: data.curator,
+          curatorId: curator.id,
         },
       });
     } else if (data.status === 'POTENTIAL') {
@@ -121,6 +132,10 @@ export class CustomerService {
     return await this.prisma.customer.findUnique({
       where: {
         id,
+      },
+      include: {
+        calls: true,
+        meetings: true,
       },
     });
   }

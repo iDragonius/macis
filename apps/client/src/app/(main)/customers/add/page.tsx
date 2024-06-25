@@ -17,8 +17,14 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { CustomerDto } from "@/lib/types";
 import { PageTitle } from "@/components/ui/page-title";
+import { useQuery } from "@tanstack/react-query";
+import { UserApi } from "@/lib/api/user.api";
 
 export default function CustomerAdd() {
+  const { data: users } = useQuery({
+    queryKey: ["users"],
+    queryFn: UserApi.getAllUsers,
+  });
   const [data, setData] = useState<CustomerDto>({
     company: "",
     head: "",
@@ -29,7 +35,7 @@ export default function CustomerAdd() {
     payment: "",
     ownersBirthday: "",
     companyEstablishmentDate: "",
-    curator: "",
+    curatorId: null,
     contractExpirationDate: "",
     termsOfPayment: "",
     terminationReason: "",
@@ -51,7 +57,7 @@ export default function CustomerAdd() {
         payment: data.payment,
         ownersBirthday: data.ownersBirthday,
         companyEstablishmentDate: data.companyEstablishmentDate,
-        curator: data.curator,
+        curatorId: data.curatorId,
       }).then((res) => {
         toast.success("Müştəri uğurla yaradıldı");
         push("/active-customers");
@@ -239,18 +245,31 @@ export default function CustomerAdd() {
                 />
               </div>
               <div>
-                <Label>Kurator </Label>
-                <Input
-                  value={data.curator}
-                  onChange={(e) =>
+                <Label>Kurator</Label>
+                <Select
+                  onValueChange={(value) =>
                     setData((prevState) => ({
                       ...prevState,
-                      curator: e.target.value,
+                      curatorId: value,
                     }))
                   }
-                  type={"text"}
-                  placeholder={"Kurator "}
-                />
+                  value={data.curatorId || undefined}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Kuratorı seçin" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {users?.data.map((user: any) => {
+                      return (
+                        <SelectItem value={user.id} key={user.id}>
+                          {user?.profile?.firstName +
+                            " " +
+                            user?.profile?.lastName}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
               </div>
             </>
           )}

@@ -137,7 +137,7 @@ export const DataTable: FC<DataTableProps> = ({ data, columns }) => {
                         column.toggleVisibility(!!value)
                       }
                     >
-                      {column.id}
+                      {column.columnDef.header as unknown as string}
                     </DropdownMenuCheckboxItem>
                   );
                 })}
@@ -188,7 +188,7 @@ export const DataTable: FC<DataTableProps> = ({ data, columns }) => {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Heç bir məlumat tapılmadı.
                 </TableCell>
               </TableRow>
             )}

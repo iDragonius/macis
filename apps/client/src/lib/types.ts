@@ -13,7 +13,7 @@ export type CustomerDto = {
   payment: string;
   ownersBirthday: string;
   companyEstablishmentDate: string;
-  curator: string;
+  curatorId: null | string;
   contractExpirationDate: string;
   termsOfPayment: string;
   terminationReason: string;
@@ -39,6 +39,8 @@ export type CustomerProps = {
   position: string | null;
   source: string | null;
   notes: string | null;
+  meetings: any[];
+  calls: any[];
 };
 export type UserDto = {
   firstName: string;
