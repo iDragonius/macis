@@ -170,8 +170,9 @@ export class CallScheduleService {
   }
 
   async getDailyCallSchedule() {
-    console.log(12312312);
     const currentDate = new Date();
+    currentDate.setHours(currentDate.getHours() + 4);
+
     const formattedDate =
       currentDate.getFullYear() +
       '-' +
