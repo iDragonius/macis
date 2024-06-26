@@ -40,15 +40,13 @@ export class MeetingScheduleController {
   async getAllMeetings(@Query('result') result?: MeetingResult) {
     return await this.meetingScheduleService.getAllMeetings(result);
   }
-
-  @Get(':id')
-  async getMeeting(@Param('id') id: string) {
-    return await this.meetingScheduleService.getMeeting(id);
-  }
-
   @Get('/daily')
   async getDailyMeetingSchedule() {
     return await this.meetingScheduleService.getDailyMeetingSchedule();
+  }
+  @Get(':id')
+  async getMeeting(@Param('id') id: string) {
+    return await this.meetingScheduleService.getMeeting(id);
   }
 
   @Patch('/result/:id')

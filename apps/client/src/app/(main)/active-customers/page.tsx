@@ -52,7 +52,12 @@ export type ActiveCustomer = {
   payment: string;
   ownersBirthday: string;
   companyEstablishmentDate: string;
-  curator: string;
+  curator: {
+    profile: {
+      firstName: string;
+      lastName: string;
+    };
+  };
 };
 
 export default function ActiveCustomers() {
@@ -139,7 +144,13 @@ export default function ActiveCustomers() {
     {
       accessorKey: "curator",
       header: "Kurator",
-      cell: ({ row }) => <div>{row.getValue("curator")}</div>,
+      cell: ({ row }) => (
+        <div>
+          {row.original.curator.profile.firstName +
+            " " +
+            row.original.curator.profile.lastName}
+        </div>
+      ),
     },
 
     {

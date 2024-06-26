@@ -46,14 +46,12 @@ export class CallScheduleController {
   async getAllCalls(@Query('result') result?: CallResult) {
     return await this.callScheduleService.getAllCalls(result);
   }
-
-  @Get(':id')
-  async getCall(@Param('id') id: string) {
-    return await this.callScheduleService.getCall(id);
-  }
-
   @Get('/daily')
   async getDailyCallSchedule() {
     return await this.callScheduleService.getDailyCallSchedule();
+  }
+  @Get(':id')
+  async getCall(@Param('id') id: string) {
+    return await this.callScheduleService.getCall(id);
   }
 }

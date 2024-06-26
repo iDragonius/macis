@@ -39,6 +39,7 @@ import { useQuery } from "@tanstack/react-query";
 import { CustomerApi } from "@/lib/api/customer.api";
 import Link from "next/link";
 import { PageTitle } from "@/components/ui/page-title";
+import { formatDate } from "@/lib/utils";
 
 export type LostCustomer = {
   id: string;
@@ -107,12 +108,14 @@ export default function LostCustomers() {
     {
       accessorKey: "contractDate",
       header: "Müqavilə tarixi",
-      cell: ({ row }) => <div>{row.getValue("contractDate")}</div>,
+      cell: ({ row }) => <div>{formatDate(row.getValue("contractDate"))}</div>,
     },
     {
       accessorKey: "contractExpirationDate",
       header: "Müqavilənin bitmə tarixi",
-      cell: ({ row }) => <div>{row.getValue("contractExpirationDate")}</div>,
+      cell: ({ row }) => (
+        <div>{formatDate(row.getValue("contractExpirationDate"))}</div>
+      ),
     },
     {
       accessorKey: "service",

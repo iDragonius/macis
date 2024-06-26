@@ -35,7 +35,7 @@ export class CustomerService {
           company: data.company,
           head: data.head,
           contactNumber: data.contactNumber,
-
+          position: data.position,
           contractDate: data.contractDate,
 
           service: data.service,
@@ -67,7 +67,7 @@ export class CustomerService {
           company: data.company,
           head: data.head,
           contactNumber: data.contactNumber,
-
+          position: data.position,
           contractDate: data.contractDate,
           contractExpirationDate: data.contractExpirationDate,
 
@@ -104,11 +104,25 @@ export class CustomerService {
           where: {
             status: CustomerStatus.ACTIVE,
           },
+          include: {
+            curator: {
+              include: {
+                profile: true,
+              },
+            },
+          },
         });
       } else if (status === CustomerStatus.POTENTIAL) {
         return this.prisma.customer.findMany({
           where: {
             status: CustomerStatus.POTENTIAL,
+          },
+          include: {
+            curator: {
+              include: {
+                profile: true,
+              },
+            },
           },
         });
       } else if (status === CustomerStatus.LOST) {
@@ -116,10 +130,25 @@ export class CustomerService {
           where: {
             status: CustomerStatus.LOST,
           },
+          include: {
+            curator: {
+              include: {
+                profile: true,
+              },
+            },
+          },
         });
       }
     } else {
-      return this.prisma.customer.findMany();
+      return this.prisma.customer.findMany({
+        include: {
+          curator: {
+            include: {
+              profile: true,
+            },
+          },
+        },
+      });
     }
   }
   async getActiveCustomers() {
