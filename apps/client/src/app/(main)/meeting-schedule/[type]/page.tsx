@@ -12,6 +12,7 @@ import { formatDate, formatField } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -119,7 +120,14 @@ const contractSignedMeetingColumns: ColumnDef<MeetingProps>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
-
+            <DropdownMenuItem>
+              <Link
+                href={`/meeting-schedule/edit/${data.id}`}
+                className={"w-full"}
+              >
+                Dəyiş
+              </Link>
+            </DropdownMenuItem>
             {/*<DropdownMenuItem>Sil</DropdownMenuItem>*/}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -233,7 +241,14 @@ const refusedMeetingColumns: ColumnDef<MeetingProps>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
-
+            <DropdownMenuItem>
+              <Link
+                href={`/meeting-schedule/edit/${data.id}`}
+                className={"w-full"}
+              >
+                Dəyiş
+              </Link>
+            </DropdownMenuItem>
             {/*<DropdownMenuItem>Sil</DropdownMenuItem>*/}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -328,7 +343,7 @@ const followedMeetingColumns: ColumnDef<MeetingProps>[] = [
     accessorKey: "nextMeetingDate",
     header: "Növbəti görüş tarixi",
     cell: ({ row }) => {
-      return <div>{formatField(row.getValue("nextMeetingDate"))}</div>;
+      return <div>{formatDate(row.getValue("nextMeetingDate"))}</div>;
     },
   },
 
@@ -355,7 +370,14 @@ const followedMeetingColumns: ColumnDef<MeetingProps>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
-
+            <DropdownMenuItem>
+              <Link
+                href={`/meeting-schedule/edit/${data.id}`}
+                className={"w-full"}
+              >
+                Dəyiş
+              </Link>
+            </DropdownMenuItem>
             {/*<DropdownMenuItem>Sil</DropdownMenuItem>*/}
           </DropdownMenuContent>
         </DropdownMenu>

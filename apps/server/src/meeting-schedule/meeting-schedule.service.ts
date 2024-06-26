@@ -33,7 +33,84 @@ export class MeetingScheduleService {
       success: true,
     };
   }
+  async updateMeeting(data: UpdateMeetingScheduleDto, id: string) {
+    const meeting = await this.prisma.meetingSchedule.findUnique({
+      where: {
+        id,
+      },
+    });
 
+    if (!meeting) {
+      throw new BadRequestException(ExceptionTypes.MEETING_NOT_FOUND);
+    }
+
+    const customer = await this.prisma.customer.findUnique({
+      where: {
+        id: data.customerId,
+      },
+    });
+    if (!customer) {
+      throw new BadRequestException(ExceptionTypes.CUSTOMER_NOT_FOUND);
+    }
+
+    if (
+      meeting.result === MeetingResult.UNKNOWN ||
+      meeting.result === MeetingResult.CONTRACT_SIGNED
+    ) {
+      return await this.prisma.meetingSchedule.update({
+        where: {
+          id,
+        },
+        data: {
+          customerId: data.customerId,
+          contactDate: data.contactDate,
+          notes: data.notes,
+          meetingTime: data.meetingTime,
+          meetingDate: data.meetingDate,
+        },
+      });
+    } else if (meeting.result === MeetingResult.REFUSED) {
+      return await this.prisma.meetingSchedule.update({
+        where: {
+          id,
+        },
+        data: {
+          customerId: data.customerId,
+          contactDate: data.contactDate,
+          notes: data.notes,
+          meetingTime: data.meetingTime,
+          meetingDate: data.meetingDate,
+          reasonForRejection: data.reasonForRejection,
+        },
+      });
+    } else if (meeting.result === MeetingResult.WILL_BE_FOLLOWED) {
+      return await this.prisma.meetingSchedule.update({
+        where: {
+          id,
+        },
+        data: {
+          customerId: data.customerId,
+          contactDate: data.contactDate,
+          notes: data.notes,
+          meetingTime: data.meetingTime,
+          meetingDate: data.meetingDate,
+          nextMeetingDate: data.nextMeetingDate,
+          nextContactDate: data.nextContactDate,
+        },
+      });
+    }
+  }
+
+  async getMeeting(id: string) {
+    return await this.prisma.meetingSchedule.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        customer: true,
+      },
+    });
+  }
   async getAllMeetings(result?: MeetingResult) {
     return await this.prisma.meetingSchedule.findMany({
       where: {

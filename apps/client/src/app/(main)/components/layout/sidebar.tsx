@@ -75,6 +75,10 @@ const Sidebar: FC<SidebarProps> = () => {
       label: "Günlük görüş qrafiki",
       url: `/daily-meeting-schedule`,
     },
+    {
+      label: "Aylıq hədəf qrafiki",
+      url: `/monthly-target`,
+    },
 
     // {
     //   label: "Kurasiya zəngləri",

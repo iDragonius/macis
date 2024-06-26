@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Query,
+  Put,
 } from '@nestjs/common';
 import { CallScheduleService } from './call-schedule.service';
 import { CreateCallScheduleDto } from './dto/create-call-schedule.dto';
@@ -13,6 +14,7 @@ import { ChangeCallResultDto } from './dto/change-call-result.dto';
 import { CallResult } from '@prisma/client';
 import { Roles } from '../core/decorators/roles.decorator';
 import { Role } from '../core/enums/role.enum';
+import { UpdateCallScheduleDto } from './dto/update-call-schedule.dto';
 
 @Controller('call-schedule')
 export class CallScheduleController {
@@ -31,10 +33,23 @@ export class CallScheduleController {
   ) {
     return await this.callScheduleService.changeCallResult(data, callId);
   }
+  @Put(':id')
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
+  async updateCall(
+    @Body() data: UpdateCallScheduleDto,
+    @Param('id') callId: string,
+  ) {
+    return await this.callScheduleService.updateCall(data, callId);
+  }
 
   @Get()
   async getAllCalls(@Query('result') result?: CallResult) {
     return await this.callScheduleService.getAllCalls(result);
+  }
+
+  @Get(':id')
+  async getCall(@Param('id') id: string) {
+    return await this.callScheduleService.getCall(id);
   }
 
   @Get('/daily')

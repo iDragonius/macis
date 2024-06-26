@@ -120,7 +120,14 @@ const followedCallColumns: ColumnDef<CallProps>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
-
+            <DropdownMenuItem>
+              <Link
+                href={`/call-schedule/edit/${data.id}`}
+                className={"w-full"}
+              >
+                Dəyiş
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem>Sil</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -227,7 +234,14 @@ const refusedCallColumns: ColumnDef<CallProps>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
-
+            <DropdownMenuItem>
+              <Link
+                href={`/call-schedule/edit/${data.id}`}
+                className={"w-full"}
+              >
+                Dəyiş
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem>Sil</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -328,6 +342,14 @@ const meetingCallColumns: ColumnDef<CallProps>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
+            <DropdownMenuItem>
+              <Link
+                href={`/call-schedule/edit/${data.id}`}
+                className={"w-full"}
+              >
+                Dəyiş
+              </Link>
+            </DropdownMenuItem>
 
             <DropdownMenuItem>Sil</DropdownMenuItem>
           </DropdownMenuContent>

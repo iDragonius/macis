@@ -34,13 +34,7 @@ const meetingColumns: ColumnDef<MeetingProps>[] = [
       return <div>{formatDate(row.getValue("meetingDate"))}</div>;
     },
   },
-  {
-    accessorKey: "meetingTime",
-    header: "Görüş saatı",
-    cell: ({ row }) => {
-      return <div>{formatField(row.getValue("meetingTime"))}</div>;
-    },
-  },
+
   {
     accessorKey: "result",
     header: "Nəticə",

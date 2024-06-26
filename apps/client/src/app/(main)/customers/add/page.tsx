@@ -50,6 +50,7 @@ export default function CustomerAdd() {
       CustomerApi.createCustomer({
         company: data.company,
         head: data.head,
+        position: data.position,
         contactNumber: data.contactNumber,
         status: data.status,
         contractDate: data.contractDate,
@@ -66,6 +67,7 @@ export default function CustomerAdd() {
       CustomerApi.createCustomer({
         company: data.company,
         head: data.head,
+        position: data.position,
         contactNumber: data.contactNumber,
         status: data.status,
         contractDate: data.contractDate,
@@ -128,6 +130,20 @@ export default function CustomerAdd() {
               placeholder={"Rəhbər"}
             />
           </div>
+          <div>
+            <Label>Vəzifə</Label>
+            <Input
+              value={data.position}
+              onChange={(e) =>
+                setData((prevState) => ({
+                  ...prevState,
+                  position: e.target.value,
+                }))
+              }
+              type={"text"}
+              placeholder={"Vəzifə"}
+            />
+          </div>{" "}
           <div>
             <Label>Əlaqə nömrəsi</Label>
             <Input
@@ -349,20 +365,6 @@ export default function CustomerAdd() {
           )}
           {data.status === "POTENTIAL" && (
             <>
-              <div>
-                <Label>Vəzifə</Label>
-                <Input
-                  value={data.position}
-                  onChange={(e) =>
-                    setData((prevState) => ({
-                      ...prevState,
-                      position: e.target.value,
-                    }))
-                  }
-                  type={"text"}
-                  placeholder={"Vəzifə"}
-                />
-              </div>{" "}
               <div>
                 <Label>Mənbə</Label>
                 <Input

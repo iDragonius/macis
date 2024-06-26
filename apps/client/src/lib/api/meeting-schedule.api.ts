@@ -19,8 +19,14 @@ export const MeetingScheduleApi = {
       },
     });
   },
+  async getMeeting(id: string) {
+    return await api.get(`/meeting-schedule/${id}`);
+  },
   async getDailyMeetingSchedule() {
     return await api.get("/meeting-schedule/daily");
+  },
+  async updateMeeting(data: any, id: string) {
+    return await api.put(`/meeting-schedule/${id}`, data);
   },
   async createMeeting(data: any) {
     return await api.post("/meeting-schedule", data);

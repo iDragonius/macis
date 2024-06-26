@@ -24,9 +24,15 @@ export const CallScheduleApi = {
   async createCall(data: any) {
     return await api.post("/call-schedule", data);
   },
+  async updateCall(data: any, id: string) {
+    return await api.put(`/call-schedule/${id}`, data);
+  },
   async changeCallResult(result: CallResultType | null, callId: string) {
     return await api.patch(`/call-schedule/result/${callId}`, {
       result,
     });
+  },
+  async getCall(id: string) {
+    return await api.get(`/call-schedule/${id}`);
   },
 };

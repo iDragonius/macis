@@ -32,6 +32,85 @@ export class CallScheduleService {
     };
   }
 
+  async updateCall(data: UpdateCallScheduleDto, id: string) {
+    const call = await this.prisma.callSchedule.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!call) {
+      throw new BadRequestException(ExceptionTypes.CALL_NOT_FOUND);
+    }
+
+    const customer = await this.prisma.customer.findUnique({
+      where: {
+        id: data.customerId,
+      },
+    });
+
+    if (!customer) {
+      throw new BadRequestException(ExceptionTypes.CUSTOMER_NOT_FOUND);
+    }
+
+    if (call.result === CallResult.UNKNOWN) {
+      await this.prisma.callSchedule.update({
+        where: {
+          id,
+        },
+        data: {
+          customerId: customer.id,
+          contactDate: data.contactDate,
+          notes: data.notes,
+        },
+      });
+    } else if (call.result === CallResult.REFUSED) {
+      await this.prisma.callSchedule.update({
+        where: {
+          id,
+        },
+        data: {
+          customerId: customer.id,
+          contactDate: data.contactDate,
+          notes: data.notes,
+          reasonForRejection: data.reasonForRejection,
+        },
+      });
+    } else if (call.result === CallResult.WILL_BE_FOLLOWED) {
+      await this.prisma.callSchedule.update({
+        where: {
+          id,
+        },
+        data: {
+          customerId: customer.id,
+          contactDate: data.contactDate,
+          notes: data.notes,
+          nextContactDate: data.nextContactDate,
+        },
+      });
+    } else {
+      await this.prisma.callSchedule.update({
+        where: {
+          id,
+        },
+        data: {
+          customerId: customer.id,
+          contactDate: data.contactDate,
+          notes: data.notes,
+        },
+      });
+    }
+  }
+  async getCall(id: string) {
+    return await this.prisma.callSchedule.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        customer: true,
+      },
+    });
+  }
   async changeCallResult(data: ChangeCallResultDto, callId: string) {
     return await this.prisma.callSchedule.update({
       where: {
