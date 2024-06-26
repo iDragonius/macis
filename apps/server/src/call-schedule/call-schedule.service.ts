@@ -171,21 +171,22 @@ export class CallScheduleService {
 
   async getDailyCallSchedule() {
     const currentDate = new Date();
-    currentDate.setHours(currentDate.getHours() + 4);
-
-    const formattedDate =
+    const formattedDate = new Date(
       currentDate.getFullYear() +
-      '-' +
-      (currentDate.getMonth() + 1) +
-      '-' +
-      currentDate.getDate();
+        '-' +
+        (currentDate.getMonth() + 1) +
+        '-' +
+        currentDate.getDate(),
+    );
+
+    formattedDate.setHours(4);
     return await this.prisma.callSchedule.findMany({
       include: {
         customer: true,
       },
       where: {
         contactDate: {
-          gte: new Date(formattedDate),
+          equals: formattedDate,
         },
       },
     });

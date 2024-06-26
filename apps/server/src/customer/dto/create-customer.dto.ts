@@ -2,6 +2,7 @@ import {
   IsDate,
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -49,9 +50,9 @@ export class CreateCustomerDto {
   @IsOptional()
   service: string;
 
-  @IsString()
+  @IsNumber()
   @IsOptional()
-  payment: string;
+  paymentAmount: number;
 
   @IsString()
   @IsOptional()

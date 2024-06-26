@@ -86,7 +86,7 @@ model Customer {
   notes                    String?
   termsOfPayment           String?
   terminationReason        String?
-  payment                  String?
+  paymentAmount            Int?
 
   calls    CallSchedule[]
   meetings MeetingSchedule[]

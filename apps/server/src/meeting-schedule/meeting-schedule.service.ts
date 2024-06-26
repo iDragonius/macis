@@ -124,37 +124,27 @@ export class MeetingScheduleService {
 
   async getDailyMeetingSchedule() {
     const currentDate = new Date();
-    currentDate.setHours(currentDate.getHours() + 4);
-    const formattedDate =
+    const formattedDate = new Date(
       currentDate.getFullYear() +
-      '-' +
-      `0${currentDate.getMonth() + 1}` +
-      '-' +
-      currentDate.getDate();
+        '-' +
+        (currentDate.getMonth() + 1) +
+        '-' +
+        currentDate.getDate(),
+    );
 
+    formattedDate.setHours(4);
     return await this.prisma.meetingSchedule.findMany({
       include: {
         customer: true,
       },
       where: {
         meetingDate: {
-          equals: new Date(formattedDate),
+          equals: formattedDate,
         },
       },
     });
   }
-  currentTime() {
-    let date = new Date();
-    let a = date.getFullYear();
-    let b = date.getMonth() + 1; // JS months are 0 indexed, 0 = January, 11 = December
-    let c = date.getDate();
 
-    let d = date.getHours();
-    let e = date.getMinutes();
-    let f = date.getSeconds();
-
-    return a + '-' + b + '-' + c;
-  }
   async changeMeetingResult(data: ChangeMeetingResultDto, meetingId: string) {
     return await this.prisma.meetingSchedule.update({
       where: {

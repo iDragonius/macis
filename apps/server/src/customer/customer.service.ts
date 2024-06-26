@@ -39,7 +39,7 @@ export class CustomerService {
           contractDate: data.contractDate,
 
           service: data.service,
-          payment: data.payment,
+          paymentAmount: data.paymentAmount,
 
           companyEstablishmentDate: data.companyEstablishmentDate,
           ownersBirthday: data.ownersBirthday,
