@@ -146,9 +146,9 @@ export default function ActiveCustomers() {
       header: "Kurator",
       cell: ({ row }) => (
         <div>
-          {row.original.curator.profile.firstName +
+          {row.original?.curator?.profile?.firstName +
             " " +
-            row.original.curator.profile.lastName}
+            row.original?.curator?.profile?.lastName}
         </div>
       ),
     },
