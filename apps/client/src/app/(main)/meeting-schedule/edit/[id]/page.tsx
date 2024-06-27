@@ -91,7 +91,7 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
       MeetingScheduleApi.updateMeeting(
         {
           customerId: data.customerId,
-          contactDate: data.contactDate,
+          meetingDate: data.meetingDate,
           notes: data.notes,
           reasonForRejection: data.reasonForRejection,
           meetingTime: data.meetingTime,
@@ -155,6 +155,20 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
               setData((prevState) => ({
                 ...prevState,
                 contactDate: e.target.value,
+              }))
+            }
+            type={"date"}
+            placeholder={"Əlaqə tarixi"}
+          />
+        </div>{" "}
+        <div>
+          <Label>Görüş tarixi</Label>
+          <Input
+            value={data.meetingDate}
+            onChange={(e) =>
+              setData((prevState) => ({
+                ...prevState,
+                meetingDate: e.target.value,
               }))
             }
             type={"date"}

@@ -13,6 +13,7 @@ import { UserModule } from './user/user.module';
 import { MeetingScheduleModule } from './meeting-schedule/meeting-schedule.module';
 import { CallScheduleModule } from './call-schedule/call-schedule.module';
 import { RolesGuard } from './core/guards/roles.guard';
+import { MonthlyTargetModule } from './monthly-target/monthly-target.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { RolesGuard } from './core/guards/roles.guard';
     UserModule,
     MeetingScheduleModule,
     CallScheduleModule,
+    MonthlyTargetModule,
   ],
   controllers: [],
   providers: [

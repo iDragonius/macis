@@ -112,6 +112,21 @@ export class CallScheduleService {
     });
   }
   async changeCallResult(data: ChangeCallResultDto, callId: string) {
+    const call = await this.prisma.callSchedule.findUnique({
+      where: { id: callId },
+    });
+    if (!call) {
+      throw new BadRequestException(ExceptionTypes.CALL_NOT_FOUND);
+    }
+    if (data.result === 'WILL_BE_MEETING') {
+      await this.prisma.meetingSchedule.create({
+        data: {
+          customerId: call.customerId,
+          meetingDate: call.contactDate,
+          contactDate: call.contactDate,
+        },
+      });
+    }
     return await this.prisma.callSchedule.update({
       where: {
         id: callId,

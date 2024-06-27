@@ -3,7 +3,7 @@ import { CreateMeetingScheduleDto } from './dto/create-meeting-schedule.dto';
 import { UpdateMeetingScheduleDto } from './dto/update-meeting-schedule.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { ExceptionTypes } from '../core/exceptions';
-import { CallResult, MeetingResult } from '@prisma/client';
+import { CallResult, CustomerStatus, MeetingResult } from '@prisma/client';
 import { ChangeMeetingResultDto } from './dto/change-meeting-result.dto';
 
 @Injectable()
@@ -146,6 +146,27 @@ export class MeetingScheduleService {
   }
 
   async changeMeetingResult(data: ChangeMeetingResultDto, meetingId: string) {
+    const meeting = await this.prisma.meetingSchedule.findUnique({
+      where: {
+        id: meetingId,
+      },
+    });
+
+    if (!meeting) {
+      throw new BadRequestException(ExceptionTypes.MEETING_NOT_FOUND);
+    }
+
+    if (meeting.result === 'CONTRACT_SIGNED') {
+      await this.prisma.customer.update({
+        where: {
+          id: meeting.customerId,
+        },
+        data: {
+          status: CustomerStatus.ACTIVE,
+        },
+      });
+    }
+
     return await this.prisma.meetingSchedule.update({
       where: {
         id: meetingId,

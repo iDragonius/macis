@@ -8,4 +8,5 @@ export const ExceptionTypes = {
   CURATOR_NOT_FOUND: 'curatorNotFound',
   CALL_NOT_FOUND: 'callNotFound',
   MEETING_NOT_FOUND: 'meetingNotFound',
+  MANAGER_NOT_FOUND: 'managerNotFound',
 };

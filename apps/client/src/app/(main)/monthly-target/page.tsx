@@ -16,7 +16,21 @@ import { CustomerApi } from "@/lib/api/customer.api";
 import { LostCustomer } from "@/app/(main)/lost-customers/page";
 import { DataTable } from "@/components/ui/data-table";
 import { useRouter } from "next/navigation";
-const columns: ColumnDef<LostCustomer>[] = [
+import { useQuery } from "@tanstack/react-query";
+import { MonthlyTargetApi } from "@/lib/api/monthly-target.api";
+
+type MonthlyTarget = {
+  meetingTarget: number;
+  manager: {
+    profile: {
+      firstName: string;
+      lastName: string;
+    };
+  };
+  contractCount: number;
+  totalAmount: number;
+};
+const columns: ColumnDef<MonthlyTarget>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -43,30 +57,27 @@ const columns: ColumnDef<LostCustomer>[] = [
     accessorKey: "manager",
     header: "Menecer",
     cell: ({ row }) => {
-      return (
-        <Link
-          href={`/customers/${row.original.id}`}
-          className={"text-blue-700 font-medium"}
-        >
-          {row.getValue("company")}
-        </Link>
-      );
+      const manager =
+        row.original.manager.profile.firstName +
+        " " +
+        row.original.manager.profile.lastName;
+      return <div className={""}>{manager}</div>;
     },
   },
   {
     accessorKey: "meetingTarget",
     header: "Görüş hədəfi",
-    cell: ({ row }) => <div>{row.getValue("head")}</div>,
+    cell: ({ row }) => <div>{row.getValue("meetingTarget")}</div>,
   },
   {
-    accessorKey: "contractNumber",
+    accessorKey: "contractCount",
     header: "Müqavilə sayı",
-    cell: ({ row }) => <div>{row.getValue("contactNumber")}</div>,
+    cell: ({ row }) => <div>{row.getValue("contractCount") || 0}</div>,
   },
   {
-    accessorKey: "total",
+    accessorKey: "totalAmount",
     header: "Toplam məbləğ",
-    cell: ({ row }) => <div>{row.getValue("contractDate")}</div>,
+    cell: ({ row }) => <div>{row.getValue("totalAmount") || 0}</div>,
   },
 
   {
@@ -93,6 +104,10 @@ const columns: ColumnDef<LostCustomer>[] = [
 ];
 
 export default function MonthlyTarget() {
+  const { data } = useQuery({
+    queryKey: ["monthly-targets"],
+    queryFn: MonthlyTargetApi.getAllMonthlyTargets,
+  });
   const { push } = useRouter();
   return (
     <div>
@@ -102,7 +117,7 @@ export default function MonthlyTarget() {
           Yeni aylıq hədəf
         </Button>
       </div>
-      <DataTable data={[]} columns={columns} />
+      <DataTable data={data?.data} columns={columns} />
     </div>
   );
 }
