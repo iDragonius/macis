@@ -6,7 +6,9 @@ export const ExceptionTypes = {
   CUSTOMER_ALREADY_EXIST: 'customerAlreadyExist',
   CUSTOMER_NOT_FOUND: 'customerNotFound',
   CURATOR_NOT_FOUND: 'curatorNotFound',
+  MANAGER_NOT_FOUND: 'managerNotFound',
   CALL_NOT_FOUND: 'callNotFound',
   MEETING_NOT_FOUND: 'meetingNotFound',
-  MANAGER_NOT_FOUND: 'managerNotFound',
+  CURATION_CALL_NOT_FOUND: 'curationCallNotFound',
+  CURATION_MEETING_NOT_FOUND: 'curationMeetingNotFound',
 };

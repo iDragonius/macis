@@ -14,6 +14,8 @@ import { MeetingScheduleModule } from './meeting-schedule/meeting-schedule.modul
 import { CallScheduleModule } from './call-schedule/call-schedule.module';
 import { RolesGuard } from './core/guards/roles.guard';
 import { MonthlyTargetModule } from './monthly-target/monthly-target.module';
+import { CurationMeetingModule } from './curation-meeting/curation-meeting.module';
+import { CurationCallModule } from './curation-call/curation-call.module';
 
 @Module({
   imports: [
@@ -27,6 +29,8 @@ import { MonthlyTargetModule } from './monthly-target/monthly-target.module';
     MeetingScheduleModule,
     CallScheduleModule,
     MonthlyTargetModule,
+    CurationCallModule,
+    CurationMeetingModule,
   ],
   controllers: [],
   providers: [

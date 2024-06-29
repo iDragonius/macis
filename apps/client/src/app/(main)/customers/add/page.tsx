@@ -32,7 +32,7 @@ export default function CustomerAdd() {
     status: "ACTIVE",
     contractDate: "",
     service: "",
-    payment: "",
+    paymentAmount: "",
     ownersBirthday: "",
     companyEstablishmentDate: "",
     curatorId: null,
@@ -55,7 +55,7 @@ export default function CustomerAdd() {
         status: data.status,
         contractDate: data.contractDate,
         service: data.service,
-        payment: data.payment,
+        paymentAmount: data.paymentAmount,
         ownersBirthday: data.ownersBirthday,
         companyEstablishmentDate: data.companyEstablishmentDate,
         curatorId: data.curatorId,
@@ -221,14 +221,14 @@ export default function CustomerAdd() {
               <div>
                 <Label>Ödəniş </Label>
                 <Input
-                  value={data.payment}
+                  value={data.paymentAmount}
                   onChange={(e) =>
                     setData((prevState) => ({
                       ...prevState,
-                      payment: e.target.value,
+                      paymentAmount: e.target.value,
                     }))
                   }
-                  type={"text"}
+                  type={"number"}
                   placeholder={"Ödəniş "}
                 />
               </div>{" "}

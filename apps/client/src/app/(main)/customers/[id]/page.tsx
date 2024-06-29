@@ -122,7 +122,7 @@ export default function Customer({ params }: { params: { id: string } }) {
         ],
         ["Müqavilə tarixi", formatDate(data?.data?.contractDate || "")],
         ["Xidmət", formatField(data?.data?.service)],
-        ["Ödəniş", formatField(data?.data?.payment)],
+        ["Ödəniş", formatField(data?.data?.paymentAmount)],
       ]);
     }
   }, [data]);

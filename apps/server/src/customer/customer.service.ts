@@ -17,18 +17,20 @@ export class CustomerService {
     if (potentialExistingCustomer) {
       throw new BadRequestException(ExceptionTypes.CUSTOMER_ALREADY_EXIST);
     }
+
+    const manager = await this.prisma.user.findUnique({
+      where: {
+        id: data.managerId,
+      },
+    });
+    if (!manager) {
+      throw new BadRequestException(ExceptionTypes.MANAGER_NOT_FOUND);
+    }
     if (data.status === 'ACTIVE') {
-      if (!data.curatorId) {
+      if (!data.managerId) {
         throw new BadRequestException();
       }
-      const curator = await this.prisma.user.findUnique({
-        where: {
-          id: data.curatorId,
-        },
-      });
-      if (!curator) {
-        throw new BadRequestException(ExceptionTypes.CURATOR_NOT_FOUND);
-      }
+
       await this.prisma.customer.create({
         data: {
           status: data.status,
@@ -43,7 +45,8 @@ export class CustomerService {
 
           companyEstablishmentDate: data.companyEstablishmentDate,
           ownersBirthday: data.ownersBirthday,
-          curatorId: curator.id,
+          curator: data.curator,
+          managerId: manager.id,
         },
       });
     } else if (data.status === 'POTENTIAL') {
@@ -58,6 +61,7 @@ export class CustomerService {
           service: data.service,
           source: data.source,
           notes: data.notes,
+          managerId: manager.id,
         },
       });
     } else {
@@ -74,6 +78,7 @@ export class CustomerService {
           service: data.service,
           termsOfPayment: data.termsOfPayment,
           terminationReason: data.terminationReason,
+          managerId: manager.id,
         },
       });
     }
@@ -105,7 +110,7 @@ export class CustomerService {
             status: CustomerStatus.ACTIVE,
           },
           include: {
-            curator: {
+            manager: {
               include: {
                 profile: true,
               },
@@ -118,7 +123,7 @@ export class CustomerService {
             status: CustomerStatus.POTENTIAL,
           },
           include: {
-            curator: {
+            manager: {
               include: {
                 profile: true,
               },
@@ -131,7 +136,7 @@ export class CustomerService {
             status: CustomerStatus.LOST,
           },
           include: {
-            curator: {
+            manager: {
               include: {
                 profile: true,
               },
@@ -142,7 +147,7 @@ export class CustomerService {
     } else {
       return this.prisma.customer.findMany({
         include: {
-          curator: {
+          manager: {
             include: {
               profile: true,
             },

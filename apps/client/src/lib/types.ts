@@ -2,6 +2,7 @@ import { CustomerStatus } from "@/lib/utils";
 import { Customer } from "@/app/(main)/customers/page";
 import { CallResultType } from "@/lib/api/call-schedule.api";
 import { MeetingResultType } from "@/lib/api/meeting-schedule.api";
+import { Optional } from "@tanstack/react-query";
 
 export type CustomerDto = {
   company: string;
@@ -10,7 +11,7 @@ export type CustomerDto = {
   status: CustomerStatus;
   contractDate: string;
   service: string;
-  payment: string;
+  paymentAmount: string;
   ownersBirthday: string;
   companyEstablishmentDate: string;
   curatorId: null | string;
@@ -29,7 +30,7 @@ export type CustomerProps = {
   status: CustomerStatus;
   contractDate: string | null;
   service: string | null;
-  payment: string | null;
+  paymentAmount: string | null;
   ownersBirthday: string | null;
   companyEstablishmentDate: string | null;
   curator: string | null;
@@ -100,4 +101,26 @@ export type MeetingProps = {
   reasonForRejection: string;
   notes: string;
   result: MeetingResultType;
+};
+
+export type CurationCallProps = {
+  id: string;
+  customer: Customer;
+  callDate: string;
+  meetingDate: string;
+  customerFeedback: string;
+  customerRequests: string;
+  notes: string;
+};
+
+export type CurationMeetingProps = {
+  id: string;
+  customer: Customer;
+  meetingDate: string;
+  meetingTime: string;
+  customerFeedback: string;
+  customerRequests: string;
+  nuances: string;
+  referenceCompanies: string;
+  notes: string;
 };

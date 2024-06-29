@@ -29,7 +29,11 @@ export class CreateCustomerDto {
 
   @IsString()
   @IsOptional()
-  curatorId: string;
+  curator: string;
+
+  @IsString()
+  @IsNotEmpty()
+  managerId: string;
 
   @IsDate()
   @Transform(({ value }) => new Date(value))
