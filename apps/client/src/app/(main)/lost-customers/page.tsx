@@ -150,7 +150,14 @@ export default function LostCustomers() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
               <DropdownMenuItem>
-                <Link href={`/customers/${data.id}`}>Müştəriyə bax</Link>
+                <Link href={`/customers/${data.id}`} className={"w-full"}>
+                  Müştəriyə bax
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href={`/customers/edit/${data.id}`} className={"w-full"}>
+                  Dəyiş
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {

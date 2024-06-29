@@ -30,6 +30,9 @@ export const CustomerApi = {
   async createCustomer(data: any) {
     return await api.post("/customer", data);
   },
+  async updateCustomer(id: string, data: any) {
+    return await api.patch(`/customer/${id}`, data);
+  },
   async getCustomer(id: string) {
     return await api.get<CustomerProps>(`/customer/${id}`);
   },

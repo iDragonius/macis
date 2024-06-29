@@ -11,10 +11,11 @@ export type CustomerDto = {
   status: CustomerStatus;
   contractDate: string;
   service: string;
-  paymentAmount: string;
+  paymentAmount: number;
   ownersBirthday: string;
   companyEstablishmentDate: string;
-  curatorId: null | string;
+  curator: string;
+  managerId: null | string;
   contractExpirationDate: string;
   termsOfPayment: string;
   terminationReason: string;
@@ -30,10 +31,13 @@ export type CustomerProps = {
   status: CustomerStatus;
   contractDate: string | null;
   service: string | null;
-  paymentAmount: string | null;
+  paymentAmount: number | null;
   ownersBirthday: string | null;
   companyEstablishmentDate: string | null;
   curator: string | null;
+  manager: {
+    id: string;
+  } | null;
   contractExpirationDate: string | null;
   termsOfPayment: string | null;
   terminationReason: string | null;

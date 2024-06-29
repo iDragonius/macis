@@ -1,7 +1,13 @@
 "use client";
+import { useQuery } from "@tanstack/react-query";
+import { CustomerApi } from "@/lib/api/customer.api";
+import { useEffect, useState } from "react";
+import { UserApi } from "@/lib/api/user.api";
+import { CustomerDto } from "@/lib/types";
+import { useRouter } from "next/navigation";
+import { PageTitle } from "@/components/ui/page-title";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -12,15 +18,13 @@ import {
 import { CustomerStatus } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { CustomerApi } from "@/lib/api/customer.api";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import { CustomerDto } from "@/lib/types";
-import { PageTitle } from "@/components/ui/page-title";
-import { useQuery } from "@tanstack/react-query";
-import { UserApi } from "@/lib/api/user.api";
 
-export default function CustomerAdd() {
+export default function Page({ params }: { params: { id: string } }) {
+  const { data: customer, refetch } = useQuery({
+    queryKey: ["customer", params.id],
+    queryFn: () => CustomerApi.getCustomer(params.id),
+  });
   const { data: users } = useQuery({
     queryKey: ["users"],
     queryFn: UserApi.getAllUsers,
@@ -46,9 +50,33 @@ export default function CustomerAdd() {
   });
   const { push } = useRouter();
 
+  useEffect(() => {
+    if (customer) {
+      setData({
+        managerId: customer?.data?.manager?.id || null,
+        status: customer.data.status,
+        company: customer.data.company || "",
+        curator: customer.data.curator || "",
+        contactNumber: customer.data.contactNumber || "",
+        contractExpirationDate: customer.data.contractExpirationDate || "",
+        contractDate: customer.data.contractDate || "",
+        companyEstablishmentDate: customer.data.companyEstablishmentDate || "",
+        service: customer.data.service || "",
+        paymentAmount: customer.data.paymentAmount || 0,
+        source: customer.data.source || "",
+        head: customer.data.head || "",
+        terminationReason: customer.data.terminationReason || "",
+        termsOfPayment: customer.data.termsOfPayment || "",
+        ownersBirthday: customer.data.ownersBirthday || "",
+        notes: customer.data.notes || "",
+        position: customer.data.position || "",
+      });
+    }
+  }, [customer]);
+
   function save() {
     if (data.status === "ACTIVE") {
-      CustomerApi.createCustomer({
+      CustomerApi.updateCustomer(params.id, {
         company: data.company,
         head: data.head,
         position: data.position,
@@ -62,11 +90,11 @@ export default function CustomerAdd() {
         curator: data.curator,
         managerId: data.managerId,
       }).then((res) => {
-        toast.success("Müştəri uğurla yaradıldı");
+        toast.success("Müştəri məlumatları uğurla dəyişdirildi!");
         push("/active-customers");
       });
     } else if (data.status === "LOST") {
-      CustomerApi.createCustomer({
+      CustomerApi.updateCustomer(params.id, {
         company: data.company,
         head: data.head,
         position: data.position,
@@ -79,11 +107,11 @@ export default function CustomerAdd() {
         service: data.service,
         managerId: data.managerId,
       }).then((res) => {
-        toast.success("Müştəri uğurla yaradıldı");
+        toast.success("Müştəri məlumatları uğurla dəyişdirildi!");
         push("/lost-customers");
       });
     } else {
-      CustomerApi.createCustomer({
+      CustomerApi.updateCustomer(params.id, {
         company: data.company,
         head: data.head,
         contactNumber: data.contactNumber,
@@ -94,15 +122,15 @@ export default function CustomerAdd() {
         service: data.service,
         managerId: data.managerId,
       }).then((res) => {
-        toast.success("Müştəri uğurla yaradıldı");
+        toast.success("Müştəri məlumatları uğurla dəyişdirildi!");
         push("/potential-customers");
       });
     }
   }
+
   return (
     <div>
-      <PageTitle>Yeni müştəri</PageTitle>
-
+      <PageTitle>Müştəri məlumatlarını dəyiş</PageTitle>
       <div>
         <h2 className={"text-[24px] font-medium mt-8"}>Ümumi məlumatlar</h2>
         <div className={"mt-5 grid grid-cols-2 gap-8"}>

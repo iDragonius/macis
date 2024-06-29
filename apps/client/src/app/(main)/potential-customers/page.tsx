@@ -123,7 +123,7 @@ export default function PotentialCustomers() {
       id: "actions",
       enableHiding: false,
       cell: ({ row }) => {
-        const payment = row.original;
+        const data = row.original;
 
         return (
           <DropdownMenu>
@@ -134,8 +134,17 @@ export default function PotentialCustomers() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
+              <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
+              <DropdownMenuItem>
+                <Link href={`/customers/${data.id}`} className={"w-full"}>
+                  Müştəriyə bax
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href={`/customers/edit/${data.id}`} className={"w-full"}>
+                  Dəyiş
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
                   CustomerApi.deleteCustomer(row.original.id).then((res) => {

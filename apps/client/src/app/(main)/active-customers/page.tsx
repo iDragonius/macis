@@ -52,12 +52,13 @@ export type ActiveCustomer = {
   payment: string;
   ownersBirthday: string;
   companyEstablishmentDate: string;
-  curator: {
+  manager: {
     profile: {
       firstName: string;
       lastName: string;
     };
   };
+  curator: string;
 };
 
 export default function ActiveCustomers() {
@@ -144,11 +145,16 @@ export default function ActiveCustomers() {
     {
       accessorKey: "curator",
       header: "Kurator",
+      cell: ({ row }) => <div>{row.original?.curator}</div>,
+    },
+    {
+      accessorKey: "manager",
+      header: "Menecer",
       cell: ({ row }) => (
         <div>
-          {row.original?.curator?.profile?.firstName +
+          {(row.original?.manager?.profile?.firstName || "") +
             " " +
-            row.original?.curator?.profile?.lastName}
+            (row?.original?.manager?.profile?.lastName || "")}
         </div>
       ),
     },
@@ -170,7 +176,14 @@ export default function ActiveCustomers() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
               <DropdownMenuItem>
-                <Link href={`/customers/${data.id}`}>Müştəriyə bax</Link>
+                <Link href={`/customers/${data.id}`} className={"w-full"}>
+                  Müştəriyə bax
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href={`/customers/edit/${data.id}`} className={"w-full"}>
+                  Dəyiş
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
