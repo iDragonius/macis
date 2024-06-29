@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -51,7 +52,7 @@ export class MeetingScheduleController {
 
   @Patch('/result/:id')
   @Roles(Role.SUPER_ADMIN, Role.ADMIN)
-  async changeCallResult(
+  async changeMeetingResult(
     @Body() data: ChangeMeetingResultDto,
     @Param('id') meetingId: string,
   ) {
@@ -59,5 +60,10 @@ export class MeetingScheduleController {
       data,
       meetingId,
     );
+  }
+  @Delete(':id')
+  @Roles(Role.SUPER_ADMIN)
+  async deleteMeeting(@Param('id') id: string) {
+    return await this.meetingScheduleService.deleteMeeting(id);
   }
 }

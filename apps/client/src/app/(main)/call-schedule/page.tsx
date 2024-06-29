@@ -26,6 +26,8 @@ import {
 } from "@/components/ui/select";
 import { CallProps, CallResult } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import { MeetingScheduleApi } from "@/lib/api/meeting-schedule.api";
+import toast from "react-hot-toast";
 
 export default function CallSchedule() {
   const [result, setResult] = useState<CallResultType | null>(null);
@@ -168,7 +170,16 @@ export default function CallSchedule() {
                   Dəyiş
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>Sil</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  CallScheduleApi.deleteCall(data.id).then(() => {
+                    refetch();
+                    toast.success("Zəng uğurla silindi!");
+                  });
+                }}
+              >
+                Sil
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );

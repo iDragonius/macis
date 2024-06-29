@@ -206,4 +206,8 @@ export class CallScheduleService {
       },
     });
   }
+
+  async deleteCall(id: string) {
+    return await this.prisma.callSchedule.delete({ where: { id } });
+  }
 }

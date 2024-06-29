@@ -31,6 +31,9 @@ export const MeetingScheduleApi = {
   async createMeeting(data: any) {
     return await api.post("/meeting-schedule", data);
   },
+  async deleteMeeting(id: string) {
+    return await api.delete(`/meeting-schedule/${id}`);
+  },
   async changeMeetingResult(result: MeetingResultType, meetingId: string) {
     return await api.patch(`/meeting-schedule/result/${meetingId}`, {
       result,

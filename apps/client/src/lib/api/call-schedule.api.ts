@@ -32,6 +32,9 @@ export const CallScheduleApi = {
       result,
     });
   },
+  async deleteCall(id: string) {
+    return await api.delete(`/call-schedule/${id}`);
+  },
   async getCall(id: string) {
     return await api.get(`/call-schedule/${id}`);
   },

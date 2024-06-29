@@ -7,6 +7,7 @@ import {
   Param,
   Query,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { CallScheduleService } from './call-schedule.service';
 import { CreateCallScheduleDto } from './dto/create-call-schedule.dto';
@@ -53,5 +54,10 @@ export class CallScheduleController {
   @Get(':id')
   async getCall(@Param('id') id: string) {
     return await this.callScheduleService.getCall(id);
+  }
+  @Roles(Role.SUPER_ADMIN)
+  @Delete(':id')
+  async deleteCall(@Param('id') id: string) {
+    return await this.callScheduleService.deleteCall(id);
   }
 }

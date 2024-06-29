@@ -30,6 +30,7 @@ import {
   MeetingScheduleApi,
 } from "@/lib/api/meeting-schedule.api";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function MeetingSchedule() {
   const [result, setResult] = useState<MeetingResultType | null>(null);
@@ -174,7 +175,16 @@ export default function MeetingSchedule() {
                   Dəyiş
                 </Link>
               </DropdownMenuItem>
-              {/*<DropdownMenuItem>Sil</DropdownMenuItem>*/}
+              <DropdownMenuItem
+                onClick={() => {
+                  MeetingScheduleApi.deleteMeeting(data.id).then(() => {
+                    refetch();
+                    toast.success("Görüş uğurla silindi!");
+                  });
+                }}
+              >
+                Sil
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );

@@ -156,7 +156,7 @@ export class MeetingScheduleService {
       throw new BadRequestException(ExceptionTypes.MEETING_NOT_FOUND);
     }
 
-    if (meeting.result === 'CONTRACT_SIGNED') {
+    if (data.result === 'CONTRACT_SIGNED') {
       await this.prisma.customer.update({
         where: {
           id: meeting.customerId,
@@ -175,5 +175,9 @@ export class MeetingScheduleService {
         result: data.result,
       },
     });
+  }
+
+  async deleteMeeting(id: string) {
+    return await this.prisma.meetingSchedule.delete({ where: { id } });
   }
 }
