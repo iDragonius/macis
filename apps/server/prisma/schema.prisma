@@ -15,17 +15,17 @@ datasource db {
 }
 
 model User {
-  id            String         @id @default(uuid())
-  createdAt     DateTime       @default(now()) @map("created_at")
-  updatedAt     DateTime       @updatedAt @map("updated_ad")
-  role          Role           @default(USER)
-  email         String         @unique
+  id            String          @id @default(uuid())
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_ad")
+  role          Role            @default(USER)
+  email         String          @unique
   password      String
   tokens        UserToken[]
   codes         UserCodes[]
   profile       UserProfile?
   customers     Customer[]
-  monthlyTarget MonthlyTarget?
+  monthlyTarget MonthlyTarget[]
 }
 
 model UserProfile {
@@ -134,7 +134,7 @@ model MonthlyTarget {
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_ad")
   manager       User     @relation(fields: [managerId], references: [id])
-  managerId     String   @unique
+  managerId     String
   meetingTarget Int
   month         Month
 }

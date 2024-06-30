@@ -20,14 +20,20 @@ import { useQuery } from "@tanstack/react-query";
 import { MonthlyTargetApi } from "@/lib/api/monthly-target.api";
 
 type MonthlyTarget = {
-  meetingTarget: number;
-  manager: {
-    profile: {
-      firstName: string;
-      lastName: string;
+  data: {
+    meetingTarget: number;
+    manager: {
+      profile: {
+        firstName: string;
+        lastName: string;
+      };
     };
+    managerId: string;
+
+    month: string;
   };
-  contractCount: number;
+  meetingCount: number;
+  signedContractCount: number;
   totalAmount: number;
 };
 const columns: ColumnDef<MonthlyTarget>[] = [
@@ -58,21 +64,24 @@ const columns: ColumnDef<MonthlyTarget>[] = [
     header: "Menecer",
     cell: ({ row }) => {
       const manager =
-        row.original.manager.profile.firstName +
+        row.original.data.manager.profile.firstName +
         " " +
-        row.original.manager.profile.lastName;
+        row.original.data.manager.profile.lastName;
       return <div className={""}>{manager}</div>;
     },
   },
   {
     accessorKey: "meetingTarget",
     header: "Görüş hədəfi",
-    cell: ({ row }) => <div>{row.getValue("meetingTarget")}</div>,
+    cell: ({ row }) => {
+      const meetingTarget = row?.original?.meetingCount;
+      return <div>{meetingTarget}</div>;
+    },
   },
   {
-    accessorKey: "contractCount",
+    accessorKey: "signedContractCount",
     header: "Müqavilə sayı",
-    cell: ({ row }) => <div>{row.getValue("contractCount") || 0}</div>,
+    cell: ({ row }) => <div>{row.getValue("signedContractCount") || 0}</div>,
   },
   {
     accessorKey: "totalAmount",
