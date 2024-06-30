@@ -74,8 +74,16 @@ const columns: ColumnDef<MonthlyTarget>[] = [
     accessorKey: "meetingTarget",
     header: "Görüş hədəfi",
     cell: ({ row }) => {
-      const meetingTarget = row?.original?.meetingCount;
+      const meetingTarget = row?.original?.data?.meetingTarget;
       return <div>{meetingTarget}</div>;
+    },
+  },
+  {
+    accessorKey: "meetingCount",
+    header: "Görüş sayı",
+    cell: ({ row }) => {
+      const meetingCount = row?.original?.meetingCount;
+      return <div>{meetingCount}</div>;
     },
   },
   {
