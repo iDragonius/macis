@@ -142,7 +142,14 @@ export default function Page() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
-
+              <DropdownMenuItem>
+                <Link
+                  href={`/curation/calls/edit/${data.id}`}
+                  className={"w-full"}
+                >
+                  Dəyiş
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
                   CurationCallApi.deleteCurationCall(row.original.id).then(() =>

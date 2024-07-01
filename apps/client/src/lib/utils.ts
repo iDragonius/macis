@@ -8,7 +8,19 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatDate(date: string): string {
-  return dayjs(date).format("DD.MM.YYYY");
+  if (dayjs(date).isValid()) {
+    return dayjs(date).format("DD.MM.YYYY");
+  } else {
+    return "Məlumat yoxdur";
+  }
+}
+
+export function formatInputDate(date: string): string {
+  if (dayjs(date).isValid()) {
+    return dayjs(date).format("YYYY-MM-DD");
+  } else {
+    return "";
+  }
 }
 
 export type CustomerStatus = "ACTIVE" | "POTENTIAL" | "LOST";

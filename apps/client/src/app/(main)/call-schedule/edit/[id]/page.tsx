@@ -17,6 +17,7 @@ import { CustomerApi } from "@/lib/api/customer.api";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { Button } from "@/components/ui/button";
+import { formatInputDate } from "@/lib/utils";
 type CallDto = {
   customerId: string | null;
   contactDate: string;
@@ -47,11 +48,11 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
     if (call) {
       setData({
         customerId: call.data.customer.id,
-        contactDate: dayjs(call.data.contactDate).format("YYYY-MM-DD"),
+        contactDate: formatInputDate(call.data.contactDate),
         notes: call.data.notes,
         result: call.data.result,
         reasonForRejection: call.data.reasonForRejection,
-        nextContactDate: dayjs(call.data.nextContactDate).format("YYYY-MM-DD"),
+        nextContactDate: formatInputDate(call.data.nextContactDate),
       });
     }
   }, [call]);

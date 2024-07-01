@@ -21,6 +21,7 @@ import {
   MeetingResultType,
   MeetingScheduleApi,
 } from "@/lib/api/meeting-schedule.api";
+import { formatInputDate } from "@/lib/utils";
 type MeetingDto = {
   customerId: string | null;
   contactDate: string;
@@ -57,18 +58,14 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
     if (meeting) {
       setData({
         customerId: meeting.data.customer.id,
-        contactDate: dayjs(meeting.data.contactDate).format("YYYY-MM-DD"),
+        contactDate: formatInputDate(meeting.data.contactDate),
         notes: meeting.data.notes,
         result: meeting.data.result,
         reasonForRejection: meeting.data.reasonForRejection,
-        nextContactDate: dayjs(meeting.data.nextContactDate).format(
-          "YYYY-MM-DD",
-        ),
-        nextMeetingDate: dayjs(meeting.data.nextMeetingDate).format(
-          "YYYY-MM-DD",
-        ),
+        nextContactDate: formatInputDate(meeting.data.nextContactDate),
+        nextMeetingDate: formatInputDate(meeting.data.nextMeetingDate),
         meetingTime: meeting.data.meetingTime,
-        meetingDate: dayjs(meeting.data.meetingDate).format("YYYY-MM-DD"),
+        meetingDate: formatInputDate(meeting.data.meetingDate),
       });
     }
   }, [meeting]);

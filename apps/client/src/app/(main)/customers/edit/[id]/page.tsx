@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CustomerStatus } from "@/lib/utils";
+import { CustomerStatus, formatInputDate } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
@@ -58,16 +58,20 @@ export default function Page({ params }: { params: { id: string } }) {
         company: customer.data.company || "",
         curator: customer.data.curator || "",
         contactNumber: customer.data.contactNumber || "",
-        contractExpirationDate: customer.data.contractExpirationDate || "",
-        contractDate: customer.data.contractDate || "",
-        companyEstablishmentDate: customer.data.companyEstablishmentDate || "",
+        contractExpirationDate: formatInputDate(
+          customer.data.contractExpirationDate || "",
+        ),
+        contractDate: formatInputDate(customer.data.contractDate || ""),
+        companyEstablishmentDate: formatInputDate(
+          customer.data.companyEstablishmentDate || "",
+        ),
         service: customer.data.service || "",
         paymentAmount: customer.data.paymentAmount || 0,
         source: customer.data.source || "",
         head: customer.data.head || "",
         terminationReason: customer.data.terminationReason || "",
         termsOfPayment: customer.data.termsOfPayment || "",
-        ownersBirthday: customer.data.ownersBirthday || "",
+        ownersBirthday: formatInputDate(customer.data.ownersBirthday || ""),
         notes: customer.data.notes || "",
         position: customer.data.position || "",
       });

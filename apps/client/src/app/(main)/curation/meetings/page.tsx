@@ -27,6 +27,7 @@ export default function Page() {
     queryKey: ["curation-meetings"],
     queryFn: CurationMeetingApi.getCurationMeetings,
   });
+  console.log(data);
   const columns: ColumnDef<CurationMeetingProps>[] = [
     {
       id: "select",
@@ -93,7 +94,7 @@ export default function Page() {
       accessorKey: "meetingTime",
       header: "Görüş zamanı",
       cell: ({ row }) => {
-        return <div>{formatDate(row.getValue("meetingTime"))}</div>;
+        return <div>{formatField(row.getValue("meetingTime"))}</div>;
       },
     },
     {
@@ -132,13 +133,6 @@ export default function Page() {
         return <div>{formatField(row.getValue("notes"))}</div>;
       },
     },
-    {
-      accessorKey: "contactDate",
-      header: "Əlaqə tarixi",
-      cell: ({ row }) => {
-        return <div>{formatDate(row.getValue("contactDate"))}</div>;
-      },
-    },
 
     {
       id: "actions",
@@ -156,7 +150,14 @@ export default function Page() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
-
+              <DropdownMenuItem>
+                <Link
+                  href={`/curation/meetings/edit/${data.id}`}
+                  className={"w-full"}
+                >
+                  Dəyiş
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
                   CurationMeetingApi.deleteCurationMeeting(
