@@ -10,12 +10,15 @@ import {
 import { CurationCallService } from './curation-call.service';
 import { CreateCurationCallDto } from './dto/create-curation-call.dto';
 import { UpdateCurationCallDto } from './dto/update-curation-call.dto';
+import { Roles } from '../core/decorators/roles.decorator';
+import { Role } from '../core/enums/role.enum';
 
 @Controller('curation-call')
 export class CurationCallController {
   constructor(private readonly curationCallService: CurationCallService) {}
 
   @Post()
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   create(@Body() data: CreateCurationCallDto) {
     return this.curationCallService.create(data);
   }
@@ -31,6 +34,7 @@ export class CurationCallController {
   }
 
   @Patch(':id')
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   update(
     @Param('id') id: string,
     @Body() updateCurationCallDto: UpdateCurationCallDto,
@@ -39,6 +43,7 @@ export class CurationCallController {
   }
 
   @Delete(':id')
+  @Roles(Role.SUPER_ADMIN)
   remove(@Param('id') id: string) {
     return this.curationCallService.remove(id);
   }

@@ -11,4 +11,5 @@ export const ExceptionTypes = {
   MEETING_NOT_FOUND: 'meetingNotFound',
   CURATION_CALL_NOT_FOUND: 'curationCallNotFound',
   CURATION_MEETING_NOT_FOUND: 'curationMeetingNotFound',
+  MANAGER_MONTHLY_TARGET_ALREADY_EXIST: 'managerMonthlyTargetAlreadyExist',
 };

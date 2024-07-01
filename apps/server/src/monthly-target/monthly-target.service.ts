@@ -19,12 +19,25 @@ export class MonthlyTargetService {
     if (!manager) {
       throw new BadRequestException(ExceptionTypes.MANAGER_NOT_FOUND);
     }
-
+    const possibleExistedMonthlyTargetForManager =
+      await this.prisma.monthlyTarget.findFirst({
+        where: {
+          managerId: data.managerId,
+          year: data.year,
+          month: data.month,
+        },
+      });
+    if (possibleExistedMonthlyTargetForManager) {
+      throw new BadRequestException(
+        ExceptionTypes.MANAGER_MONTHLY_TARGET_ALREADY_EXIST,
+      );
+    }
     return await this.prisma.monthlyTarget.create({
       data: {
         managerId: data.managerId,
         meetingTarget: data.meetingTarget,
         month: data.month,
+        year: data.year,
       },
     });
   }
@@ -78,5 +91,40 @@ export class MonthlyTargetService {
     });
     await Promise.all(promises);
     return temp;
+  }
+
+  async deleteMonthlyTarget(id: string) {
+    return await this.prisma.monthlyTarget.delete({ where: { id } });
+  }
+
+  async updateMonthlyTarget(id: string, data: UpdateMonthlyTargetDto) {
+    const manager = await this.prisma.user.findUnique({
+      where: {
+        id: data.managerId,
+      },
+    });
+
+    if (!manager) {
+      throw new BadRequestException(ExceptionTypes.MANAGER_NOT_FOUND);
+    }
+
+    return await this.prisma.monthlyTarget.update({
+      where: { id },
+      data: {
+        managerId: data.managerId,
+        meetingTarget: data.meetingTarget,
+        month: data.month,
+        year: data.year,
+      },
+    });
+  }
+
+  async getMonthlyTarget(id: string) {
+    return await this.prisma.monthlyTarget.findUnique({
+      where: { id },
+      include: {
+        manager: true,
+      },
+    });
   }
 }

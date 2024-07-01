@@ -13,4 +13,8 @@ export class CreateMonthlyTargetDto {
   @IsNotEmpty()
   @IsEnum(Month)
   month: Month;
+
+  @IsNotEmpty()
+  @IsNumber()
+  year: number;
 }

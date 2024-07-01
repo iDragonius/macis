@@ -1,7 +1,11 @@
 "use client";
-import { PageTitle } from "@/components/ui/page-title";
 import { useQuery } from "@tanstack/react-query";
 import { UserApi } from "@/lib/api/user.api";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { MonthlyTargetApi } from "@/lib/api/monthly-target.api";
+import toast from "react-hot-toast";
+import { PageTitle } from "@/components/ui/page-title";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -10,26 +14,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { months, years } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { MonthlyTargetApi } from "@/lib/api/monthly-target.api";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import { months, years } from "@/lib/utils";
-
 type MonthlyTargetDto = {
   managerId: string | null;
   meetingTarget: number;
   month: string | null;
   year: string | null;
 };
-export default function AddMonthlyTarget() {
+export default function Page({ params }: { params: { id: string } }) {
   const { data: users } = useQuery({
     queryKey: ["users"],
     queryFn: UserApi.getAllUsers,
   });
-
+  const { data: monthlyTarget } = useQuery({
+    queryKey: ["monthly-target", params.id],
+    queryFn: () => MonthlyTargetApi.getMonthlyTarget(params.id),
+  });
   const [data, setData] = useState<MonthlyTargetDto>({
     managerId: null,
     month: null,
@@ -37,16 +39,25 @@ export default function AddMonthlyTarget() {
     year: null,
   });
   const { push } = useRouter();
+  useEffect(() => {
+    if (monthlyTarget) {
+      setData({
+        month: monthlyTarget.data.month,
+        year: monthlyTarget.data.year,
+        managerId: monthlyTarget.data.managerId,
+        meetingTarget: monthlyTarget.data.meetingTarget,
+      });
+    }
+  }, [monthlyTarget]);
   function save() {
-    MonthlyTargetApi.createMonthlyTarget(data).then((res) => {
+    MonthlyTargetApi.updateMonthlyTarget(data, params.id).then(() => {
       push("/monthly-target");
-      toast.success("Aylıq hədəf uğurla  yaradıldı");
+      toast.success("Aylıq hədəf məlumatları uğurla  dəyişdirildi!");
     });
   }
-
   return (
     <div>
-      <PageTitle>Yeni aylıq hədəf</PageTitle>
+      <PageTitle>Aylıq hədəfi dəyiş</PageTitle>
 
       <div className={"mt-5 grid grid-cols-2 gap-8"}>
         <div>

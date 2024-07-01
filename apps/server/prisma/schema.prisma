@@ -137,6 +137,7 @@ model MonthlyTarget {
   managerId     String
   meetingTarget Int
   month         Month
+  year          Int
 }
 
 model CurationCall {

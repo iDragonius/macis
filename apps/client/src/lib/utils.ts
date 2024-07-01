@@ -39,3 +39,60 @@ export function getRole(role: Role): string {
     return "Super Admin";
   }
 }
+
+export const months = [
+  {
+    value: "January",
+    label: "Yanvar",
+  },
+  {
+    value: "February",
+    label: "Fevral",
+  },
+  {
+    value: "March",
+    label: "Mart",
+  },
+  {
+    value: "April",
+    label: "Aprel",
+  },
+  {
+    value: "May",
+    label: "May",
+  },
+  {
+    value: "June",
+    label: "İyun",
+  },
+  {
+    value: "July",
+    label: "İyul",
+  },
+  {
+    value: "August",
+    label: "Avqust",
+  },
+  {
+    value: "September",
+    label: "Sentyabr",
+  },
+  {
+    value: "October",
+    label: "Oktyabr",
+  },
+  {
+    value: "November",
+    label: "Noyabr",
+  },
+  {
+    value: "December",
+    label: "Dekabr",
+  },
+];
+
+export const years = [2024, 2025, 2026, 2027, 2028, 2029, 2030];
+
+export function formatMonth(month: string): string {
+  return months.find((el) => el.value === month)?.label || "";
+}
