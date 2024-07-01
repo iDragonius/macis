@@ -97,6 +97,13 @@ export default function Page() {
       },
     },
     {
+      accessorKey: "meetingDate",
+      header: "Görüş tarixi",
+      cell: ({ row }) => {
+        return <div>{formatDate(row.getValue("meetingDate"))}</div>;
+      },
+    },
+    {
       accessorKey: "customerFeedback",
       header: "Müştəri geridönüşləri ",
       cell: ({ row }) => {
@@ -116,13 +123,6 @@ export default function Page() {
       header: "Əlavə qeydlər",
       cell: ({ row }) => {
         return <div>{formatField(row.getValue("notes"))}</div>;
-      },
-    },
-    {
-      accessorKey: "contactDate",
-      header: "Əlaqə tarixi",
-      cell: ({ row }) => {
-        return <div>{formatDate(row.getValue("contactDate"))}</div>;
       },
     },
 

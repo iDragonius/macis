@@ -49,7 +49,7 @@ export type ActiveCustomer = {
   contactNumber: string;
   contractDate: string;
   service: string;
-  payment: string;
+  paymentAmount: number;
   ownersBirthday: string;
   companyEstablishmentDate: string;
   manager: {
@@ -124,9 +124,9 @@ export default function ActiveCustomers() {
       cell: ({ row }) => <div>{row.getValue("service")}</div>,
     },
     {
-      accessorKey: "payment",
+      accessorKey: "paymentAmount",
       header: "Ödəniş",
-      cell: ({ row }) => <div>{row.getValue("payment")}</div>,
+      cell: ({ row }) => <div>{row.getValue("paymentAmount")}</div>,
     },
     {
       accessorKey: "ownersBirthday",
