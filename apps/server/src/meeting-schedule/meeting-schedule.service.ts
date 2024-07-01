@@ -124,6 +124,7 @@ export class MeetingScheduleService {
 
   async getDailyMeetingSchedule() {
     const currentDate = new Date();
+    console.log(currentDate);
     const formattedDate = new Date(
       currentDate.getFullYear() +
         '-' +
@@ -131,8 +132,9 @@ export class MeetingScheduleService {
         '-' +
         currentDate.getDate(),
     );
-
     formattedDate.setHours(4);
+    console.log(formattedDate);
+
     return await this.prisma.meetingSchedule.findMany({
       include: {
         customer: true,
