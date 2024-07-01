@@ -111,7 +111,9 @@ export default function Customers() {
                 <Link href={`/customers/${data.id}`}>Müştəriyə bax</Link>
               </DropdownMenuItem>{" "}
               <DropdownMenuItem>
-                <Link href={`/customers/edit/${data.id}`}>Dəyiş</Link>
+                <Link href={`/customers/edit/${data.id}`} className={"w-full"}>
+                  Dəyiş
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
