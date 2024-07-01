@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ExceptionTypes } from '../core/exceptions';
 import { ChangeCallResultDto } from './dto/change-call-result.dto';
 import { CallResult } from '@prisma/client';
+import { endOfDay, startOfDay } from 'date-fns';
 
 @Injectable()
 export class CallScheduleService {
@@ -186,22 +187,16 @@ export class CallScheduleService {
 
   async getDailyCallSchedule() {
     const currentDate = new Date();
-    const formattedDate = new Date(
-      currentDate.getFullYear() +
-        '-' +
-        (currentDate.getMonth() + 1) +
-        '-' +
-        currentDate.getDate(),
-    );
-
-    formattedDate.setHours(4);
+    const start = startOfDay(currentDate);
+    const end = endOfDay(currentDate);
     return await this.prisma.callSchedule.findMany({
       include: {
         customer: true,
       },
       where: {
         contactDate: {
-          equals: formattedDate,
+          gte: start,
+          lte: end,
         },
       },
     });
