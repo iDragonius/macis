@@ -137,7 +137,7 @@ model MonthlyTarget {
   managerId     String
   meetingTarget Int
   month         Month
-  year          Int
+  year          Int      @default(2024)
 }
 
 model CurationCall {
