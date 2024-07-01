@@ -38,6 +38,8 @@ type MonthlyTarget = {
   meetingCount: number;
   signedContractCount: number;
   totalAmount: number;
+  followingMeetingsCount: number;
+  refusedMeetingsCount: number;
 };
 
 export default function MonthlyTarget() {
@@ -115,6 +117,22 @@ export default function MonthlyTarget() {
       },
     },
     {
+      accessorKey: "followingMeetingsCount",
+      header: "Təqib olunan görüş sayı",
+      cell: ({ row }) => {
+        const followingMeetingsCount = row?.original?.followingMeetingsCount;
+        return <div>{followingMeetingsCount}</div>;
+      },
+    },
+    {
+      accessorKey: "refusedMeetingsCount",
+      header: "Rədd görüş sayı",
+      cell: ({ row }) => {
+        const refusedMeetingsCount = row?.original?.refusedMeetingsCount;
+        return <div>{refusedMeetingsCount}</div>;
+      },
+    },
+    {
       accessorKey: "signedContractCount",
       header: "Müqavilə sayı",
       cell: ({ row }) => <div>{row.getValue("signedContractCount") || 0}</div>,
@@ -143,12 +161,20 @@ export default function MonthlyTarget() {
               <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
               <DropdownMenuItem>
                 <Link
+                  href={`/manager/${data.data.managerId}`}
+                  className={"w-full"}
+                >
+                  Menecerə bax
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link
                   href={`/monthly-target/edit/${data.data.id}`}
                   className={"w-full"}
                 >
                   Dəyiş
                 </Link>
-              </DropdownMenuItem>
+              </DropdownMenuItem>{" "}
               <DropdownMenuItem
                 onClick={() => {
                   MonthlyTargetApi.deleteMonthlyTarget(data.data.id).then(

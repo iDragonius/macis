@@ -66,6 +66,8 @@ export class MonthlyTargetService {
       let meetingCount = 0;
       let signedContractCount = 0;
       let totalAmount = 0;
+      let followingMeetingsCount = 0;
+      let refusedMeetingsCount = 0;
       customers.map((customer) => {
         customer.meetings.map((meeting) => {
           if (
@@ -77,6 +79,10 @@ export class MonthlyTargetService {
               signedContractCount++;
 
               totalAmount += customer.paymentAmount;
+            } else if (meeting.result === 'REFUSED') {
+              refusedMeetingsCount++;
+            } else if (meeting.result === 'WILL_BE_FOLLOWED') {
+              followingMeetingsCount++;
             }
           }
         });
@@ -87,6 +93,8 @@ export class MonthlyTargetService {
         meetingCount,
         signedContractCount,
         totalAmount,
+        followingMeetingsCount,
+        refusedMeetingsCount,
       });
     });
     await Promise.all(promises);
