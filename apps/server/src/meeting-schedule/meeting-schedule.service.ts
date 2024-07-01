@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ExceptionTypes } from '../core/exceptions';
 import { CallResult, CustomerStatus, MeetingResult } from '@prisma/client';
 import { ChangeMeetingResultDto } from './dto/change-meeting-result.dto';
+import { startOfDay, endOfDay } from 'date-fns';
 
 @Injectable()
 export class MeetingScheduleService {
@@ -124,16 +125,8 @@ export class MeetingScheduleService {
 
   async getDailyMeetingSchedule() {
     const currentDate = new Date();
-    console.log(currentDate);
-    const formattedDate = new Date(
-      currentDate.getFullYear() +
-        '-' +
-        (currentDate.getMonth() + 1) +
-        '-' +
-        currentDate.getDate(),
-    );
-    formattedDate.setHours(4);
-    console.log(formattedDate);
+    const start = startOfDay(currentDate);
+    const end = endOfDay(currentDate);
 
     return await this.prisma.meetingSchedule.findMany({
       include: {
@@ -141,7 +134,8 @@ export class MeetingScheduleService {
       },
       where: {
         meetingDate: {
-          equals: formattedDate,
+          gte: start,
+          lte: end,
         },
       },
     });
