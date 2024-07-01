@@ -9,14 +9,18 @@ import { Role } from '../core/enums/role.enum';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Get()
+  async getAllUsers() {
+    return this.userService.getAllUsers();
+  }
   @Get('/me')
   async me(@GetCurrentUserId() userId: string) {
     return this.userService.me(userId);
   }
 
-  @Get()
-  async getAllUsers() {
-    return this.userService.getAllUsers();
+  @Get(':id')
+  async getUser(@Param('id') id: string) {
+    return await this.userService.getUser(id);
   }
 
   @Post()

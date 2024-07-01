@@ -77,6 +77,25 @@ export class UserService {
       success: true,
     };
   }
+
+  async getUser(id: string) {
+    return await this.prisma.user.findUnique({
+      where: { id },
+      include: {
+        profile: true,
+        customers: {
+          include: {
+            meetings: {
+              include: {
+                customer: true,
+              },
+            },
+            calls: true,
+          },
+        },
+      },
+    });
+  }
   async deleteUser(id: string) {
     return await this.prisma.user.delete({
       where: {

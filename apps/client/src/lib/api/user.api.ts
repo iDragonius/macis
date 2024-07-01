@@ -8,6 +8,9 @@ export const UserApi = {
   async getAllUsers() {
     return await api.get("/user");
   },
+  async getUser(id: string) {
+    return await api.get(`/user/${id}`);
+  },
 
   async createUser(data: any) {
     return await api.post("/user", data);
