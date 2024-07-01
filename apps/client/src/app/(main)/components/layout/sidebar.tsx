@@ -115,13 +115,17 @@ const Sidebar: FC<SidebarProps> = () => {
           <Image src={"/logo.png"} width={300} height={200} alt={"logo"} />
         </div>
 
-        <div className={"flex flex-col gap-0.5 mt-6"}>
+        <div
+          className={
+            "flex flex-col gap-0.5 mt-6 max-h-[calc(100vh-300px)] overflow-y-auto overflow-x-hidden"
+          }
+        >
           {navigationData.map((nav) => (
             <Link
               href={nav.url}
               key={nav.url}
               className={cn(
-                "h-[38px]   gap-2 px-2 w-[228px] font-medium leading-[120%] flex items-center rounded-[8px] trans text-white hover:bg-white hover:text-blue-600",
+                "h-[38px] py-2  gap-2 px-2 w-[228px] font-medium leading-[120%] flex items-center rounded-[8px] trans text-white hover:bg-white hover:text-blue-600",
               )}
             >
               {nav.label}
