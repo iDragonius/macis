@@ -118,6 +118,7 @@ export default function CallScheduleType({
         return <div>{formatDate(row.getValue("nextContactDate"))}</div>;
       },
     },
+
     {
       accessorKey: "notes",
       header: "Əlavə qeydlər",
@@ -244,6 +245,14 @@ export default function CallScheduleType({
       header: "Rədd etmə səbəbi",
       cell: ({ row }) => {
         return <div>{formatField(row.getValue("reasonForRejection"))}</div>;
+      },
+    },
+    {
+      accessorKey: "category",
+      header: "Kateqoriya",
+      cell: ({ row }) => {
+        const category = row?.original?.category?.name;
+        return <div>{formatField(category)}</div>;
       },
     },
     {

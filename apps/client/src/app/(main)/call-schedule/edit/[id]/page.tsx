@@ -18,8 +18,12 @@ import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { Button } from "@/components/ui/button";
 import { formatInputDate } from "@/lib/utils";
+import { CategoryApi } from "@/lib/api/category.api";
+import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
+import { DialogBody } from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
 type CallDto = {
   customerId: string | null;
+  categoryId: string | null;
   contactDate: string;
   notes: string;
   result: CallResultType;
@@ -35,7 +39,12 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
     queryKey: ["call", params.id],
     queryFn: () => CallScheduleApi.getCall(params.id),
   });
-
+  const { data: categories, refetch } = useQuery({
+    queryKey: ["categories"],
+    queryFn: CategoryApi.getAllCategories,
+  });
+  const [categoryOpen, setCategoryOpen] = useState<boolean>(false);
+  const [categoryName, setCategoryName] = useState<string>("");
   const [data, setData] = useState<CallDto>({
     customerId: null,
     contactDate: "",
@@ -43,6 +52,7 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
     result: "UNKNOWN",
     reasonForRejection: "",
     nextContactDate: "",
+    categoryId: null,
   });
   useEffect(() => {
     if (call) {
@@ -53,6 +63,7 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
         result: call.data.result,
         reasonForRejection: call.data.reasonForRejection,
         nextContactDate: formatInputDate(call.data.nextContactDate),
+        categoryId: call?.data?.categoryId,
       });
     }
   }, [call]);
@@ -96,7 +107,12 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
       });
     }
   }
-
+  function saveCategory() {
+    CategoryApi.createCategory(categoryName).then((res) => {
+      refetch();
+      setCategoryOpen(false);
+    });
+  }
   return (
     <div>
       <PageTitle>Zəng məlumatlarını dəyiş</PageTitle>
@@ -160,6 +176,30 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
           {data.result === "UNKNOWN" && <></>}
           {data.result === "REFUSED" && (
             <>
+              <Dialog
+                open={categoryOpen}
+                onOpenChange={(value) => setCategoryOpen(value)}
+              >
+                <DialogContent>
+                  <DialogHeader>Yeni kateqoriya</DialogHeader>
+                  <DialogBody>
+                    <div>
+                      <Label>Adı</Label>
+                      <Input
+                        placeholder={"Kateqoriya adını daxil edin"}
+                        value={categoryName}
+                        onChange={(e) => setCategoryName(e.target.value)}
+                      />
+                    </div>
+                    <Button
+                      onClick={saveCategory}
+                      className={"mt-3 float-right"}
+                    >
+                      Yadda saxla
+                    </Button>
+                  </DialogBody>
+                </DialogContent>
+              </Dialog>
               <div>
                 <Label>Rədd etmə səbəbi</Label>
                 <Textarea
@@ -172,6 +212,40 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
                     }))
                   }
                 />
+              </div>
+              <div>
+                <Label>Kateqoriya</Label>
+                <Select
+                  onValueChange={(value) =>
+                    setData((prevState) => ({
+                      ...prevState,
+                      categoryId: value,
+                    }))
+                  }
+                  value={data.categoryId || undefined}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Kateqoriya" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories?.data.map((category: any) => {
+                      return (
+                        <SelectItem value={category.id} key={category.id}>
+                          {category.name}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+                <button
+                  onClick={() => setCategoryOpen(true)}
+                  className={
+                    "w-full text-left  transition-all ease-in-out px-2   mt-1 text-primary"
+                  }
+                >
+                  {" "}
+                  Yeni kateqoriya yarat
+                </button>
               </div>
             </>
           )}

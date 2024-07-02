@@ -92,6 +92,9 @@ export type CallProps = {
   reasonForRejection: string;
   notes: string;
   result: CallResultType;
+  category: {
+    name: string;
+  };
 };
 
 export type MeetingProps = {
@@ -105,6 +108,9 @@ export type MeetingProps = {
   reasonForRejection: string;
   notes: string;
   result: MeetingResultType;
+  category: {
+    name: string;
+  };
 };
 
 export type CurationCallProps = {

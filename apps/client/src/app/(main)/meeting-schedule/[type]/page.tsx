@@ -252,6 +252,14 @@ export default function MeetingScheduleType({
       },
     },
     {
+      accessorKey: "category",
+      header: "Kateqoriya",
+      cell: ({ row }) => {
+        const category = row?.original?.category?.name;
+        return <div>{formatField(category)}</div>;
+      },
+    },
+    {
       accessorKey: "notes",
       header: "Əlavə qeydlər",
       cell: ({ row }) => {
