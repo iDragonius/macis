@@ -6,7 +6,10 @@
     "turbo": "^1.12.4"
   },
   "scripts": {
-    "dev": "turbo run dev"
+    "dev": "turbo run dev",
+    "deploy":"git pull && cd apps/server && yarn && npx prisma migrate deploy && npx prisma db push  && yarn build && pm2 start ecosystem.config.js && cd ../client && yarn && yarn build && pm2 start ecosystem.config.js && cd ../.. ",
+    "deploy:client":"git pull && cd apps/client && yarn && yarn build && pm2 start ecosystem.config.js",
+    "deploy:server":"git pull && cd apps/server && yarn && npx prisma migrate deploy && npx prisma db push  && yarn build && pm2 start ecosystem.config.js "
   },
   "repository": {
     "type": "git",
