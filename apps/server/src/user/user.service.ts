@@ -90,7 +90,11 @@ export class UserService {
                 customer: true,
               },
             },
-            calls: true,
+            calls: {
+              include: {
+                customer: true,
+              },
+            },
           },
         },
       },
