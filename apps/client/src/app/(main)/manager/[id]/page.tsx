@@ -4,7 +4,12 @@ import { UserApi } from "@/lib/api/user.api";
 import { PageTitle } from "@/components/ui/page-title";
 import { useEffect, useState } from "react";
 import { formatDate, formatField } from "@/lib/utils";
-import { MeetingProps, MeetingResult } from "@/lib/types";
+import {
+  CallProps,
+  CallResult,
+  MeetingProps,
+  MeetingResult,
+} from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
@@ -20,6 +25,7 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { MeetingScheduleApi } from "@/lib/api/meeting-schedule.api";
 import toast from "react-hot-toast";
 import { DataTable } from "@/components/ui/data-table";
+import { CallScheduleApi } from "@/lib/api/call-schedule.api";
 
 const contractSignedMeetingColumns: ColumnDef<MeetingProps>[] = [
   {
@@ -230,6 +236,141 @@ const followedMeetingColumns: ColumnDef<MeetingProps>[] = [
   },
 ];
 
+const refusedCallColumns: ColumnDef<CallProps>[] = [
+  {
+    accessorKey: "company",
+    header: "Şirkət",
+    cell: ({ row }) => {
+      const company = row.original.customer.company;
+      return (
+        <Link
+          href={`/customers/${row.original.customer.id}`}
+          className={"text-blue-700 font-medium"}
+        >
+          {formatField(company)}
+        </Link>
+      );
+    },
+  },
+  {
+    accessorKey: "head",
+    header: "Rəhbər",
+    cell: ({ row }) => {
+      const head = row.original.customer.head;
+      return <div>{formatField(head)}</div>;
+    },
+  },
+  {
+    accessorKey: "position",
+    header: "Vəzifəsi",
+    cell: ({ row }) => {
+      const head = row.original.customer.position;
+      return <div>{formatField(head)}</div>;
+    },
+  },
+  {
+    accessorKey: "contactNumber",
+    header: "Əlaqə nömrəsi",
+    cell: ({ row }) => {
+      const contactNumber = row.original.customer.contactNumber;
+      return <div>{formatField(contactNumber)}</div>;
+    },
+  },
+  {
+    accessorKey: "contactDate",
+    header: "Əlaqə tarixi",
+    cell: ({ row }) => {
+      return <div>{formatDate(row.getValue("contactDate"))}</div>;
+    },
+  },
+  {
+    accessorKey: "reasonForRejection",
+    header: "Rədd etmə səbəbi",
+    cell: ({ row }) => {
+      return <div>{formatField(row.getValue("reasonForRejection"))}</div>;
+    },
+  },
+  {
+    accessorKey: "category",
+    header: "Kateqoriya",
+    cell: ({ row }) => {
+      const category = row?.original?.category?.name;
+      return <div>{formatField(category)}</div>;
+    },
+  },
+  {
+    accessorKey: "notes",
+    header: "Əlavə qeydlər",
+    cell: ({ row }) => {
+      return <div>{formatField(row.getValue("notes"))}</div>;
+    },
+  },
+];
+
+const followedCallColumns: ColumnDef<CallProps>[] = [
+  {
+    accessorKey: "company",
+    header: "Şirkət",
+    cell: ({ row }) => {
+      const company = row.original.customer.company;
+      return (
+        <Link
+          href={`/customers/${row.original.customer.id}`}
+          className={"text-blue-700 font-medium"}
+        >
+          {formatField(company)}
+        </Link>
+      );
+    },
+  },
+  {
+    accessorKey: "head",
+    header: "Rəhbər",
+    cell: ({ row }) => {
+      const head = row.original.customer.head;
+      return <div>{formatField(head)}</div>;
+    },
+  },
+  {
+    accessorKey: "position",
+    header: "Vəzifəsi",
+    cell: ({ row }) => {
+      const head = row.original.customer.position;
+      return <div>{formatField(head)}</div>;
+    },
+  },
+  {
+    accessorKey: "contactNumber",
+    header: "Əlaqə nömrəsi",
+    cell: ({ row }) => {
+      const contactNumber = row.original.customer.contactNumber;
+      return <div>{formatField(contactNumber)}</div>;
+    },
+  },
+  {
+    accessorKey: "contactDate",
+    header: "Əlaqə tarixi",
+    cell: ({ row }) => {
+      return <div>{formatDate(row.getValue("contactDate"))}</div>;
+    },
+  },
+  {
+    accessorKey: "nextContactDate",
+    header: "Növbəti əlaqə tarixi",
+    cell: ({ row }) => {
+      return <div>{formatDate(row.getValue("nextContactDate"))}</div>;
+    },
+  },
+
+  {
+    accessorKey: "notes",
+    header: "Əlavə qeydlər",
+    cell: ({ row }) => {
+      return <div>{formatField(row.getValue("notes"))}</div>;
+    },
+  },
+];
+
 export default function Page({ params }: { params: { id: string } }) {
   const { data } = useQuery({
     queryKey: ["manager", params.id],
@@ -244,6 +385,14 @@ export default function Page({ params }: { params: { id: string } }) {
     contractSignedMeetings: [],
     followedMeetings: [],
   });
+
+  const [calls, setCalls] = useState<{
+    refusedCalls: any[];
+    followedCalls: any[];
+  }>({
+    refusedCalls: [],
+    followedCalls: [],
+  });
   const [information, setInformation] = useState<[string, string][]>([]);
   useEffect(() => {
     if (data) {
@@ -256,6 +405,8 @@ export default function Page({ params }: { params: { id: string } }) {
       const refusedMeetings: any[] = [];
       const contractSignedMeetings: any[] = [];
       const followedMeetings: any[] = [];
+      const followedCalls: any[] = [];
+      const refusedCalls: any[] = [];
       data?.data?.customers?.map((customer: any) => {
         meetingCount += customer?.meetings?.length;
         customer?.meetings?.map((meeting: any) => {
@@ -269,6 +420,14 @@ export default function Page({ params }: { params: { id: string } }) {
             totalAmount += customer?.paymentAmount || 0;
             contractSignedMeetings.push(meeting);
             successfulMeetingCount++;
+          }
+        });
+
+        customer?.calls?.map((call: any) => {
+          if (call.result === CallResult.REFUSED) {
+            refusedCalls.push(call);
+          } else if (call.result === MeetingResult.WILL_BE_FOLLOWED) {
+            followedCalls.push(call);
           }
         });
       });
@@ -294,12 +453,15 @@ export default function Page({ params }: { params: { id: string } }) {
         refusedMeetings,
         followedMeetings,
       });
+      setCalls({
+        refusedCalls,
+        followedCalls,
+      });
     }
   }, [data]);
   return (
     <div>
       <PageTitle>Menecer məlumatları</PageTitle>
-
       <div className={"py-3 border-b "}>
         <div
           className={
@@ -314,7 +476,6 @@ export default function Page({ params }: { params: { id: string } }) {
           ))}
         </div>
       </div>
-
       <div className={"py-3 border-b"}>
         <h2 className={"text-[22px] font-semibold"}>
           Müqavilə bağlanmış görüşlər
@@ -324,7 +485,6 @@ export default function Page({ params }: { params: { id: string } }) {
           columns={contractSignedMeetingColumns}
         />
       </div>
-
       <div className={"py-3 border-b"}>
         <h2 className={"text-[22px] font-semibold"}>Təqib olunan görüşlər</h2>
         <DataTable
@@ -332,7 +492,6 @@ export default function Page({ params }: { params: { id: string } }) {
           columns={followedMeetingColumns}
         />
       </div>
-
       <div className={"py-3 border-b"}>
         <h2 className={"text-[22px] font-semibold"}>Rədd edilmiş görüşlər</h2>
 
@@ -340,6 +499,16 @@ export default function Page({ params }: { params: { id: string } }) {
           data={meetings.refusedMeetings}
           columns={refusedMeetingColumns}
         />
+      </div>{" "}
+      <div className={"py-3 border-b"}>
+        <h2 className={"text-[22px] font-semibold"}>Təqib olunan zənglər</h2>
+
+        <DataTable data={calls.followedCalls} columns={followedCallColumns} />
+      </div>{" "}
+      <div className={"py-3 border-b"}>
+        <h2 className={"text-[22px] font-semibold"}>Rədd edilmiş zənglər</h2>
+
+        <DataTable data={calls.followedCalls} columns={refusedCallColumns} />
       </div>
     </div>
   );

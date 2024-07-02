@@ -16,6 +16,7 @@ import { RolesGuard } from './core/guards/roles.guard';
 import { MonthlyTargetModule } from './monthly-target/monthly-target.module';
 import { CurationMeetingModule } from './curation-meeting/curation-meeting.module';
 import { CurationCallModule } from './curation-call/curation-call.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { CurationCallModule } from './curation-call/curation-call.module';
     MonthlyTargetModule,
     CurationCallModule,
     CurationMeetingModule,
+    CategoryModule,
   ],
   controllers: [],
   providers: [

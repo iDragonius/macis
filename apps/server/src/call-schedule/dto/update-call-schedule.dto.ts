@@ -12,4 +12,8 @@ export class UpdateCallScheduleDto extends PartialType(CreateCallScheduleDto) {
   @IsOptional()
   @IsString()
   reasonForRejection: string;
+
+  @IsString()
+  @IsOptional()
+  categoryId: string;
 }

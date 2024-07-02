@@ -66,6 +66,13 @@ export class CallScheduleService {
         },
       });
     } else if (call.result === CallResult.REFUSED) {
+      const category = await this.prisma.category.findUnique({
+        where: { id: data.categoryId },
+      });
+
+      if (!category) {
+        throw new BadRequestException(ExceptionTypes.CATEGORY_NOT_FOUND);
+      }
       await this.prisma.callSchedule.update({
         where: {
           id,
@@ -75,6 +82,7 @@ export class CallScheduleService {
           contactDate: data.contactDate,
           notes: data.notes,
           reasonForRejection: data.reasonForRejection,
+          categoryId: data.categoryId,
         },
       });
     } else if (call.result === CallResult.WILL_BE_FOLLOWED) {
@@ -109,6 +117,7 @@ export class CallScheduleService {
       },
       include: {
         customer: true,
+        category: true,
       },
     });
   }
@@ -181,6 +190,7 @@ export class CallScheduleService {
       },
       include: {
         customer: true,
+        category: true,
       },
     });
   }
@@ -192,6 +202,7 @@ export class CallScheduleService {
     return await this.prisma.callSchedule.findMany({
       include: {
         customer: true,
+        category: true,
       },
       where: {
         contactDate: {

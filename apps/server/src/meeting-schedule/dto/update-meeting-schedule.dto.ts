@@ -20,6 +20,10 @@ export class UpdateMeetingScheduleDto extends PartialType(
   @IsString()
   reasonForRejection: string;
 
+  @IsString()
+  @IsOptional()
+  categoryId: string;
+
   @IsOptional()
   @IsString()
   meetingTime: string;

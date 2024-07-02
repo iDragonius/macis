@@ -108,6 +108,8 @@ model CallSchedule {
   nextContactDate    DateTime?
   reasonForRejection String?
   result             CallResult? @default(UNKNOWN)
+  category           Category?   @relation(fields: [categoryId], references: [id])
+  categoryId         String?
 }
 
 model MeetingSchedule {
@@ -127,6 +129,8 @@ model MeetingSchedule {
   nextMeetingDate    DateTime?
   reasonForRejection String?
   result             MeetingResult @default(UNKNOWN)
+  category           Category?     @relation(fields: [categoryId], references: [id])
+  categoryId         String?
 }
 
 model MonthlyTarget {
@@ -166,6 +170,16 @@ model CurationMeeting {
   nuances            String?
   referenceCompanies String?
   notes              String?
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_ad")
+  name      String   @unique
+
+  meetings MeetingSchedule[]
+  calls    CallSchedule[]
 }
 
 enum CodeType {

@@ -71,6 +71,13 @@ export class MeetingScheduleService {
         },
       });
     } else if (meeting.result === MeetingResult.REFUSED) {
+      const category = await this.prisma.category.findUnique({
+        where: { id: data.categoryId },
+      });
+
+      if (!category) {
+        throw new BadRequestException(ExceptionTypes.CATEGORY_NOT_FOUND);
+      }
       return await this.prisma.meetingSchedule.update({
         where: {
           id,
@@ -82,6 +89,7 @@ export class MeetingScheduleService {
           meetingTime: data.meetingTime,
           meetingDate: data.meetingDate,
           reasonForRejection: data.reasonForRejection,
+          categoryId: data.categoryId,
         },
       });
     } else if (meeting.result === MeetingResult.WILL_BE_FOLLOWED) {
@@ -109,6 +117,7 @@ export class MeetingScheduleService {
       },
       include: {
         customer: true,
+        category: true,
       },
     });
   }
@@ -119,6 +128,7 @@ export class MeetingScheduleService {
       },
       include: {
         customer: true,
+        category: true,
       },
     });
   }
@@ -131,6 +141,7 @@ export class MeetingScheduleService {
     return await this.prisma.meetingSchedule.findMany({
       include: {
         customer: true,
+        category: true,
       },
       where: {
         meetingDate: {
