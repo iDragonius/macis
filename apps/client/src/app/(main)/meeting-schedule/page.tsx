@@ -31,6 +31,18 @@ import {
 } from "@/lib/api/meeting-schedule.api";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import useConfirmationDialog from "@/hooks/use-confirmation-dialog";
 
 export default function MeetingSchedule() {
   const [result, setResult] = useState<MeetingResultType | null>(null);
@@ -38,7 +50,7 @@ export default function MeetingSchedule() {
     queryKey: ["calls", result],
     queryFn: () => MeetingScheduleApi.getAllMeetings(result),
   });
-
+  const { setDialogState } = useConfirmationDialog();
   const meetingColumns: ColumnDef<MeetingProps>[] = [
     {
       id: "select",
@@ -158,35 +170,43 @@ export default function MeetingSchedule() {
         const data = row.original;
 
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <DotsHorizontalIcon className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
-              <DropdownMenuItem>
-                <Link
-                  href={`/meeting-schedule/edit/${data.id}`}
-                  className={"w-full"}
+          <>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <DotsHorizontalIcon className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
+
+                <DropdownMenuItem>
+                  <Link
+                    href={`/meeting-schedule/edit/${data.id}`}
+                    className={"w-full"}
+                  >
+                    Dəyiş
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() =>
+                    setDialogState({
+                      isOpen: true,
+                      confirmFunction() {
+                        MeetingScheduleApi.deleteMeeting(data.id).then(() => {
+                          toast.success("Görüş uğurla silindi!");
+                          refetch();
+                        });
+                      },
+                    })
+                  }
                 >
-                  Dəyiş
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  MeetingScheduleApi.deleteMeeting(data.id).then(() => {
-                    refetch();
-                    toast.success("Görüş uğurla silindi!");
-                  });
-                }}
-              >
-                Sil
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  Sil
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </>
         );
       },
     },
@@ -194,41 +214,43 @@ export default function MeetingSchedule() {
 
   const { push } = useRouter();
   return (
-    <div>
-      <div className={"flex items-center justify-between"}>
-        <PageTitle>Görüş qrafiki</PageTitle>
-        <div className={"flex items-center gap-4"}>
-          {/*<Select*/}
-          {/*  onValueChange={(value) => {*/}
-          {/*    if (value === "ALL") {*/}
-          {/*      setResult(null);*/}
-          {/*    } else {*/}
-          {/*      setResult(value as MeetingResultType);*/}
-          {/*    }*/}
-          {/*  }}*/}
-          {/*  value={result || "ALL"}*/}
-          {/*>*/}
-          {/*  <SelectTrigger className={"w-[200px]"}>*/}
-          {/*    <SelectValue placeholder="" />*/}
-          {/*  </SelectTrigger>*/}
-          {/*  <SelectContent>*/}
-          {/*    <SelectItem value="ALL">Hamısı</SelectItem>*/}
-          {/*    <SelectItem value="CONTRACT_SIGNED">Müqavilə bağlandı</SelectItem>*/}
-          {/*    <SelectItem value="WILL_BE_FOLLOWED">Təqib olunacaq</SelectItem>*/}
-          {/*    <SelectItem value="REFUSED">İtirilmiş</SelectItem>*/}
-          {/*  </SelectContent>*/}
-          {/*</Select>*/}
+    <>
+      <div>
+        <div className={"flex items-center justify-between"}>
+          <PageTitle>Görüş qrafiki</PageTitle>
+          <div className={"flex items-center gap-4"}>
+            {/*<Select*/}
+            {/*  onValueChange={(value) => {*/}
+            {/*    if (value === "ALL") {*/}
+            {/*      setResult(null);*/}
+            {/*    } else {*/}
+            {/*      setResult(value as MeetingResultType);*/}
+            {/*    }*/}
+            {/*  }}*/}
+            {/*  value={result || "ALL"}*/}
+            {/*>*/}
+            {/*  <SelectTrigger className={"w-[200px]"}>*/}
+            {/*    <SelectValue placeholder="" />*/}
+            {/*  </SelectTrigger>*/}
+            {/*  <SelectContent>*/}
+            {/*    <SelectItem value="ALL">Hamısı</SelectItem>*/}
+            {/*    <SelectItem value="CONTRACT_SIGNED">Müqavilə bağlandı</SelectItem>*/}
+            {/*    <SelectItem value="WILL_BE_FOLLOWED">Təqib olunacaq</SelectItem>*/}
+            {/*    <SelectItem value="REFUSED">İtirilmiş</SelectItem>*/}
+            {/*  </SelectContent>*/}
+            {/*</Select>*/}
 
-          <Button
-            onClick={() => {
-              push("/meeting-schedule/add");
-            }}
-          >
-            Yeni görüş
-          </Button>
+            <Button
+              onClick={() => {
+                push("/meeting-schedule/add");
+              }}
+            >
+              Yeni görüş
+            </Button>
+          </div>
         </div>
+        <DataTable data={data?.data} columns={meetingColumns} />
       </div>
-      <DataTable data={data?.data} columns={meetingColumns} />
-    </div>
+    </>
   );
 }

@@ -40,6 +40,9 @@ import { CustomerApi } from "@/lib/api/customer.api";
 import Link from "next/link";
 import { PageTitle } from "@/components/ui/page-title";
 import { formatDate } from "@/lib/utils";
+import { MeetingScheduleApi } from "@/lib/api/meeting-schedule.api";
+import toast from "react-hot-toast";
+import useConfirmationDialog from "@/hooks/use-confirmation-dialog";
 
 export type LostCustomer = {
   id: string;
@@ -58,6 +61,8 @@ export default function LostCustomers() {
     queryKey: ["lost-customers"],
     queryFn: CustomerApi.getLostCustomers,
   });
+  const { setDialogState } = useConfirmationDialog();
+
   const columns: ColumnDef<LostCustomer>[] = [
     {
       id: "select",
@@ -161,8 +166,16 @@ export default function LostCustomers() {
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  CustomerApi.deleteCustomer(row.original.id).then((res) => {
-                    refetch();
+                  setDialogState({
+                    isOpen: true,
+                    confirmFunction() {
+                      CustomerApi.deleteCustomer(row.original.id).then(
+                        (res) => {
+                          refetch();
+                          toast.success("Müştəri uğurla silindi!");
+                        },
+                      );
+                    },
                   });
                 }}
               >

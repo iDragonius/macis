@@ -28,6 +28,8 @@ import { CallProps, CallResult } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { MeetingScheduleApi } from "@/lib/api/meeting-schedule.api";
 import toast from "react-hot-toast";
+import { CurationCallApi } from "@/lib/api/curation-call.api";
+import useConfirmationDialog from "@/hooks/use-confirmation-dialog";
 
 export default function CallSchedule() {
   const [result, setResult] = useState<CallResultType | null>(null);
@@ -35,6 +37,7 @@ export default function CallSchedule() {
     queryKey: ["calls", result],
     queryFn: () => CallScheduleApi.getAllCalls(result),
   });
+  const { setDialogState } = useConfirmationDialog();
 
   const callColumns: ColumnDef<CallProps>[] = [
     {
@@ -172,9 +175,14 @@ export default function CallSchedule() {
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  CallScheduleApi.deleteCall(data.id).then(() => {
-                    refetch();
-                    toast.success("Zəng uğurla silindi!");
+                  setDialogState({
+                    isOpen: true,
+                    confirmFunction() {
+                      CallScheduleApi.deleteCall(data.id).then(() => {
+                        refetch();
+                        toast.success("Zəng uğurla silindi!");
+                      });
+                    },
                   });
                 }}
               >

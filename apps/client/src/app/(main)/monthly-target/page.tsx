@@ -20,6 +20,8 @@ import { useQuery } from "@tanstack/react-query";
 import { MonthlyTargetApi } from "@/lib/api/monthly-target.api";
 import toast from "react-hot-toast";
 import { formatMonth } from "@/lib/utils";
+import { MeetingScheduleApi } from "@/lib/api/meeting-schedule.api";
+import useConfirmationDialog from "@/hooks/use-confirmation-dialog";
 
 type MonthlyTarget = {
   data: {
@@ -48,6 +50,7 @@ export default function MonthlyTarget() {
     queryFn: MonthlyTargetApi.getAllMonthlyTargets,
   });
   const { push } = useRouter();
+  const { setDialogState } = useConfirmationDialog();
 
   const columns: ColumnDef<MonthlyTarget>[] = [
     {
@@ -155,12 +158,17 @@ export default function MonthlyTarget() {
               </DropdownMenuItem>{" "}
               <DropdownMenuItem
                 onClick={() => {
-                  MonthlyTargetApi.deleteMonthlyTarget(data.data.id).then(
-                    (res) => {
-                      toast.success("Aylıq hədəf uğurla silindi!");
-                      refetch();
+                  setDialogState({
+                    isOpen: true,
+                    confirmFunction() {
+                      MonthlyTargetApi.deleteMonthlyTarget(data.data.id).then(
+                        () => {
+                          toast.success("Aylıq hədəf uğurla silindi!");
+                          refetch();
+                        },
+                      );
                     },
-                  );
+                  });
                 }}
               >
                 Sil

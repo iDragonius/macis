@@ -17,6 +17,8 @@ import { getCustomerStatus } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PageTitle } from "@/components/ui/page-title";
+import toast from "react-hot-toast";
+import useConfirmationDialog from "@/hooks/use-confirmation-dialog";
 
 export type Customer = {
   id: string;
@@ -33,6 +35,7 @@ export default function Customers() {
     queryFn: CustomerApi.getAllCustomers,
   });
   const { push } = useRouter();
+  const { setDialogState } = useConfirmationDialog();
 
   const columns: ColumnDef<Customer>[] = [
     {
@@ -117,8 +120,16 @@ export default function Customers() {
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  CustomerApi.deleteCustomer(row.original.id).then((res) => {
-                    refetch();
+                  setDialogState({
+                    isOpen: true,
+                    confirmFunction() {
+                      CustomerApi.deleteCustomer(row.original.id).then(
+                        (res) => {
+                          refetch();
+                          toast.success("Müştəri uğurla silindi!");
+                        },
+                      );
+                    },
                   });
                 }}
               >

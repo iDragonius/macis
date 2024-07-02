@@ -22,6 +22,8 @@ import { DataTable } from "@/components/ui/data-table";
 import { useQuery } from "@tanstack/react-query";
 import { PageTitle } from "@/components/ui/page-title";
 import toast from "react-hot-toast";
+import { CustomerApi } from "@/lib/api/customer.api";
+import useConfirmationDialog from "@/hooks/use-confirmation-dialog";
 
 export default function MeetingScheduleType({
   params,
@@ -36,6 +38,7 @@ export default function MeetingScheduleType({
     refused: "Görüş rədd qrafiki",
     "will-be-followed": "Görüş təqib qrafiki",
   };
+  const { setDialogState } = useConfirmationDialog();
 
   const contractSignedMeetingColumns: ColumnDef<MeetingProps>[] = [
     {
@@ -146,9 +149,14 @@ export default function MeetingScheduleType({
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  MeetingScheduleApi.deleteMeeting(data.id).then(() => {
-                    refetch();
-                    toast.success("Görüş uğurla silindi!");
+                  setDialogState({
+                    isOpen: true,
+                    confirmFunction() {
+                      MeetingScheduleApi.deleteMeeting(data.id).then(() => {
+                        refetch();
+                        toast.success("Görüş uğurla silindi!");
+                      });
+                    },
                   });
                 }}
               >
@@ -276,9 +284,14 @@ export default function MeetingScheduleType({
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  MeetingScheduleApi.deleteMeeting(data.id).then(() => {
-                    refetch();
-                    toast.success("Görüş uğurla silindi!");
+                  setDialogState({
+                    isOpen: true,
+                    confirmFunction() {
+                      MeetingScheduleApi.deleteMeeting(data.id).then(() => {
+                        refetch();
+                        toast.success("Görüş uğurla silindi!");
+                      });
+                    },
                   });
                 }}
               >
@@ -414,9 +427,14 @@ export default function MeetingScheduleType({
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  MeetingScheduleApi.deleteMeeting(data.id).then(() => {
-                    refetch();
-                    toast.success("Görüş uğurla silindi!");
+                  setDialogState({
+                    isOpen: true,
+                    confirmFunction() {
+                      MeetingScheduleApi.deleteMeeting(data.id).then(() => {
+                        refetch();
+                        toast.success("Görüş uğurla silindi!");
+                      });
+                    },
                   });
                 }}
               >

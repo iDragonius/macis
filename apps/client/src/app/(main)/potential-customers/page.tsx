@@ -39,6 +39,9 @@ import { useQuery } from "@tanstack/react-query";
 import { CustomerApi } from "@/lib/api/customer.api";
 import { DataTable } from "@/components/ui/data-table";
 import { PageTitle } from "@/components/ui/page-title";
+import { MonthlyTargetApi } from "@/lib/api/monthly-target.api";
+import toast from "react-hot-toast";
+import useConfirmationDialog from "@/hooks/use-confirmation-dialog";
 
 export type PotentialCustomer = {
   id: string;
@@ -56,6 +59,8 @@ export default function PotentialCustomers() {
     queryKey: ["potential-customers"],
     queryFn: CustomerApi.getPotentialCustomers,
   });
+  const { setDialogState } = useConfirmationDialog();
+
   const columns: ColumnDef<PotentialCustomer>[] = [
     {
       id: "select",
@@ -147,8 +152,16 @@ export default function PotentialCustomers() {
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  CustomerApi.deleteCustomer(row.original.id).then((res) => {
-                    refetch();
+                  setDialogState({
+                    isOpen: true,
+                    confirmFunction() {
+                      CustomerApi.deleteCustomer(row.original.id).then(
+                        (res) => {
+                          toast.success("Müştəri uğurla silindi!");
+                          refetch();
+                        },
+                      );
+                    },
                   });
                 }}
               >

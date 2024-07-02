@@ -26,6 +26,9 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Optional, useQuery } from "@tanstack/react-query";
 import { CurationCallApi } from "@/lib/api/curation-call.api";
 import { DataTable } from "@/components/ui/data-table";
+import { CurationMeetingApi } from "@/lib/api/curation-meeting.api";
+import toast from "react-hot-toast";
+import useConfirmationDialog from "@/hooks/use-confirmation-dialog";
 
 export default function Page() {
   const { push } = useRouter();
@@ -34,6 +37,8 @@ export default function Page() {
     queryKey: ["curation-calls"],
     queryFn: CurationCallApi.getCurationCalls,
   });
+  const { setDialogState } = useConfirmationDialog();
+
   const columns: ColumnDef<CurationCallProps>[] = [
     {
       id: "select",
@@ -152,9 +157,17 @@ export default function Page() {
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  CurationCallApi.deleteCurationCall(row.original.id).then(() =>
-                    refetch(),
-                  );
+                  setDialogState({
+                    isOpen: true,
+                    confirmFunction() {
+                      CurationCallApi.deleteCurationCall(row.original.id).then(
+                        () => {
+                          refetch();
+                          toast.success("Kurasiya zəngi uğurla silindi!");
+                        },
+                      );
+                    },
+                  });
                 }}
               >
                 Sil

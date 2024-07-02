@@ -41,6 +41,9 @@ import { formatDate } from "@/lib/utils";
 import { DataTable } from "@/components/ui/data-table";
 import Link from "next/link";
 import { PageTitle } from "@/components/ui/page-title";
+import { CallScheduleApi } from "@/lib/api/call-schedule.api";
+import toast from "react-hot-toast";
+import useConfirmationDialog from "@/hooks/use-confirmation-dialog";
 
 export type ActiveCustomer = {
   id: string;
@@ -66,6 +69,8 @@ export default function ActiveCustomers() {
     queryKey: ["active-customers"],
     queryFn: CustomerApi.getActiveCustomers,
   });
+  const { setDialogState } = useConfirmationDialog();
+
   const columns: ColumnDef<ActiveCustomer>[] = [
     {
       id: "select",
@@ -187,8 +192,16 @@ export default function ActiveCustomers() {
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  CustomerApi.deleteCustomer(row.original.id).then((res) => {
-                    refetch();
+                  setDialogState({
+                    isOpen: true,
+                    confirmFunction() {
+                      CustomerApi.deleteCustomer(row.original.id).then(
+                        (res) => {
+                          refetch();
+                          toast.success("Müştəri uğurla silindi!");
+                        },
+                      );
+                    },
                   });
                 }}
               >

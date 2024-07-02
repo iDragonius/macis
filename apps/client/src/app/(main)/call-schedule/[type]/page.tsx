@@ -22,6 +22,8 @@ import { Button } from "@/components/ui/button";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { PageTitle } from "@/components/ui/page-title";
 import toast from "react-hot-toast";
+import { CurationCallApi } from "@/lib/api/curation-call.api";
+import useConfirmationDialog from "@/hooks/use-confirmation-dialog";
 
 export default function CallScheduleType({
   params,
@@ -37,6 +39,8 @@ export default function CallScheduleType({
     refused: "Zəng rədd qrafiki",
     "will-be-followed": "Zəng təqib qrafiki",
   };
+
+  const { setDialogState } = useConfirmationDialog();
 
   const followedCallColumns: ColumnDef<CallProps>[] = [
     {
@@ -147,9 +151,14 @@ export default function CallScheduleType({
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  CallScheduleApi.deleteCall(data.id).then(() => {
-                    refetch();
-                    toast.success("Zəng uğurla silindi!");
+                  setDialogState({
+                    isOpen: true,
+                    confirmFunction() {
+                      CallScheduleApi.deleteCall(data.id).then(() => {
+                        refetch();
+                        toast.success("Zəng uğurla silindi!");
+                      });
+                    },
                   });
                 }}
               >
@@ -270,9 +279,14 @@ export default function CallScheduleType({
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  CallScheduleApi.deleteCall(data.id).then(() => {
-                    refetch();
-                    toast.success("Zəng uğurla silindi!");
+                  setDialogState({
+                    isOpen: true,
+                    confirmFunction() {
+                      CallScheduleApi.deleteCall(data.id).then(() => {
+                        refetch();
+                        toast.success("Zəng uğurla silindi!");
+                      });
+                    },
                   });
                 }}
               >
@@ -388,9 +402,14 @@ export default function CallScheduleType({
 
               <DropdownMenuItem
                 onClick={() => {
-                  CallScheduleApi.deleteCall(data.id).then(() => {
-                    refetch();
-                    toast.success("Zəng uğurla silindi!");
+                  setDialogState({
+                    isOpen: true,
+                    confirmFunction() {
+                      CallScheduleApi.deleteCall(data.id).then(() => {
+                        refetch();
+                        toast.success("Zəng uğurla silindi!");
+                      });
+                    },
                   });
                 }}
               >
