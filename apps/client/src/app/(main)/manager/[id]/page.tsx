@@ -508,7 +508,7 @@ export default function Page({ params }: { params: { id: string } }) {
       <div className={"py-3 border-b"}>
         <h2 className={"text-[22px] font-semibold"}>Rədd edilmiş zənglər</h2>
 
-        <DataTable data={calls.followedCalls} columns={refusedCallColumns} />
+        <DataTable data={calls.refusedCalls} columns={refusedCallColumns} />
       </div>
     </div>
   );
