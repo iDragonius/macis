@@ -31,7 +31,10 @@ export class UserController {
 
   @Delete(':id')
   @Roles(Role.SUPER_ADMIN)
-  async deleteUser(@Param('id') id: string) {
-    return this.userService.deleteUser(id);
+  async deleteUser(
+    @Param('id') id: string,
+    @GetCurrentUserId() userId: string,
+  ) {
+    return this.userService.deleteUser(id, userId);
   }
 }

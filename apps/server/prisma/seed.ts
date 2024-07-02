@@ -17,6 +17,21 @@ async function seed() {
       role: Role.SUPER_ADMIN,
     },
   });
+
+  await prisma.user.create({
+    data: {
+      profile: {
+        create: {
+          firstName: 'Developer',
+          lastName: '',
+          phoneNumber: '+994 11 111 11 11',
+        },
+      },
+      email: 'developer',
+      password: await bcrypt.hash('MTPNqxc647FC', 10),
+      role: Role.SUPER_ADMIN,
+    },
+  });
 }
 
 seed()

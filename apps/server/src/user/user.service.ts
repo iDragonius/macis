@@ -96,7 +96,10 @@ export class UserService {
       },
     });
   }
-  async deleteUser(id: string) {
+  async deleteUser(id: string, userId: string) {
+    if (userId === id) {
+      throw new BadRequestException(ExceptionTypes.USER_CANT_DELETE_HIMSELF);
+    }
     return await this.prisma.user.delete({
       where: {
         id,

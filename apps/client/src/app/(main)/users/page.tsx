@@ -17,6 +17,9 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { DataTable } from "@/components/ui/data-table";
 import { useRouter } from "next/navigation";
 import { getRole } from "@/lib/utils";
+import { MonthlyTargetApi } from "@/lib/api/monthly-target.api";
+import toast from "react-hot-toast";
+import useConfirmationDialog from "@/hooks/use-confirmation-dialog";
 
 export type User = {
   id: string;
@@ -35,6 +38,7 @@ export default function Users() {
     queryKey: ["users"],
     queryFn: UserApi.getAllUsers,
   });
+  const { setDialogState } = useConfirmationDialog();
 
   const columns: ColumnDef<User>[] = [
     {
@@ -88,8 +92,14 @@ export default function Users() {
               <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
               <DropdownMenuItem
                 onClick={() => {
-                  UserApi.deleteUser(row.original.id).then((res) => {
-                    refetch();
+                  setDialogState({
+                    isOpen: true,
+                    confirmFunction() {
+                      UserApi.deleteUser(row.original.id).then((res) => {
+                        refetch();
+                        toast.success("İstifadəçi uğurla silindi!");
+                      });
+                    },
                   });
                 }}
               >
