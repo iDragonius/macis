@@ -85,6 +85,7 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
       CallScheduleApi.updateCall(
         {
           customerId: data.customerId,
+          categoryId: data.categoryId,
           contactDate: data.contactDate,
           notes: data.notes,
           reasonForRejection: data.reasonForRejection,
