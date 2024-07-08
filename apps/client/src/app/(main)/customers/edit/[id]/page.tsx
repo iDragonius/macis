@@ -153,7 +153,7 @@ export default function Page({ params }: { params: { id: string } }) {
             />
           </div>
           <div>
-            <Label>Rəhbər</Label>
+            <Label>Əlaqədar Şəxs</Label>
             <Input
               value={data.head}
               onChange={(e) =>
@@ -163,7 +163,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 }))
               }
               type={"text"}
-              placeholder={"Rəhbər"}
+              placeholder={"Əlaqədar Şəxs"}
             />
           </div>
           <div>

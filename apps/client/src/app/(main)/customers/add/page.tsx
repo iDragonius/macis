@@ -121,7 +121,7 @@ export default function CustomerAdd() {
             />
           </div>
           <div>
-            <Label>Rəhbər</Label>
+            <Label>Əlaqədar Şəxs</Label>
             <Input
               value={data.head}
               onChange={(e) =>
@@ -131,7 +131,7 @@ export default function CustomerAdd() {
                 }))
               }
               type={"text"}
-              placeholder={"Rəhbər"}
+              placeholder={"Əlaqədar Şəxs"}
             />
           </div>
           <div>
