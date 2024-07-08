@@ -10,14 +10,6 @@ import { ChangeCustomerStatusDto } from './dto/change-customer-status.dto';
 export class CustomerService {
   constructor(private prisma: PrismaService) {}
   async createCustomer(data: CreateCustomerDto) {
-    const potentialExistingCustomer = await this.prisma.customer.findUnique({
-      where: { company: data.company },
-    });
-
-    if (potentialExistingCustomer) {
-      throw new BadRequestException(ExceptionTypes.CUSTOMER_ALREADY_EXIST);
-    }
-
     const manager = await this.prisma.user.findUnique({
       where: {
         id: data.managerId,

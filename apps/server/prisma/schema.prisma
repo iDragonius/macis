@@ -70,7 +70,7 @@ model Customer {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_ad")
-  company   String   @unique
+  company   String
 
   manager   User?   @relation(fields: [managerId], references: [id])
   managerId String?
