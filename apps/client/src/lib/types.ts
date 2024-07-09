@@ -10,7 +10,7 @@ export type CustomerDto = {
   contactNumber: string;
   status: CustomerStatus;
   contractDate: string;
-  service: string;
+  service: string | null;
   paymentAmount: number;
   ownersBirthday: string;
   companyEstablishmentDate: string;
@@ -20,7 +20,7 @@ export type CustomerDto = {
   termsOfPayment: string;
   terminationReason: string;
   position: string;
-  source: string;
+  source: string | null;
   notes: string;
 };
 

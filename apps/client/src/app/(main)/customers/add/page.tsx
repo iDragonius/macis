@@ -19,6 +19,7 @@ import { CustomerDto } from "@/lib/types";
 import { PageTitle } from "@/components/ui/page-title";
 import { useQuery } from "@tanstack/react-query";
 import { UserApi } from "@/lib/api/user.api";
+import { Services, Sources } from "@/lib/constants";
 
 export default function CustomerAdd() {
   const { data: users } = useQuery({
@@ -205,7 +206,7 @@ export default function CustomerAdd() {
               value={data.status}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Theme" />
+                <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="ACTIVE">Aktiv</SelectItem>
@@ -235,17 +236,26 @@ export default function CustomerAdd() {
               </div>{" "}
               <div>
                 <Label>Aldığı xidmət</Label>
-                <Input
-                  value={data.service}
-                  onChange={(e) =>
+                <Select
+                  onValueChange={(value) =>
                     setData((prevState) => ({
                       ...prevState,
-                      service: e.target.value,
+                      service: value as string,
                     }))
                   }
-                  type={"text"}
-                  placeholder={"Aldığı xidmət"}
-                />
+                  value={data.service || undefined}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Aldığı xidmət" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Services.map((service) => (
+                      <SelectItem value={service} key={service}>
+                        {service}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>{" "}
               <div>
                 <Label>Ödəniş </Label>
@@ -338,17 +348,26 @@ export default function CustomerAdd() {
               </div>{" "}
               <div>
                 <Label>Aldığı xidmət</Label>
-                <Input
-                  value={data.service}
-                  onChange={(e) =>
+                <Select
+                  onValueChange={(value) =>
                     setData((prevState) => ({
                       ...prevState,
-                      service: e.target.value,
+                      service: value as string,
                     }))
                   }
-                  type={"text"}
-                  placeholder={"Aldığı xidmət"}
-                />
+                  value={data.service || undefined}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Aldığı xidmət" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Services.map((service) => (
+                      <SelectItem value={service} key={service}>
+                        {service}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>{" "}
               <div>
                 <Label>Ödəniş şərtləri </Label>
@@ -383,31 +402,71 @@ export default function CustomerAdd() {
             <>
               <div>
                 <Label>Mənbə</Label>
-                <Input
-                  value={data.source}
-                  onChange={(e) =>
+                <Select
+                  onValueChange={(value) =>
                     setData((prevState) => ({
                       ...prevState,
-                      source: e.target.value,
+                      source: value as string,
                     }))
                   }
-                  type={"text"}
-                  placeholder={"Mənbə"}
-                />
+                  value={data.source || undefined}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Mənbə" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Sources.map((source) => (
+                      <SelectItem value={source} key={source}>
+                        {source}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>{" "}
+                {/*<Input*/}
+                {/*  value={data.source}*/}
+                {/*  onChange={(e) =>*/}
+                {/*    setData((prevState) => ({*/}
+                {/*      ...prevState,*/}
+                {/*      source: e.target.value,*/}
+                {/*    }))*/}
+                {/*  }*/}
+                {/*  type={"text"}*/}
+                {/*  placeholder={"Mənbə"}*/}
+                {/*/>*/}
               </div>{" "}
               <div>
                 <Label>Müraciət etdiyi xidmət</Label>
-                <Input
-                  value={data.service}
-                  onChange={(e) =>
+                <Select
+                  onValueChange={(value) =>
                     setData((prevState) => ({
                       ...prevState,
-                      service: e.target.value,
+                      service: value as string,
                     }))
                   }
-                  type={"text"}
-                  placeholder={"Aldığı xidmət"}
-                />
+                  value={data.service || undefined}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Aldığı xidmət" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Services.map((service) => (
+                      <SelectItem value={service} key={service}>
+                        {service}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {/*<Input*/}
+                {/*  value={data.service}*/}
+                {/*  onChange={(e) =>*/}
+                {/*    setData((prevState) => ({*/}
+                {/*      ...prevState,*/}
+                {/*      service: e.target.value,*/}
+                {/*    }))*/}
+                {/*  }*/}
+                {/*  type={"text"}*/}
+                {/*  placeholder={"Aldığı xidmət"}*/}
+                {/*/>*/}
               </div>{" "}
               <div>
                 <Label>Qeydlər</Label>
