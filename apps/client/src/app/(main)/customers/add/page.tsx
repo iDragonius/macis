@@ -64,7 +64,7 @@ export default function CustomerAdd() {
         contractDate: data.contractDate,
         service: data.service === "Digər" ? data.otherService : data.service,
         paymentAmount: +data.paymentAmount,
-        paymentInformation: data.paymentAmount,
+        paymentInformation: data.paymentInformation,
         ownersBirthday: data.ownersBirthday,
         companyEstablishmentDate: data.companyEstablishmentDate,
         curator: data.curator,
