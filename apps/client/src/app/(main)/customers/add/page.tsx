@@ -287,7 +287,7 @@ export default function CustomerAdd() {
                 />
               </div>{" "}
               <div>
-                <Label>Ödəniş məlumatlar </Label>
+                <Label>Ödəniş məlumatları </Label>
                 <Input
                   value={data.paymentInformation}
                   onChange={(e) =>
