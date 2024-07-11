@@ -89,12 +89,12 @@ model Customer {
   termsOfPayment           String?
   terminationReason        String?
   paymentAmount            Int?
-
-  calls            CallSchedule[]
-  meetings         MeetingSchedule[]
-  curationCalls    CurationCall[]
-  curationMeetings CurationMeeting[]
-  status           CustomerStatus    @default(POTENTIAL)
+  paymentInformation       String?
+  calls                    CallSchedule[]
+  meetings                 MeetingSchedule[]
+  curationCalls            CurationCall[]
+  curationMeetings         CurationMeeting[]
+  status                   CustomerStatus    @default(POTENTIAL)
 }
 
 model CallSchedule {

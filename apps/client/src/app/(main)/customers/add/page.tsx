@@ -36,6 +36,7 @@ export default function CustomerAdd() {
     service: "",
     otherService: "",
     paymentAmount: 0,
+    paymentInformation: "",
     ownersBirthday: "",
     companyEstablishmentDate: "",
     curator: "",
@@ -63,6 +64,7 @@ export default function CustomerAdd() {
         contractDate: data.contractDate,
         service: data.service === "Digər" ? data.otherService : data.service,
         paymentAmount: +data.paymentAmount,
+        paymentInformation: data.paymentAmount,
         ownersBirthday: data.ownersBirthday,
         companyEstablishmentDate: data.companyEstablishmentDate,
         curator: data.curator,
@@ -282,6 +284,20 @@ export default function CustomerAdd() {
                   }
                   type={"number"}
                   placeholder={"Ödəniş "}
+                />
+              </div>{" "}
+              <div>
+                <Label>Ödəniş məlumatlar </Label>
+                <Input
+                  value={data.paymentInformation}
+                  onChange={(e) =>
+                    setData((prevState) => ({
+                      ...prevState,
+                      paymentInformation: e.target.value,
+                    }))
+                  }
+                  type={"text"}
+                  placeholder={"Ödəniş məlumatları"}
                 />
               </div>{" "}
               <div>

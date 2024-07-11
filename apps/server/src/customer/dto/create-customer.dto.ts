@@ -60,6 +60,10 @@ export class CreateCustomerDto {
 
   @IsString()
   @IsOptional()
+  paymentInformation: string;
+
+  @IsString()
+  @IsOptional()
   termsOfPayment: string;
 
   @IsString()

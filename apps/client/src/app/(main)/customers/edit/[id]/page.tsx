@@ -39,6 +39,7 @@ export default function Page({ params }: { params: { id: string } }) {
     contractDate: "",
     service: "",
     paymentAmount: 0,
+    paymentInformation: "",
     ownersBirthday: "",
     companyEstablishmentDate: "",
     curator: "",
@@ -94,6 +95,7 @@ export default function Page({ params }: { params: { id: string } }) {
         otherSource: Sources.includes(customer?.data?.source || "")
           ? ""
           : customer?.data?.source || "",
+        paymentInformation: customer?.data?.paymentInformation || "",
       });
     }
   }, [customer]);
@@ -110,6 +112,7 @@ export default function Page({ params }: { params: { id: string } }) {
         contractDate: data.contractDate,
         service: data.service === "Digər" ? data.otherService : data.service,
         paymentAmount: +data.paymentAmount,
+        paymentInformation: data.paymentInformation,
         ownersBirthday: data.ownersBirthday,
         companyEstablishmentDate: data.companyEstablishmentDate,
         curator: data.curator,
@@ -330,6 +333,20 @@ export default function Page({ params }: { params: { id: string } }) {
                   }
                   type={"number"}
                   placeholder={"Ödəniş "}
+                />
+              </div>{" "}
+              <div>
+                <Label>Ödəniş məlumatlar </Label>
+                <Input
+                  value={data.paymentInformation}
+                  onChange={(e) =>
+                    setData((prevState) => ({
+                      ...prevState,
+                      paymentInformation: e.target.value,
+                    }))
+                  }
+                  type={"text"}
+                  placeholder={"Ödəniş məlumatları"}
                 />
               </div>{" "}
               <div>

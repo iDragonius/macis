@@ -196,7 +196,7 @@ export class CustomerService {
 
           service: data.service,
           paymentAmount: data.paymentAmount,
-
+          paymentInformation: data.paymentInformation,
           companyEstablishmentDate: data.companyEstablishmentDate,
           ownersBirthday: data.ownersBirthday,
           curator: data.curator,

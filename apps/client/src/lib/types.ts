@@ -12,6 +12,7 @@ export type CustomerDto = {
   contractDate: string;
   service: string | null;
   paymentAmount: number;
+  paymentInformation: string;
   ownersBirthday: string;
   companyEstablishmentDate: string;
   curator: string;
@@ -35,6 +36,7 @@ export type CustomerProps = {
   contractDate: string | null;
   service: string | null;
   paymentAmount: number | null;
+  paymentInformation: string | null;
   ownersBirthday: string | null;
   companyEstablishmentDate: string | null;
   curator: string | null;
