@@ -53,6 +53,7 @@ export type LostCustomer = {
   service: string;
   termsOfPayment: string;
   terminationReason: string;
+  curator: string;
   contractExpirationDate: string;
 };
 
@@ -126,6 +127,11 @@ export default function LostCustomers() {
       accessorKey: "service",
       header: "Aldığı xidmət",
       cell: ({ row }) => <div>{row.getValue("service")}</div>,
+    },
+    {
+      accessorKey: "curator",
+      header: "Kurator",
+      cell: ({ row }) => <div>{row.getValue("curator")}</div>,
     },
     {
       accessorKey: "termsOfPayment",

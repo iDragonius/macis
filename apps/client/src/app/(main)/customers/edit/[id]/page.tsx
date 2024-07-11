@@ -19,7 +19,8 @@ import { CustomerStatus, formatInputDate } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
-import { Services, Sources } from "@/lib/constants";
+import { Positions, Services, Sources } from "@/lib/constants";
+import { SelectWithOtherOption } from "@/components/ui/select-with-other-option";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { data: customer, refetch } = useQuery({
@@ -48,6 +49,9 @@ export default function Page({ params }: { params: { id: string } }) {
     position: "",
     source: "",
     notes: "",
+    otherPosition: "",
+    otherService: "",
+    otherSource: "",
   });
   const { push } = useRouter();
 
@@ -66,15 +70,30 @@ export default function Page({ params }: { params: { id: string } }) {
         companyEstablishmentDate: formatInputDate(
           customer.data.companyEstablishmentDate || "",
         ),
-        service: customer.data.service || "",
+        service: Services.includes(customer?.data?.service || "")
+          ? customer?.data?.service || ""
+          : "Digər",
         paymentAmount: customer.data.paymentAmount || 0,
-        source: customer.data.source || "",
+        source: Sources.includes(customer?.data?.source || "")
+          ? customer?.data?.source || ""
+          : "Digər",
         head: customer.data.head || "",
         terminationReason: customer.data.terminationReason || "",
         termsOfPayment: customer.data.termsOfPayment || "",
         ownersBirthday: formatInputDate(customer.data.ownersBirthday || ""),
         notes: customer.data.notes || "",
-        position: customer.data.position || "",
+        position: Positions.includes(customer?.data?.position || "")
+          ? customer?.data?.position || ""
+          : "Digər",
+        otherService: Services.includes(customer?.data?.service || "")
+          ? ""
+          : customer?.data?.service || "",
+        otherPosition: Positions.includes(customer?.data?.position || "")
+          ? ""
+          : customer?.data?.position || "",
+        otherSource: Sources.includes(customer?.data?.source || "")
+          ? ""
+          : customer?.data?.source || "",
       });
     }
   }, [customer]);
@@ -84,11 +103,12 @@ export default function Page({ params }: { params: { id: string } }) {
       CustomerApi.updateCustomer(params.id, {
         company: data.company,
         head: data.head,
-        position: data.position,
+        position:
+          data.position === "Digər" ? data.otherPosition : data.position,
         contactNumber: data.contactNumber,
         status: data.status,
         contractDate: data.contractDate,
-        service: data.service,
+        service: data.service === "Digər" ? data.otherService : data.service,
         paymentAmount: +data.paymentAmount,
         ownersBirthday: data.ownersBirthday,
         companyEstablishmentDate: data.companyEstablishmentDate,
@@ -102,14 +122,16 @@ export default function Page({ params }: { params: { id: string } }) {
       CustomerApi.updateCustomer(params.id, {
         company: data.company,
         head: data.head,
-        position: data.position,
+        position:
+          data.position === "Digər" ? data.otherPosition : data.position,
         contactNumber: data.contactNumber,
         status: data.status,
+        curator: data.curator,
         contractDate: data.contractDate,
         contractExpirationDate: data.contractExpirationDate,
         termsOfPayment: data.termsOfPayment,
         terminationReason: data.terminationReason,
-        service: data.service,
+        service: data.service === "Digər" ? data.otherService : data.service,
         managerId: data.managerId,
       }).then((res) => {
         toast.success("Müştəri məlumatları uğurla dəyişdirildi!");
@@ -121,10 +143,11 @@ export default function Page({ params }: { params: { id: string } }) {
         head: data.head,
         contactNumber: data.contactNumber,
         status: data.status,
-        position: data.position,
-        source: data.source,
+        position:
+          data.position === "Digər" ? data.otherPosition : data.position,
+        source: data.source === "Digər" ? data.otherSource : data.source,
         notes: data.notes,
-        service: data.service,
+        service: data.service === "Digər" ? data.otherService : data.service,
         managerId: data.managerId,
       }).then((res) => {
         toast.success("Müştəri məlumatları uğurla dəyişdirildi!");
@@ -169,16 +192,24 @@ export default function Page({ params }: { params: { id: string } }) {
           </div>
           <div>
             <Label>Vəzifə</Label>
-            <Input
-              value={data.position}
-              onChange={(e) =>
+
+            <SelectWithOtherOption
+              onValueChange={(value) => {
                 setData((prevState) => ({
                   ...prevState,
-                  position: e.target.value,
+                  position: value,
+                }));
+              }}
+              value={data.position || undefined}
+              otherValue={data.otherPosition}
+              onOtherValueChange={(value) =>
+                setData((prevState) => ({
+                  ...prevState,
+                  otherPosition: value,
                 }))
               }
-              type={"text"}
               placeholder={"Vəzifə"}
+              options={Positions}
             />
           </div>{" "}
           <div>
@@ -268,26 +299,24 @@ export default function Page({ params }: { params: { id: string } }) {
               </div>{" "}
               <div>
                 <Label>Aldığı xidmət</Label>
-                <Select
-                  onValueChange={(value) =>
+                <SelectWithOtherOption
+                  onValueChange={(value) => {
                     setData((prevState) => ({
                       ...prevState,
                       service: value as string,
+                    }));
+                  }}
+                  value={data.service || undefined}
+                  otherValue={data.otherService}
+                  onOtherValueChange={(value) =>
+                    setData((prevState) => ({
+                      ...prevState,
+                      otherService: value as string,
                     }))
                   }
-                  value={data.service || undefined}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Aldığı xidmət" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Services.map((service) => (
-                      <SelectItem value={service} key={service}>
-                        {service}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  placeholder={"Aldığı xidmət"}
+                  options={Services}
+                />
               </div>{" "}
               <div>
                 <Label>Ödəniş </Label>
@@ -380,26 +409,24 @@ export default function Page({ params }: { params: { id: string } }) {
               </div>{" "}
               <div>
                 <Label>Aldığı xidmət</Label>
-                <Select
-                  onValueChange={(value) =>
+                <SelectWithOtherOption
+                  onValueChange={(value) => {
                     setData((prevState) => ({
                       ...prevState,
                       service: value as string,
+                    }));
+                  }}
+                  value={data.service || undefined}
+                  otherValue={data.otherService}
+                  onOtherValueChange={(value) =>
+                    setData((prevState) => ({
+                      ...prevState,
+                      otherService: value as string,
                     }))
                   }
-                  value={data.service || undefined}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Aldığı xidmət" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Services.map((service) => (
-                      <SelectItem value={service} key={service}>
-                        {service}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  placeholder={"Aldığı xidmət"}
+                  options={Services}
+                />
               </div>{" "}
               <div>
                 <Label>Ödəniş şərtləri </Label>
@@ -434,49 +461,45 @@ export default function Page({ params }: { params: { id: string } }) {
             <>
               <div>
                 <Label>Mənbə</Label>
-                <Select
-                  onValueChange={(value) =>
+                <SelectWithOtherOption
+                  onValueChange={(value) => {
                     setData((prevState) => ({
                       ...prevState,
                       source: value as string,
+                    }));
+                  }}
+                  value={data.source || undefined}
+                  otherValue={data.otherSource}
+                  onOtherValueChange={(value) =>
+                    setData((prevState) => ({
+                      ...prevState,
+                      otherSource: value as string,
                     }))
                   }
-                  value={data.source || undefined}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Mənbə" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Sources.map((source) => (
-                      <SelectItem value={source} key={source}>
-                        {source}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>{" "}
+                  placeholder={"Mənbə"}
+                  options={Sources}
+                />{" "}
               </div>{" "}
               <div>
                 <Label>Müraciət etdiyi xidmət</Label>
-                <Select
-                  onValueChange={(value) =>
+                <SelectWithOtherOption
+                  onValueChange={(value) => {
                     setData((prevState) => ({
                       ...prevState,
                       service: value as string,
+                    }));
+                  }}
+                  value={data.service || undefined}
+                  otherValue={data.otherService}
+                  onOtherValueChange={(value) =>
+                    setData((prevState) => ({
+                      ...prevState,
+                      otherService: value as string,
                     }))
                   }
-                  value={data.service || undefined}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Aldığı xidmət" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Services.map((service) => (
-                      <SelectItem value={service} key={service}>
-                        {service}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  placeholder={"Aldığı xidmət"}
+                  options={Services}
+                />
               </div>{" "}
               <div>
                 <Label>Qeydlər</Label>

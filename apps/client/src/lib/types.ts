@@ -22,6 +22,9 @@ export type CustomerDto = {
   position: string;
   source: string | null;
   notes: string;
+  otherService: string;
+  otherSource: string;
+  otherPosition: string;
 };
 
 export type CustomerProps = {

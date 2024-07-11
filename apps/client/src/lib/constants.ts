@@ -19,3 +19,5 @@ export const Sources = [
   "Digər platformalar",
   "Sosial şəbəkə",
 ];
+
+export const Positions = ["Direktor", "İcraçı direktor", "Şöbə rəhbəri"];

@@ -66,7 +66,7 @@ export class CustomerService {
           position: data.position,
           contractDate: data.contractDate,
           contractExpirationDate: data.contractExpirationDate,
-
+          curator: data.curator,
           service: data.service,
           termsOfPayment: data.termsOfPayment,
           terminationReason: data.terminationReason,
@@ -231,7 +231,7 @@ export class CustomerService {
           position: data.position,
           contractDate: data.contractDate,
           contractExpirationDate: data.contractExpirationDate,
-
+          curator: data.curator,
           service: data.service,
           termsOfPayment: data.termsOfPayment,
           terminationReason: data.terminationReason,
