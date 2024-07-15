@@ -42,29 +42,7 @@ export default function MeetingScheduleType({
 
   const contractSignedMeetingColumns: ColumnDef<MeetingProps>[] = [
     {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      accessorKey: "company",
+      accessorKey: "customer.company",
       header: "Şirkət",
       cell: ({ row }) => {
         const company = row.original.customer.company;
@@ -79,7 +57,7 @@ export default function MeetingScheduleType({
       },
     },
     {
-      accessorKey: "head",
+      accessorKey: "customer.head",
       header: "Rəhbər",
       cell: ({ row }) => {
         const head = row.original.customer.head;
@@ -87,7 +65,7 @@ export default function MeetingScheduleType({
       },
     },
     {
-      accessorKey: "position",
+      accessorKey: "customer.position",
       header: "Vəzifəsi",
       cell: ({ row }) => {
         const head = row.original.customer.position;
@@ -95,7 +73,7 @@ export default function MeetingScheduleType({
       },
     },
     {
-      accessorKey: "contactNumber",
+      accessorKey: "customer.contactNumber",
       header: "Əlaqə nömrəsi",
       cell: ({ row }) => {
         const contactNumber = row.original.customer.contactNumber;
@@ -170,29 +148,7 @@ export default function MeetingScheduleType({
   ];
   const refusedMeetingColumns: ColumnDef<MeetingProps>[] = [
     {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      accessorKey: "company",
+      accessorKey: "customer.company",
       header: "Şirkət",
       cell: ({ row }) => {
         const company = row.original.customer.company;
@@ -207,7 +163,7 @@ export default function MeetingScheduleType({
       },
     },
     {
-      accessorKey: "head",
+      accessorKey: "customer.head",
       header: "Rəhbər",
       cell: ({ row }) => {
         const head = row.original.customer.head;
@@ -215,7 +171,7 @@ export default function MeetingScheduleType({
       },
     },
     {
-      accessorKey: "position",
+      accessorKey: "customer.position",
       header: "Vəzifəsi",
       cell: ({ row }) => {
         const head = row.original.customer.position;
@@ -223,7 +179,7 @@ export default function MeetingScheduleType({
       },
     },
     {
-      accessorKey: "contactNumber",
+      accessorKey: "customer.contactNumber",
       header: "Əlaqə nömrəsi",
       cell: ({ row }) => {
         const contactNumber = row.original.customer.contactNumber;
@@ -252,7 +208,7 @@ export default function MeetingScheduleType({
       },
     },
     {
-      accessorKey: "category",
+      accessorKey: "category.name",
       header: "Kateqoriya",
       cell: ({ row }) => {
         const category = row?.original?.category?.name;
@@ -313,29 +269,7 @@ export default function MeetingScheduleType({
   ];
   const followedMeetingColumns: ColumnDef<MeetingProps>[] = [
     {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      accessorKey: "company",
+      accessorKey: "customer.company",
       header: "Şirkət",
       cell: ({ row }) => {
         const company = row.original.customer.company;
@@ -350,7 +284,7 @@ export default function MeetingScheduleType({
       },
     },
     {
-      accessorKey: "head",
+      accessorKey: "customer.head",
       header: "Rəhbər",
       cell: ({ row }) => {
         const head = row.original.customer.head;
@@ -358,7 +292,7 @@ export default function MeetingScheduleType({
       },
     },
     {
-      accessorKey: "position",
+      accessorKey: "customer.position",
       header: "Vəzifəsi",
       cell: ({ row }) => {
         const head = row.original.customer.position;
@@ -366,7 +300,7 @@ export default function MeetingScheduleType({
       },
     },
     {
-      accessorKey: "contactNumber",
+      accessorKey: "customer.contactNumber",
       header: "Əlaqə nömrəsi",
       cell: ({ row }) => {
         const contactNumber = row.original.customer.contactNumber;

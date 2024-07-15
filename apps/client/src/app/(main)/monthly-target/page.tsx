@@ -54,7 +54,7 @@ export default function MonthlyTarget() {
 
   const columns: ColumnDef<MonthlyTarget>[] = [
     {
-      accessorKey: "manager",
+      accessorKey: "data.manager.profile.firstName",
       header: "Menecer",
       cell: ({ row }) => {
         const manager =
@@ -65,7 +65,7 @@ export default function MonthlyTarget() {
       },
     },
     {
-      accessorKey: "year",
+      accessorKey: "data.year",
       header: "İl",
       cell: ({ row }) => {
         const year = row?.original?.data?.year;
@@ -73,7 +73,7 @@ export default function MonthlyTarget() {
       },
     },
     {
-      accessorKey: "month",
+      accessorKey: "data.month",
       header: "Ay",
       cell: ({ row }) => {
         const month = formatMonth(row?.original?.data?.month);
@@ -82,7 +82,7 @@ export default function MonthlyTarget() {
       },
     },
     {
-      accessorKey: "meetingTarget",
+      accessorKey: "data.meetingTarget",
       header: "Görüş hədəfi",
       cell: ({ row }) => {
         const meetingTarget = row?.original?.data?.meetingTarget;

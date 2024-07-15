@@ -29,7 +29,7 @@ import { CallScheduleApi } from "@/lib/api/call-schedule.api";
 
 const contractSignedMeetingColumns: ColumnDef<MeetingProps>[] = [
   {
-    accessorKey: "company",
+    accessorKey: "customer.company",
     header: "Şirkət",
     cell: ({ row }) => {
       const company = row.original.customer.company;
@@ -44,7 +44,7 @@ const contractSignedMeetingColumns: ColumnDef<MeetingProps>[] = [
     },
   },
   {
-    accessorKey: "head",
+    accessorKey: "customer.head",
     header: "Rəhbər",
     cell: ({ row }) => {
       const head = row.original.customer.head;
@@ -52,7 +52,7 @@ const contractSignedMeetingColumns: ColumnDef<MeetingProps>[] = [
     },
   },
   {
-    accessorKey: "position",
+    accessorKey: "customer.position",
     header: "Vəzifəsi",
     cell: ({ row }) => {
       const head = row.original.customer.position;
@@ -60,7 +60,7 @@ const contractSignedMeetingColumns: ColumnDef<MeetingProps>[] = [
     },
   },
   {
-    accessorKey: "contactNumber",
+    accessorKey: "customer.contactNumber",
     header: "Əlaqə nömrəsi",
     cell: ({ row }) => {
       const contactNumber = row.original.customer.contactNumber;
@@ -91,7 +91,7 @@ const contractSignedMeetingColumns: ColumnDef<MeetingProps>[] = [
 ];
 const refusedMeetingColumns: ColumnDef<MeetingProps>[] = [
   {
-    accessorKey: "company",
+    accessorKey: "customer.company",
     header: "Şirkət",
     cell: ({ row }) => {
       const company = row.original.customer.company;
@@ -106,7 +106,7 @@ const refusedMeetingColumns: ColumnDef<MeetingProps>[] = [
     },
   },
   {
-    accessorKey: "head",
+    accessorKey: "customer.head",
     header: "Rəhbər",
     cell: ({ row }) => {
       const head = row.original.customer.head;
@@ -114,7 +114,7 @@ const refusedMeetingColumns: ColumnDef<MeetingProps>[] = [
     },
   },
   {
-    accessorKey: "position",
+    accessorKey: "customer.position",
     header: "Vəzifəsi",
     cell: ({ row }) => {
       const head = row.original.customer.position;
@@ -122,7 +122,7 @@ const refusedMeetingColumns: ColumnDef<MeetingProps>[] = [
     },
   },
   {
-    accessorKey: "contactNumber",
+    accessorKey: "customer.contactNumber",
     header: "Əlaqə nömrəsi",
     cell: ({ row }) => {
       const contactNumber = row.original.customer.contactNumber;
@@ -160,7 +160,7 @@ const refusedMeetingColumns: ColumnDef<MeetingProps>[] = [
 ];
 const followedMeetingColumns: ColumnDef<MeetingProps>[] = [
   {
-    accessorKey: "company",
+    accessorKey: "customer.company",
     header: "Şirkət",
     cell: ({ row }) => {
       const company = row.original.customer.company;
@@ -175,7 +175,7 @@ const followedMeetingColumns: ColumnDef<MeetingProps>[] = [
     },
   },
   {
-    accessorKey: "head",
+    accessorKey: "customer.head",
     header: "Rəhbər",
     cell: ({ row }) => {
       const head = row.original.customer.head;
@@ -183,7 +183,7 @@ const followedMeetingColumns: ColumnDef<MeetingProps>[] = [
     },
   },
   {
-    accessorKey: "position",
+    accessorKey: "customer.position",
     header: "Vəzifəsi",
     cell: ({ row }) => {
       const head = row.original.customer.position;
@@ -191,7 +191,7 @@ const followedMeetingColumns: ColumnDef<MeetingProps>[] = [
     },
   },
   {
-    accessorKey: "contactNumber",
+    accessorKey: "customer.contactNumber",
     header: "Əlaqə nömrəsi",
     cell: ({ row }) => {
       const contactNumber = row.original.customer.contactNumber;
@@ -238,7 +238,7 @@ const followedMeetingColumns: ColumnDef<MeetingProps>[] = [
 
 const refusedCallColumns: ColumnDef<CallProps>[] = [
   {
-    accessorKey: "company",
+    accessorKey: "customer.company",
     header: "Şirkət",
     cell: ({ row }) => {
       const company = row.original.customer.company;
@@ -253,7 +253,7 @@ const refusedCallColumns: ColumnDef<CallProps>[] = [
     },
   },
   {
-    accessorKey: "head",
+    accessorKey: "customer.head",
     header: "Rəhbər",
     cell: ({ row }) => {
       const head = row.original.customer.head;
@@ -261,7 +261,7 @@ const refusedCallColumns: ColumnDef<CallProps>[] = [
     },
   },
   {
-    accessorKey: "position",
+    accessorKey: "customer.position",
     header: "Vəzifəsi",
     cell: ({ row }) => {
       const head = row.original.customer.position;
@@ -269,7 +269,7 @@ const refusedCallColumns: ColumnDef<CallProps>[] = [
     },
   },
   {
-    accessorKey: "contactNumber",
+    accessorKey: "customer.contactNumber",
     header: "Əlaqə nömrəsi",
     cell: ({ row }) => {
       const contactNumber = row.original.customer.contactNumber;
@@ -291,7 +291,7 @@ const refusedCallColumns: ColumnDef<CallProps>[] = [
     },
   },
   {
-    accessorKey: "category",
+    accessorKey: "category.name",
     header: "Kateqoriya",
     cell: ({ row }) => {
       const category = row?.original?.category?.name;

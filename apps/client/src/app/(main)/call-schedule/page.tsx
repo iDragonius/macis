@@ -41,29 +41,7 @@ export default function CallSchedule() {
 
   const callColumns: ColumnDef<CallProps>[] = [
     {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      accessorKey: "company",
+      accessorKey: "customer.company",
       header: "Şirkət",
       cell: ({ row }) => {
         const company = row.original.customer.company;
@@ -78,7 +56,7 @@ export default function CallSchedule() {
       },
     },
     {
-      accessorKey: "head",
+      accessorKey: "customer.head",
       header: "Rəhbər",
       cell: ({ row }) => {
         const head = row.original.customer.head;
@@ -86,7 +64,7 @@ export default function CallSchedule() {
       },
     },
     {
-      accessorKey: "position",
+      accessorKey: "customer.position",
       header: "Vəzifəsi",
       cell: ({ row }) => {
         const head = row.original.customer.position;
@@ -94,7 +72,7 @@ export default function CallSchedule() {
       },
     },
     {
-      accessorKey: "contactNumber",
+      accessorKey: "customer.contactNumber",
       header: "Əlaqə nömrəsi",
       cell: ({ row }) => {
         const contactNumber = row.original.customer.contactNumber;

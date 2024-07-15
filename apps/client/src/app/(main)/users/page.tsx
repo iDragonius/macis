@@ -47,7 +47,7 @@ export default function Users() {
       cell: ({ row }) => <div>{row.getValue("email")}</div>,
     },
     {
-      accessorKey: "fullName",
+      accessorKey: "profile.firstName",
       header: "Ad",
       cell: ({ row }) => {
         const fullName =
@@ -66,7 +66,7 @@ export default function Users() {
       },
     },
     {
-      accessorKey: "phoneNumber",
+      accessorKey: "profile.phoneNumber",
       header: "Telefon nömrəsi",
       cell: ({ row }) => {
         const phoneNumber = row?.original?.profile?.phoneNumber;
