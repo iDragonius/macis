@@ -21,7 +21,7 @@ import {
   MeetingResultType,
   MeetingScheduleApi,
 } from "@/lib/api/meeting-schedule.api";
-import { formatInputDate } from "@/lib/utils";
+import { cn, formatInputDate } from "@/lib/utils";
 import { CategoryApi } from "@/lib/api/category.api";
 import {
   Dialog,
@@ -31,6 +31,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { DialogBody } from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { CaretSortIcon } from "@radix-ui/react-icons";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { CheckIcon } from "lucide-react";
 type MeetingDto = {
   customerId: string | null;
   contactDate: string;
@@ -138,36 +153,68 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
       });
     }
   }
+  const [open, setOpen] = useState<boolean>(false);
 
   return (
     <div>
       <PageTitle>Görüş məlumatlarını dəyiş</PageTitle>
 
       <div className={"mt-5 grid grid-cols-2 gap-8"}>
-        <div>
-          <Label>Müştərini seçin</Label>
-          <Select
-            onValueChange={(value) =>
-              setData((prevState) => ({
-                ...prevState,
-                customerId: value,
-              }))
-            }
-            value={data.customerId || undefined}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Müştəri" />
-            </SelectTrigger>
-            <SelectContent>
-              {customers?.data.map((customer: any) => {
-                return (
-                  <SelectItem value={customer.id} key={customer.id}>
-                    {customer.company}
-                  </SelectItem>
-                );
-              })}
-            </SelectContent>
-          </Select>
+        <div className={"flex flex-col w-full mt-1.5"}>
+          <Label className={"mb-1"}>Müştərini seçin</Label>
+
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                className="w-full justify-between"
+              >
+                {data.customerId
+                  ? customers?.data?.find(
+                      (customer: any) => customer.id === data.customerId,
+                    )?.company
+                  : "Müştərini seçin..."}
+                <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[300px] p-0">
+              <Command>
+                <CommandInput
+                  placeholder="Müştərini axtar..."
+                  className="h-9"
+                />
+                <CommandEmpty>Heç bir müştəri tapılmadı.</CommandEmpty>
+                <CommandGroup>
+                  <CommandList>
+                    {customers?.data?.map((customer: any) => (
+                      <CommandItem
+                        key={customer.id}
+                        value={customer.company}
+                        onSelect={(currentValue) => {
+                          setData((prevState) => ({
+                            ...prevState,
+                            customerId: customer.id,
+                          }));
+                          setOpen(false);
+                        }}
+                      >
+                        {customer.company}
+                        <CheckIcon
+                          className={cn(
+                            "ml-auto h-4 w-4",
+                            data.customerId === customer.id
+                              ? "opacity-100"
+                              : "opacity-0",
+                          )}
+                        />
+                      </CommandItem>
+                    ))}
+                  </CommandList>
+                </CommandGroup>
+              </Command>
+            </PopoverContent>
+          </Popover>
         </div>
         <div>
           <Label>Əlaqə tarixi</Label>
