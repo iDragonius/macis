@@ -118,6 +118,7 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
           contactDate: data.contactDate,
           notes: data.notes,
           meetingTime: data.meetingTime,
+          meetingDate: data.meetingDate,
         },
         params.id,
       ).then((res) => {
@@ -145,6 +146,7 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
           notes: data.notes,
           nextContactDate: data.nextContactDate,
           meetingTime: data.meetingTime,
+          meetingDate: data.meetingDate,
           nextMeetingDate: data.nextMeetingDate,
         },
         params.id,
@@ -241,7 +243,7 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
               }))
             }
             type={"date"}
-            placeholder={"Əlaqə tarixi"}
+            placeholder={"Görüş tarixi"}
           />
         </div>{" "}
         <div>
