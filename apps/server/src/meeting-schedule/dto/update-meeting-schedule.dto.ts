@@ -16,10 +16,6 @@ export class UpdateMeetingScheduleDto extends PartialType(
   @Transform(({ value }) => new Date(value))
   nextContactDate: Date;
 
-  @IsOptional()
-  @IsString()
-  reasonForRejection: string;
-
   @IsString()
   @IsOptional()
   categoryId: string;

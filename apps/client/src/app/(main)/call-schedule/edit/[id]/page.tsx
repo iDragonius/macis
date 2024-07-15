@@ -27,7 +27,6 @@ type CallDto = {
   contactDate: string;
   notes: string;
   result: CallResultType;
-  reasonForRejection: string;
   nextContactDate: string;
 };
 export default function CallEditPage({ params }: { params: { id: string } }) {
@@ -50,7 +49,6 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
     contactDate: "",
     notes: "",
     result: "UNKNOWN",
-    reasonForRejection: "",
     nextContactDate: "",
     categoryId: null,
   });
@@ -61,7 +59,7 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
         contactDate: formatInputDate(call.data.contactDate),
         notes: call.data.notes,
         result: call.data.result,
-        reasonForRejection: call.data.reasonForRejection,
+
         nextContactDate: formatInputDate(call.data.nextContactDate),
         categoryId: call?.data?.categoryId,
       });
@@ -88,7 +86,6 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
           categoryId: data.categoryId,
           contactDate: data.contactDate,
           notes: data.notes,
-          reasonForRejection: data.reasonForRejection,
         },
         params.id,
       ).then((res) => {
@@ -201,19 +198,7 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
                   </DialogBody>
                 </DialogContent>
               </Dialog>
-              <div>
-                <Label>Rədd etmə səbəbi</Label>
-                <Textarea
-                  placeholder={"Rədd etmə səbəbi"}
-                  value={data.reasonForRejection}
-                  onChange={(e) =>
-                    setData((prevState) => ({
-                      ...prevState,
-                      reasonForRejection: e.target.value,
-                    }))
-                  }
-                />
-              </div>
+
               <div>
                 <Label>Kateqoriya</Label>
                 <Select

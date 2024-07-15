@@ -81,7 +81,6 @@ export class CallScheduleService {
           customerId: customer.id,
           contactDate: data.contactDate,
           notes: data.notes,
-          reasonForRejection: data.reasonForRejection,
           categoryId: data.categoryId,
         },
       });

@@ -196,13 +196,7 @@ export default function CallScheduleType({
         return <div>{formatDate(row.getValue("contactDate"))}</div>;
       },
     },
-    {
-      accessorKey: "reasonForRejection",
-      header: "Rədd etmə səbəbi",
-      cell: ({ row }) => {
-        return <div>{formatField(row.getValue("reasonForRejection"))}</div>;
-      },
-    },
+
     {
       accessorKey: "category",
       header: "Kateqoriya",

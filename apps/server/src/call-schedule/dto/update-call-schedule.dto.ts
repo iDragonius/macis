@@ -9,10 +9,6 @@ export class UpdateCallScheduleDto extends PartialType(CreateCallScheduleDto) {
   @Transform(({ value }) => new Date(value))
   nextContactDate: Date;
 
-  @IsOptional()
-  @IsString()
-  reasonForRejection: string;
-
   @IsString()
   @IsOptional()
   categoryId: string;

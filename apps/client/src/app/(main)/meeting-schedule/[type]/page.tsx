@@ -200,13 +200,7 @@ export default function MeetingScheduleType({
         return <div>{formatField(row.getValue("meetingTime"))}</div>;
       },
     },
-    {
-      accessorKey: "reasonForRejection",
-      header: "Rədd etmə səbəbi",
-      cell: ({ row }) => {
-        return <div>{formatField(row.getValue("reasonForRejection"))}</div>;
-      },
-    },
+
     {
       accessorKey: "category.name",
       header: "Kateqoriya",

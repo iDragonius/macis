@@ -52,7 +52,6 @@ type MeetingDto = {
   meetingDate: string;
   notes: string;
   result: MeetingResultType;
-  reasonForRejection: string;
   nextContactDate: string;
   nextMeetingDate: string;
   meetingTime: string;
@@ -80,7 +79,6 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
     contactDate: "",
     notes: "",
     result: "UNKNOWN",
-    reasonForRejection: "",
     nextContactDate: "",
     nextMeetingDate: "",
     meetingDate: "",
@@ -99,7 +97,6 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
         contactDate: formatInputDate(meeting?.data?.contactDate),
         notes: meeting?.data?.notes,
         result: meeting?.data?.result,
-        reasonForRejection: meeting?.data?.reasonForRejection,
         nextContactDate: formatInputDate(meeting?.data?.nextContactDate),
         nextMeetingDate: formatInputDate(meeting?.data?.nextMeetingDate),
         meetingTime: meeting?.data?.meetingTime,
@@ -130,7 +127,6 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
           customerId: data.customerId,
           meetingDate: data.meetingDate,
           notes: data.notes,
-          reasonForRejection: data.reasonForRejection,
           meetingTime: data.meetingTime,
           categoryId: data.categoryId,
         },
@@ -301,19 +297,7 @@ export default function CallEditPage({ params }: { params: { id: string } }) {
                   </DialogBody>
                 </DialogContent>
               </Dialog>
-              <div>
-                <Label>Rədd etmə səbəbi</Label>
-                <Textarea
-                  placeholder={"Rədd etmə səbəbi"}
-                  value={data.reasonForRejection}
-                  onChange={(e) =>
-                    setData((prevState) => ({
-                      ...prevState,
-                      reasonForRejection: e.target.value,
-                    }))
-                  }
-                />
-              </div>
+
               <div>
                 <Label>Kateqoriya</Label>
                 <Select

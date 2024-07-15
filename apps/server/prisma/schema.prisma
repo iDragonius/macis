@@ -98,39 +98,37 @@ model Customer {
 }
 
 model CallSchedule {
-  id                 String      @id @default(uuid())
-  createdAt          DateTime    @default(now()) @map("created_at")
-  updatedAt          DateTime    @updatedAt @map("updated_ad")
-  customer           Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  customerId         String
-  notes              String?
-  contactDate        DateTime?
-  nextContactDate    DateTime?
-  reasonForRejection String?
-  result             CallResult? @default(UNKNOWN)
-  category           Category?   @relation(fields: [categoryId], references: [id])
-  categoryId         String?
+  id              String      @id @default(uuid())
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_ad")
+  customer        Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customerId      String
+  notes           String?
+  contactDate     DateTime?
+  nextContactDate DateTime?
+  result          CallResult? @default(UNKNOWN)
+  category        Category?   @relation(fields: [categoryId], references: [id])
+  categoryId      String?
 }
 
 model MeetingSchedule {
-  id                 String        @id @default(uuid())
-  createdAt          DateTime      @default(now()) @map("created_at")
-  updatedAt          DateTime      @updatedAt @map("updated_ad")
-  customer           Customer      @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  customerId         String
-  participant        String?
-  contactNumber      String?
-  position           String?
-  meetingTime        String?
-  meetingDate        DateTime?
-  notes              String?
-  contactDate        DateTime?
-  nextContactDate    DateTime?
-  nextMeetingDate    DateTime?
-  reasonForRejection String?
-  result             MeetingResult @default(UNKNOWN)
-  category           Category?     @relation(fields: [categoryId], references: [id])
-  categoryId         String?
+  id              String        @id @default(uuid())
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_ad")
+  customer        Customer      @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customerId      String
+  participant     String?
+  contactNumber   String?
+  position        String?
+  meetingTime     String?
+  meetingDate     DateTime?
+  notes           String?
+  contactDate     DateTime?
+  nextContactDate DateTime?
+  nextMeetingDate DateTime?
+  result          MeetingResult @default(UNKNOWN)
+  category        Category?     @relation(fields: [categoryId], references: [id])
+  categoryId      String?
 }
 
 model MonthlyTarget {

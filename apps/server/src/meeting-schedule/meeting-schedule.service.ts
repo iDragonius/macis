@@ -88,7 +88,6 @@ export class MeetingScheduleService {
           notes: data.notes,
           meetingTime: data.meetingTime,
           meetingDate: data.meetingDate,
-          reasonForRejection: data.reasonForRejection,
           categoryId: data.categoryId,
         },
       });
