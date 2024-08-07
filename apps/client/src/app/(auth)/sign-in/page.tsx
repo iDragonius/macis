@@ -1,10 +1,10 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { FormEvent, useState } from "react";
 import { AuthApi, SignInDto } from "@/lib/api/auth.api";
 import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
 
 export default function SignIn() {
   const { push } = useRouter();
@@ -22,8 +22,9 @@ export default function SignIn() {
       push("/");
     });
   }
+
   return (
-    <div className={"w-full h-full flex items-center justify-center"}>
+    <div className={"w-full h-full flex items-center justify-center "}>
       <div className={"w-[600px]"}>
         <h1 className={"text-blue-600 text-[40px] font-semibold text-center"}>
           Daxil ol

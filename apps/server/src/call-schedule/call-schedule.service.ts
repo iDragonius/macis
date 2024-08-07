@@ -25,6 +25,7 @@ export class CallScheduleService {
         customerId: data.customerId,
         contactDate: data.contactDate,
         notes: data.notes,
+        managerId: customer.managerId,
       },
     });
 

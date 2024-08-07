@@ -2,8 +2,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { UserApi } from "@/lib/api/user.api";
 import { PageTitle } from "@/components/ui/page-title";
-import { useEffect, useState } from "react";
-import { formatDate, formatField } from "@/lib/utils";
+import { ReactNode, useEffect, useState } from "react";
+import { cn, formatDate, formatField } from "@/lib/utils";
 import {
   CallProps,
   CallResult,
@@ -26,6 +26,8 @@ import { MeetingScheduleApi } from "@/lib/api/meeting-schedule.api";
 import toast from "react-hot-toast";
 import { DataTable } from "@/components/ui/data-table";
 import { CallScheduleApi } from "@/lib/api/call-schedule.api";
+import { retry } from "next/dist/compiled/@next/font/dist/google/retry";
+import { useRouter } from "next/navigation";
 
 const contractSignedMeetingColumns: ColumnDef<MeetingProps>[] = [
   {
@@ -459,9 +461,19 @@ export default function Page({ params }: { params: { id: string } }) {
       });
     }
   }, [data]);
+  const { push } = useRouter();
   return (
     <div>
-      <PageTitle>Menecer məlumatları</PageTitle>
+      <div className={"flex justify-between items-center"}>
+        <PageTitle>Menecer məlumatları</PageTitle>
+        <Button
+          onClick={() => {
+            push("/manager/sales-trainings");
+          }}
+        >
+          Satış təlimləri
+        </Button>
+      </div>
       <div className={"py-3 border-b "}>
         <div
           className={
@@ -476,40 +488,130 @@ export default function Page({ params }: { params: { id: string } }) {
           ))}
         </div>
       </div>
-      <div className={"py-3 border-b"}>
-        <h2 className={"text-[22px] font-semibold"}>
-          Müqavilə bağlanmış görüşlər
+
+      <div>
+        <h2 className={"text-[32px] font-medium px-3 mt-8 mb-4"}>Hesabatlar</h2>
+        <ExpandableTable title={"Günlük hesabat"}>
+          <div className={"grid grid-cols-4"}>
+            <p>Müştəri sayı: 0</p>
+            <p>Ümumi görüş sayı: 0</p>
+            <p>Rədd görüş sayı: 0</p>
+            <p>Təqib olunan görüş sayı: 0</p>
+            <p>Müqavilə sayı: 0</p>
+            <p>Ümumi zəng sayı: 0</p>
+            <p>Rədd zəng sayı: 0</p>
+            <p>Təqib olunan zəng sayı: 0</p>
+          </div>
+        </ExpandableTable>
+
+        <ExpandableTable title={"Həftəlik hesabat"}>
+          <div className={"grid grid-cols-4"}>
+            <p>Müştəri sayı: 0</p>
+            <p>Ümumi görüş sayı: 0</p>
+            <p>Rədd görüş sayı: 0</p>
+            <p>Təqib olunan görüş sayı: 0</p>
+            <p>Müqavilə sayı: 0</p>
+            <p>Ümumi zəng sayı: 0</p>
+            <p>Rədd zəng sayı: 0</p>
+            <p>Təqib olunan zəng sayı: 0</p>
+          </div>
+        </ExpandableTable>
+        <ExpandableTable title={"Aylıq hesabat"}>
+          <div className={"grid grid-cols-4"}>
+            <p>Müştəri sayı: 0</p>
+            <p>Ümumi görüş sayı: 0</p>
+            <p>Rədd görüş sayı: 0</p>
+            <p>Təqib olunan görüş sayı: 0</p>
+            <p>Müqavilə sayı: 0</p>
+            <p>Ümumi zəng sayı: 0</p>
+            <p>Rədd zəng sayı: 0</p>
+            <p>Təqib olunan zəng sayı: 0</p>
+          </div>
+        </ExpandableTable>
+
+        <ExpandableTable title={"İllik hesabat"}>
+          <div className={"grid grid-cols-4"}>
+            <p>Müştəri sayı: 0</p>
+            <p>Ümumi görüş sayı: 0</p>
+            <p>Rədd görüş sayı: 0</p>
+            <p>Təqib olunan görüş sayı: 0</p>
+            <p>Müqavilə sayı: 0</p>
+            <p>Ümumi zəng sayı: 0</p>
+            <p>Rədd zəng sayı: 0</p>
+            <p>Təqib olunan zəng sayı: 0</p>
+          </div>
+        </ExpandableTable>
+      </div>
+      <div>
+        <h2 className={"text-[32px] font-medium px-3 mt-8 mb-4"}>
+          Ümumi məlumatlar
         </h2>
-        <DataTable
-          data={meetings.contractSignedMeetings}
-          columns={contractSignedMeetingColumns}
-        />
-      </div>
-      <div className={"py-3 border-b"}>
-        <h2 className={"text-[22px] font-semibold"}>Təqib olunan görüşlər</h2>
-        <DataTable
-          data={meetings.followedMeetings}
-          columns={followedMeetingColumns}
-        />
-      </div>
-      <div className={"py-3 border-b"}>
-        <h2 className={"text-[22px] font-semibold"}>Rədd edilmiş görüşlər</h2>
+        <ExpandableTable title={"Müqavilə bağlanmış görüşlər"}>
+          <DataTable
+            data={meetings.contractSignedMeetings}
+            columns={contractSignedMeetingColumns}
+          />
+        </ExpandableTable>
 
-        <DataTable
-          data={meetings.refusedMeetings}
-          columns={refusedMeetingColumns}
-        />
-      </div>{" "}
-      <div className={"py-3 border-b"}>
-        <h2 className={"text-[22px] font-semibold"}>Təqib olunan zənglər</h2>
+        <ExpandableTable title={"Təqib olunan görüşlər"}>
+          <DataTable
+            data={meetings.followedMeetings}
+            columns={followedMeetingColumns}
+          />
+        </ExpandableTable>
+        <ExpandableTable title={"Rədd edilmiş görüşlər"}>
+          <DataTable
+            data={meetings.refusedMeetings}
+            columns={refusedMeetingColumns}
+          />
+        </ExpandableTable>
 
-        <DataTable data={calls.followedCalls} columns={followedCallColumns} />
-      </div>{" "}
-      <div className={"py-3 border-b"}>
-        <h2 className={"text-[22px] font-semibold"}>Rədd edilmiş zənglər</h2>
-
-        <DataTable data={calls.refusedCalls} columns={refusedCallColumns} />
+        <ExpandableTable title={"Təqib olunan zənglər"}>
+          <DataTable data={calls.followedCalls} columns={followedCallColumns} />
+        </ExpandableTable>
+        <ExpandableTable title={"Rədd edilmiş zənglər"}>
+          <DataTable data={calls.refusedCalls} columns={refusedCallColumns} />
+        </ExpandableTable>
       </div>
     </div>
   );
 }
+
+const ExpandableTable = ({
+  children,
+  title,
+}: {
+  children: ReactNode;
+  title: string;
+}) => {
+  const [open, setOpen] = useState<boolean>(false);
+  return (
+    <div className={" border-b  "}>
+      <div
+        onClick={() => setOpen((prevState) => !prevState)}
+        className={
+          "flex justify-between items-center transition-all ease-in-out hover:bg-gray-100 py-3 px-3"
+        }
+      >
+        <h2 className={"text-[22px] font-semibold"}>{title}</h2>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          className={cn(open ? "rotate-180" : "")}
+        >
+          <path
+            d="M6 9L12 15L18 9"
+            stroke="black"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
+      {open && <div className={"px-3"}>{children}</div>}
+    </div>
+  );
+};

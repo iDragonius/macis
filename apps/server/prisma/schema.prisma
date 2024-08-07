@@ -15,17 +15,20 @@ datasource db {
 }
 
 model User {
-  id            String          @id @default(uuid())
-  createdAt     DateTime        @default(now()) @map("created_at")
-  updatedAt     DateTime        @updatedAt @map("updated_ad")
-  role          Role            @default(USER)
-  email         String          @unique
-  password      String
-  tokens        UserToken[]
-  codes         UserCodes[]
-  profile       UserProfile?
-  customers     Customer[]
-  monthlyTarget MonthlyTarget[]
+  id              String            @id @default(uuid())
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_ad")
+  role            Role              @default(USER)
+  email           String            @unique
+  password        String
+  tokens          UserToken[]
+  codes           UserCodes[]
+  profile         UserProfile?
+  customers       Customer[]
+  monthlyTarget   MonthlyTarget[]
+  isManager       Boolean           @default(false)
+  managedCalls    CallSchedule[]
+  managedMeetings MeetingSchedule[]
 }
 
 model UserProfile {
@@ -109,6 +112,8 @@ model CallSchedule {
   result          CallResult? @default(UNKNOWN)
   category        Category?   @relation(fields: [categoryId], references: [id])
   categoryId      String?
+  manager         User?       @relation(fields: [managerId], references: [id])
+  managerId       String?
 }
 
 model MeetingSchedule {
@@ -129,6 +134,8 @@ model MeetingSchedule {
   result          MeetingResult @default(UNKNOWN)
   category        Category?     @relation(fields: [categoryId], references: [id])
   categoryId      String?
+  manager         User?         @relation(fields: [managerId], references: [id])
+  managerId       String?
 }
 
 model MonthlyTarget {

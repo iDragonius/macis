@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { GetCurrentUserId } from '../core/decorators';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -10,8 +19,8 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async getAllUsers() {
-    return this.userService.getAllUsers();
+  async getAllUsers(@Query('isManager') isManager?: string) {
+    return this.userService.getAllUsers(isManager);
   }
   @Get('/me')
   async me(@GetCurrentUserId() userId: string) {
@@ -36,5 +45,14 @@ export class UserController {
     @GetCurrentUserId() userId: string,
   ) {
     return this.userService.deleteUser(id, userId);
+  }
+
+  @Patch(':id/manager')
+  @Roles(Role.SUPER_ADMIN)
+  async setManagerStatus(
+    @Param('id') id: string,
+    @Body('isManager') isManager: boolean,
+  ) {
+    return this.userService.setManagerStatus(isManager, id);
   }
 }

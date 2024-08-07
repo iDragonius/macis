@@ -27,6 +27,10 @@ const Sidebar: FC<SidebarProps> = () => {
       url: "/users",
     },
     {
+      label: "Menecerlər",
+      url: "/manager",
+    },
+    {
       label: "Müştərilər",
       url: `/customers`,
     },

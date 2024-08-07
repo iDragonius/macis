@@ -27,7 +27,7 @@ type MonthlyTargetDto = {
 export default function AddMonthlyTarget() {
   const { data: users } = useQuery({
     queryKey: ["users"],
-    queryFn: UserApi.getAllUsers,
+    queryFn: UserApi.getAllManagers,
   });
 
   const [data, setData] = useState<MonthlyTargetDto>({

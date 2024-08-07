@@ -3,8 +3,6 @@ import { PageTitle } from "@/components/ui/page-title";
 import { useQuery } from "@tanstack/react-query";
 import { UserApi } from "@/lib/api/user.api";
 import { ColumnDef } from "@tanstack/react-table";
-import { Checkbox } from "@/components/ui/checkbox";
-import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,14 +15,13 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { DataTable } from "@/components/ui/data-table";
 import { useRouter } from "next/navigation";
 import { getRole } from "@/lib/utils";
-import { MonthlyTargetApi } from "@/lib/api/monthly-target.api";
 import toast from "react-hot-toast";
 import useConfirmationDialog from "@/hooks/use-confirmation-dialog";
+import Link from "next/link";
 
 export type User = {
   id: string;
   email: string;
-  isManager: boolean;
   profile: {
     firstName: string;
     gender: string;
@@ -34,10 +31,10 @@ export type User = {
   };
 };
 
-export default function Users() {
+export default function Managers() {
   const { data, refetch } = useQuery({
     queryKey: ["users"],
-    queryFn: UserApi.getAllUsers,
+    queryFn: UserApi.getAllManagers,
   });
   const { setDialogState } = useConfirmationDialog();
 
@@ -75,7 +72,6 @@ export default function Users() {
         return <div>{phoneNumber}</div>;
       },
     },
-
     {
       id: "actions",
       enableHiding: false,
@@ -92,34 +88,8 @@ export default function Users() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => {
-                  UserApi.setManagerStatus(
-                    !row.original.isManager,
-                    row.original.id,
-                  ).then((res) => {
-                    refetch();
-                  });
-                }}
-              >
-                {row.original.isManager
-                  ? "İstifadəçini menecerlikdən çıxart"
-                  : "İstifadəçini menecer et"}
-              </DropdownMenuItem>{" "}
-              <DropdownMenuItem
-                onClick={() => {
-                  setDialogState({
-                    isOpen: true,
-                    confirmFunction() {
-                      UserApi.deleteUser(row.original.id).then((res) => {
-                        refetch();
-                        toast.success("İstifadəçi uğurla silindi!");
-                      });
-                    },
-                  });
-                }}
-              >
-                Sil
+              <DropdownMenuItem>
+                <Link href={`/manager/${row.original.id}`}>Menecerə bax</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -131,8 +101,7 @@ export default function Users() {
   return (
     <>
       <div className={"flex justify-between items-center"}>
-        <PageTitle>İstifadəçilər</PageTitle>
-        <Button onClick={() => push("/users/add")}>Yeni istifadəçi</Button>
+        <PageTitle>Menecerlər</PageTitle>
       </div>
       <DataTable data={data?.data} columns={columns} />
     </>

@@ -27,6 +27,7 @@ export class MeetingScheduleService {
         contactDate: data.contactDate,
         meetingDate: data.meetingDate,
         notes: data.notes,
+        managerId: customer.managerId,
       },
     });
 

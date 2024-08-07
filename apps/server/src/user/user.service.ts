@@ -32,10 +32,13 @@ export class UserService {
     });
   }
 
-  async getAllUsers() {
+  async getAllUsers(isManager?: string) {
     return await this.prisma.user.findMany({
       include: {
         profile: true,
+      },
+      where: {
+        isManager: isManager === 'true' ? true : undefined,
       },
     });
   }
@@ -54,6 +57,7 @@ export class UserService {
         email: data.email,
         password: hashedPassword,
         role: data.role,
+        isManager: data.isManager,
         profile: {
           create: {
             firstName: data.firstName,
@@ -107,6 +111,16 @@ export class UserService {
     return await this.prisma.user.delete({
       where: {
         id,
+      },
+    });
+  }
+  async setManagerStatus(isManager: boolean, userId: string) {
+    return await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        isManager,
       },
     });
   }

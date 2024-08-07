@@ -17,6 +17,7 @@ import { MonthlyTargetModule } from './monthly-target/monthly-target.module';
 import { CurationMeetingModule } from './curation-meeting/curation-meeting.module';
 import { CurationCallModule } from './curation-call/curation-call.module';
 import { CategoryModule } from './category/category.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { CategoryModule } from './category/category.module';
     CurationCallModule,
     CurationMeetingModule,
     CategoryModule,
+    ReportModule,
   ],
   controllers: [],
   providers: [
