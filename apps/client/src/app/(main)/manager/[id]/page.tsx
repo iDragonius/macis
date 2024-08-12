@@ -372,7 +372,14 @@ const followedCallColumns: ColumnDef<CallProps>[] = [
     },
   },
 ];
-
+type SectionType =
+  | "MAIN"
+  | "SALES_TRAININGS"
+  | "DAILY_REPORT"
+  | "WEEKLY_REPORT"
+  | "MONTHLY_REPORT"
+  | "ANNUAL_REPORT"
+  | "GENERAL_INFORMATION";
 export default function Page({ params }: { params: { id: string } }) {
   const { data } = useQuery({
     queryKey: ["manager", params.id],
@@ -462,156 +469,213 @@ export default function Page({ params }: { params: { id: string } }) {
     }
   }, [data]);
   const { push } = useRouter();
+  const sections: {
+    section: SectionType;
+    label: string;
+  }[] = [
+    {
+      section: "DAILY_REPORT",
+      label: "Günlük hesabat",
+    },
+    {
+      section: "WEEKLY_REPORT",
+      label: "Həfətlik hesabat",
+    },
+    {
+      section: "MONTHLY_REPORT",
+      label: "Aylıq hesabat",
+    },
+    {
+      section: "ANNUAL_REPORT",
+      label: "İllik hesabat",
+    },
+    {
+      section: "SALES_TRAININGS",
+      label: "Satış təlimləri",
+    },
+    {
+      section: "GENERAL_INFORMATION",
+      label: "Ümumi məlumatlar",
+    },
+  ];
+  const [activeSection, setActiveSection] = useState<SectionType>("MAIN");
   return (
     <div>
-      <div className={"flex justify-between items-center"}>
-        <PageTitle>Menecer məlumatları</PageTitle>
-        <Button
-          onClick={() => {
-            push("/manager/sales-trainings");
-          }}
-        >
-          Satış təlimləri
-        </Button>
-      </div>
-      <div className={"py-3 border-b "}>
+      <div className={"flex gap-5 items-center "}>
         <div
           className={
-            "flex flex-col border rounded-[12px] gap-1 py-4 px-8 w-max"
+            "w-14 h-14 flex items-center justify-center rounded-full bg-gray-100 text-[20px] font-medium"
           }
         >
-          {information.map(([key, value]) => (
-            <div className={"flex gap-4 "} key={key}>
-              <h3 className={"w-[200px] font-medium"}>{key}</h3>
-              <p>{value}</p>
-            </div>
-          ))}
+          {data?.data?.profile?.firstName[0].toUpperCase() +
+            data?.data?.profile?.lastName[0].toUpperCase()}
+        </div>
+        <div>
+          <h1 className={"text-[28px] font-semibold"}>
+            {data?.data?.profile?.firstName +
+              " " +
+              data?.data?.profile?.lastName}
+          </h1>
+          <p>Menecer</p>
         </div>
       </div>
-
-      <div>
-        <h2 className={"text-[32px] font-medium px-3 mt-8 mb-4"}>Hesabatlar</h2>
-        <ExpandableTable title={"Günlük hesabat"}>
-          <div className={"grid grid-cols-4"}>
-            <p>Müştəri sayı: 0</p>
-            <p>Ümumi görüş sayı: 0</p>
-            <p>Rədd görüş sayı: 0</p>
-            <p>Təqib olunan görüş sayı: 0</p>
-            <p>Müqavilə sayı: 0</p>
-            <p>Ümumi zəng sayı: 0</p>
-            <p>Rədd zəng sayı: 0</p>
-            <p>Təqib olunan zəng sayı: 0</p>
-          </div>
-        </ExpandableTable>
-
-        <ExpandableTable title={"Həftəlik hesabat"}>
-          <div className={"grid grid-cols-4"}>
-            <p>Müştəri sayı: 0</p>
-            <p>Ümumi görüş sayı: 0</p>
-            <p>Rədd görüş sayı: 0</p>
-            <p>Təqib olunan görüş sayı: 0</p>
-            <p>Müqavilə sayı: 0</p>
-            <p>Ümumi zəng sayı: 0</p>
-            <p>Rədd zəng sayı: 0</p>
-            <p>Təqib olunan zəng sayı: 0</p>
-          </div>
-        </ExpandableTable>
-        <ExpandableTable title={"Aylıq hesabat"}>
-          <div className={"grid grid-cols-4"}>
-            <p>Müştəri sayı: 0</p>
-            <p>Ümumi görüş sayı: 0</p>
-            <p>Rədd görüş sayı: 0</p>
-            <p>Təqib olunan görüş sayı: 0</p>
-            <p>Müqavilə sayı: 0</p>
-            <p>Ümumi zəng sayı: 0</p>
-            <p>Rədd zəng sayı: 0</p>
-            <p>Təqib olunan zəng sayı: 0</p>
-          </div>
-        </ExpandableTable>
-
-        <ExpandableTable title={"İllik hesabat"}>
-          <div className={"grid grid-cols-4"}>
-            <p>Müştəri sayı: 0</p>
-            <p>Ümumi görüş sayı: 0</p>
-            <p>Rədd görüş sayı: 0</p>
-            <p>Təqib olunan görüş sayı: 0</p>
-            <p>Müqavilə sayı: 0</p>
-            <p>Ümumi zəng sayı: 0</p>
-            <p>Rədd zəng sayı: 0</p>
-            <p>Təqib olunan zəng sayı: 0</p>
-          </div>
-        </ExpandableTable>
-      </div>
-      <div>
-        <h2 className={"text-[32px] font-medium px-3 mt-8 mb-4"}>
-          Ümumi məlumatlar
-        </h2>
-        <ExpandableTable title={"Müqavilə bağlanmış görüşlər"}>
-          <DataTable
-            data={meetings.contractSignedMeetings}
-            columns={contractSignedMeetingColumns}
-          />
-        </ExpandableTable>
-
-        <ExpandableTable title={"Təqib olunan görüşlər"}>
-          <DataTable
-            data={meetings.followedMeetings}
-            columns={followedMeetingColumns}
-          />
-        </ExpandableTable>
-        <ExpandableTable title={"Rədd edilmiş görüşlər"}>
-          <DataTable
-            data={meetings.refusedMeetings}
-            columns={refusedMeetingColumns}
-          />
-        </ExpandableTable>
-
-        <ExpandableTable title={"Təqib olunan zənglər"}>
-          <DataTable data={calls.followedCalls} columns={followedCallColumns} />
-        </ExpandableTable>
-        <ExpandableTable title={"Rədd edilmiş zənglər"}>
-          <DataTable data={calls.refusedCalls} columns={refusedCallColumns} />
-        </ExpandableTable>
-      </div>
+      <hr className={"my-6"} />
+      {activeSection === "MAIN" && (
+        <div className={"grid grid-cols-3 gap-6"}>
+          {sections.map((section, i) => (
+            <button
+              onClick={() => {
+                if (section.section === "SALES_TRAININGS") {
+                  push("/manager/sales-trainings");
+                  return;
+                }
+                setActiveSection(section.section);
+              }}
+              key={i}
+              className={
+                "w-full text-blue-600 border border-[#D0D5DD] rounded-[16px] h-[140px] text-left p-6 text-[20px] font-medium hover:bg-blue-600 hover:text-white transition-all ease-in-out"
+              }
+            >
+              {section.label}
+            </button>
+          ))}
+        </div>
+      )}{" "}
+      {activeSection === "DAILY_REPORT" && (
+        <div>
+          <button
+            onClick={() => setActiveSection("MAIN")}
+            className={
+              "flex items-center gap-2 text-[18px] text-[#475467] font-semibold"
+            }
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+            >
+              <path
+                d="M15.8334 9.99996H4.16675M4.16675 9.99996L10.0001 15.8333M4.16675 9.99996L10.0001 4.16663"
+                stroke="#475467"
+                strokeWidth="1.66667"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Geri
+          </button>
+        </div>
+      )}{" "}
+      {activeSection === "WEEKLY_REPORT" && (
+        <div>
+          <button
+            onClick={() => setActiveSection("MAIN")}
+            className={
+              "flex items-center gap-2 text-[18px] text-[#475467] font-semibold"
+            }
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+            >
+              <path
+                d="M15.8334 9.99996H4.16675M4.16675 9.99996L10.0001 15.8333M4.16675 9.99996L10.0001 4.16663"
+                stroke="#475467"
+                strokeWidth="1.66667"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Geri
+          </button>
+        </div>
+      )}{" "}
+      {activeSection === "MONTHLY_REPORT" && (
+        <div>
+          <button
+            onClick={() => setActiveSection("MAIN")}
+            className={
+              "flex items-center gap-2 text-[18px] text-[#475467] font-semibold"
+            }
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+            >
+              <path
+                d="M15.8334 9.99996H4.16675M4.16675 9.99996L10.0001 15.8333M4.16675 9.99996L10.0001 4.16663"
+                stroke="#475467"
+                strokeWidth="1.66667"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Geri
+          </button>
+        </div>
+      )}{" "}
+      {activeSection === "ANNUAL_REPORT" && (
+        <div>
+          <button
+            onClick={() => setActiveSection("MAIN")}
+            className={
+              "flex items-center gap-2 text-[18px] text-[#475467] font-semibold"
+            }
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+            >
+              <path
+                d="M15.8334 9.99996H4.16675M4.16675 9.99996L10.0001 15.8333M4.16675 9.99996L10.0001 4.16663"
+                stroke="#475467"
+                strokeWidth="1.66667"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Geri
+          </button>
+        </div>
+      )}{" "}
+      {activeSection === "GENERAL_INFORMATION" && (
+        <div>
+          <button
+            onClick={() => setActiveSection("MAIN")}
+            className={
+              "flex items-center gap-2 text-[18px] text-[#475467] font-semibold"
+            }
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+            >
+              <path
+                d="M15.8334 9.99996H4.16675M4.16675 9.99996L10.0001 15.8333M4.16675 9.99996L10.0001 4.16663"
+                stroke="#475467"
+                strokeWidth="1.66667"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Geri
+          </button>
+        </div>
+      )}
     </div>
   );
 }
-
-const ExpandableTable = ({
-  children,
-  title,
-}: {
-  children: ReactNode;
-  title: string;
-}) => {
-  const [open, setOpen] = useState<boolean>(false);
-  return (
-    <div className={" border-b  "}>
-      <div
-        onClick={() => setOpen((prevState) => !prevState)}
-        className={
-          "flex justify-between items-center transition-all ease-in-out hover:bg-gray-100 py-3 px-3"
-        }
-      >
-        <h2 className={"text-[22px] font-semibold"}>{title}</h2>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          className={cn(open ? "rotate-180" : "")}
-        >
-          <path
-            d="M6 9L12 15L18 9"
-            stroke="black"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </div>
-      {open && <div className={"px-3"}>{children}</div>}
-    </div>
-  );
-};
