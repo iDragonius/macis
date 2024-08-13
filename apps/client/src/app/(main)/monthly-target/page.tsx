@@ -1,7 +1,6 @@
 "use client";
 import { PageTitle } from "@/components/ui/page-title";
 import { ColumnDef } from "@tanstack/react-table";
-import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -10,10 +9,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { MonthlyTarget } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { CustomerApi } from "@/lib/api/customer.api";
-import { LostCustomer } from "@/app/(main)/lost-customers/page";
 import { DataTable } from "@/components/ui/data-table";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
@@ -23,28 +21,7 @@ import { formatMonth } from "@/lib/utils";
 import { MeetingScheduleApi } from "@/lib/api/meeting-schedule.api";
 import useConfirmationDialog from "@/hooks/use-confirmation-dialog";
 
-type MonthlyTarget = {
-  data: {
-    id: string;
-    meetingTarget: number;
-    manager: {
-      profile: {
-        firstName: string;
-        lastName: string;
-      };
-    };
-    managerId: string;
-    year: number;
-    month: string;
-  };
-  meetingCount: number;
-  signedContractCount: number;
-  totalAmount: number;
-  followingMeetingsCount: number;
-  refusedMeetingsCount: number;
-};
-
-export default function MonthlyTarget() {
+export default function MonthlyTargets() {
   const { data, refetch } = useQuery({
     queryKey: ["monthly-targets"],
     queryFn: MonthlyTargetApi.getAllMonthlyTargets,

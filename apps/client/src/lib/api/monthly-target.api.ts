@@ -13,6 +13,9 @@ export const MonthlyTargetApi = {
   async getMonthlyTarget(id: string) {
     return await api.get(`/monthly-target/${id}`);
   },
+  async getMonthlyTargetByManager(userId: string) {
+    return await api.get(`/monthly-target/manager/${userId}`);
+  },
   async deleteMonthlyTarget(id: string) {
     return await api.delete(`/monthly-target/${id}`);
   },

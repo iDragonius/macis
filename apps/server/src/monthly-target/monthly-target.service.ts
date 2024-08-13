@@ -104,7 +104,65 @@ export class MonthlyTargetService {
   async deleteMonthlyTarget(id: string) {
     return await this.prisma.monthlyTarget.delete({ where: { id } });
   }
+  async getMonthlyTargetByManager(id: string) {
+    const monthlyTargets = await this.prisma.monthlyTarget.findMany({
+      where: { managerId: id },
+      include: {
+        manager: {
+          include: {
+            profile: true,
+          },
+        },
+      },
+    });
+    const temp: any[] = [];
+    const promises = monthlyTargets.map(async (monthlyTarget) => {
+      const customers = await this.prisma.customer.findMany({
+        where: {
+          managerId: monthlyTarget.managerId,
+        },
+        include: {
+          meetings: true,
+          calls: true,
+        },
+      });
+      let meetingCount = 0;
+      let signedContractCount = 0;
+      let totalAmount = 0;
+      let followingMeetingsCount = 0;
+      let refusedMeetingsCount = 0;
+      customers.map((customer) => {
+        customer.meetings.map((meeting) => {
+          if (
+            Months[new Date(meeting.meetingDate).getMonth()] ===
+            monthlyTarget.month
+          ) {
+            meetingCount++;
+            if (meeting.result === 'CONTRACT_SIGNED') {
+              signedContractCount++;
 
+              totalAmount += customer.paymentAmount;
+            } else if (meeting.result === 'REFUSED') {
+              refusedMeetingsCount++;
+            } else if (meeting.result === 'WILL_BE_FOLLOWED') {
+              followingMeetingsCount++;
+            }
+          }
+        });
+      });
+
+      temp.push({
+        data: monthlyTarget,
+        meetingCount,
+        signedContractCount,
+        totalAmount,
+        followingMeetingsCount,
+        refusedMeetingsCount,
+      });
+    });
+    await Promise.all(promises);
+    return temp;
+  }
   async updateMonthlyTarget(id: string, data: UpdateMonthlyTargetDto) {
     const manager = await this.prisma.user.findUnique({
       where: {

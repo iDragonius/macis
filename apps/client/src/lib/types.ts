@@ -139,3 +139,24 @@ export type CurationMeetingProps = {
   referenceCompanies: string;
   notes: string;
 };
+
+export type MonthlyTarget = {
+  data: {
+    id: string;
+    meetingTarget: number;
+    manager: {
+      profile: {
+        firstName: string;
+        lastName: string;
+      };
+    };
+    managerId: string;
+    year: number;
+    month: string;
+  };
+  meetingCount: number;
+  signedContractCount: number;
+  totalAmount: number;
+  followingMeetingsCount: number;
+  refusedMeetingsCount: number;
+};

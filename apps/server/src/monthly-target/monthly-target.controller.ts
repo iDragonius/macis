@@ -30,6 +30,10 @@ export class MonthlyTargetController {
   async getMonthlyTarget(@Param('id') id: string) {
     return await this.monthlyTargetService.getMonthlyTarget(id);
   }
+  @Get('/manager/:id')
+  async getMonthlyTargetByManager(@Param('id') id: string) {
+    return await this.monthlyTargetService.getMonthlyTargetByManager(id);
+  }
   @Patch(':id')
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async updateMonthlyTarget(
