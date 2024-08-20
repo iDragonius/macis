@@ -514,6 +514,10 @@ export default function Page({ params }: { params: { id: string } }) {
         ["Təqib olunan görüş sayı", followingMeetingCount],
         ["Müqavilə sayı", successfulMeetingCount],
         ["Toplam məbləğ", totalAmount],
+        ["Vəzifə öhdəlikləri", ""],
+        ["Təcrübə-2 ay", ""],
+        ["Sabit əmək haqqı-3 ay", ""],
+        ["Çevik əmək haqqı-3 aydan bir", ""],
       ]);
       setMeetings({
         contractSignedMeetings,
@@ -532,6 +536,18 @@ export default function Page({ params }: { params: { id: string } }) {
     label: string;
   }[] = [
     {
+      section: "GENERAL_INFORMATION",
+      label: "Ümumi məlumatlar",
+    },
+    {
+      section: "MONTHLY_TARGET",
+      label: "Aylıq hədəf qrafiki",
+    },
+    {
+      section: "SALES_TRAININGS",
+      label: "Satış təlimləri",
+    },
+    {
       section: "DAILY_REPORT",
       label: "Günlük hesabat",
     },
@@ -547,19 +563,8 @@ export default function Page({ params }: { params: { id: string } }) {
       section: "ANNUAL_REPORT",
       label: "İllik hesabat",
     },
-    {
-      section: "SALES_TRAININGS",
-      label: "Satış təlimləri",
-    },
-    {
-      section: "MONTHLY_TARGET",
-      label: "Aylıq hədəf qrafiki",
-    },
-    {
-      section: "GENERAL_INFORMATION",
-      label: "Ümumi məlumatlar",
-    },
   ];
+
   const [activeSection, setActiveSection] = useState<SectionType>("MAIN");
   return (
     <div>
@@ -628,6 +633,25 @@ export default function Page({ params }: { params: { id: string } }) {
             </svg>
             Geri
           </button>
+          <div className={"mt-7"}>
+            <ExpandableTable title={"Müqavilə bağlanmış görüşlər"}>
+              <DataTable data={[]} columns={contractSignedMeetingColumns} />
+            </ExpandableTable>
+
+            <ExpandableTable title={"Təqib olunan görüşlər"}>
+              <DataTable data={[]} columns={followedMeetingColumns} />
+            </ExpandableTable>
+            <ExpandableTable title={"Rədd edilmiş görüşlər"}>
+              <DataTable data={[]} columns={refusedMeetingColumns} />
+            </ExpandableTable>
+
+            <ExpandableTable title={"Təqib olunan zənglər"}>
+              <DataTable data={[]} columns={followedCallColumns} />
+            </ExpandableTable>
+            <ExpandableTable title={"Rədd edilmiş zənglər"}>
+              <DataTable data={[]} columns={refusedCallColumns} />
+            </ExpandableTable>
+          </div>
         </div>
       )}{" "}
       {activeSection === "WEEKLY_REPORT" && (
@@ -824,38 +848,18 @@ export default function Page({ params }: { params: { id: string } }) {
             Geri
           </button>
           <div className={"mt-7"}>
-            <ExpandableTable title={"Müqavilə bağlanmış görüşlər"}>
-              <DataTable
-                data={meetings.contractSignedMeetings}
-                columns={contractSignedMeetingColumns}
-              />
-            </ExpandableTable>
-
-            <ExpandableTable title={"Təqib olunan görüşlər"}>
-              <DataTable
-                data={meetings.followedMeetings}
-                columns={followedMeetingColumns}
-              />
-            </ExpandableTable>
-            <ExpandableTable title={"Rədd edilmiş görüşlər"}>
-              <DataTable
-                data={meetings.refusedMeetings}
-                columns={refusedMeetingColumns}
-              />
-            </ExpandableTable>
-
-            <ExpandableTable title={"Təqib olunan zənglər"}>
-              <DataTable
-                data={calls.followedCalls}
-                columns={followedCallColumns}
-              />
-            </ExpandableTable>
-            <ExpandableTable title={"Rədd edilmiş zənglər"}>
-              <DataTable
-                data={calls.refusedCalls}
-                columns={refusedCallColumns}
-              />
-            </ExpandableTable>
+            <div className={"flex flex-col  border rounded-[8px] "}>
+              {information.map((el, i) => (
+                <div
+                  className={"flex border-b py-2 h-[40px]  items-center  px-4"}
+                >
+                  <h4 className={"text-[18px] w-1/2  font-semibold"}>
+                    {el[0]}
+                  </h4>
+                  <p className={"w-1/2 font-medium"}>{el[1]}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}
