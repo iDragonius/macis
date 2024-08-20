@@ -851,6 +851,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <div className={"flex flex-col  border rounded-[8px] "}>
               {information.map((el, i) => (
                 <div
+                  key={i}
                   className={"flex border-b py-2 h-[40px]  items-center  px-4"}
                 >
                   <h4 className={"text-[18px] w-1/2  font-semibold"}>
