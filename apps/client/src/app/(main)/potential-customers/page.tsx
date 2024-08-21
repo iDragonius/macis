@@ -87,6 +87,11 @@ export default function PotentialCustomers() {
       cell: ({ row }) => <div>{row.getValue("position")}</div>,
     },
     {
+      accessorKey: "contactNumber",
+      header: "Əlaqə nömrəsi",
+      cell: ({ row }) => <div>{row.getValue("contactNumber")}</div>,
+    },
+    {
       accessorKey: "source",
       header: "Mənbə",
       cell: ({ row }) => <div>{row.getValue("source")}</div>,
