@@ -30,6 +30,11 @@ const Sidebar: FC<SidebarProps> = () => {
       label: "Menecerlər",
       url: "/manager",
     },
+
+    {
+      label: "Günlük tapşırıqlar",
+      url: "/tasks",
+    },
     {
       label: "Müştərilər",
       url: `/customers`,
@@ -58,10 +63,6 @@ const Sidebar: FC<SidebarProps> = () => {
       label: "Zəng təqib qrafiki",
       url: `/call-schedule/will-be-followed`,
     },
-    {
-      label: "Günlük zəng qrafiki",
-      url: `/daily-call-schedule`,
-    },
 
     {
       label: "Görüş qrafiki",
@@ -75,10 +76,7 @@ const Sidebar: FC<SidebarProps> = () => {
       label: "Görüş təqib qrafiki",
       url: `/meeting-schedule/will-be-followed`,
     },
-    {
-      label: "Günlük görüş qrafiki",
-      url: `/daily-meeting-schedule`,
-    },
+
     {
       label: "Kurasiya zəngləri",
       url: `/curation/calls`,

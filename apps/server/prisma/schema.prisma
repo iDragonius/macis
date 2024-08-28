@@ -187,6 +187,25 @@ model Category {
   calls    CallSchedule[]
 }
 
+model Task {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_ad")
+
+  type   TaskType
+  status TaskStatus
+}
+
+enum TaskType {
+  MEETING
+  CALL
+}
+
+enum TaskStatus {
+  IN_PROGRESS
+  DONE
+}
+
 enum CodeType {
   OTP
 }

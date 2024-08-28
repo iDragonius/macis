@@ -1,9 +1,16 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
-import { CallProps, CallResult, MeetingResult } from "@/lib/types";
-import { Checkbox } from "@/components/ui/checkbox";
+import { CallProps, CallResult } from "@/lib/types";
 import Link from "next/link";
 import { formatDate, formatField } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { CallResultType, CallScheduleApi } from "@/lib/api/call-schedule.api";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,29 +20,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { useQuery } from "@tanstack/react-query";
-import { CallResultType, CallScheduleApi } from "@/lib/api/call-schedule.api";
+import toast from "react-hot-toast";
 import { PageTitle } from "@/components/ui/page-title";
 import { DataTable } from "@/components/ui/data-table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  MeetingResultType,
-  MeetingScheduleApi,
-} from "@/lib/api/meeting-schedule.api";
 
-export default function DailyCallSchedule() {
-  const { data, refetch } = useQuery({
-    queryKey: ["daily-calls"],
-    queryFn: CallScheduleApi.getDailyCallSchedule,
-  });
-
-  const callColumns: ColumnDef<CallProps>[] = [
+export default function Page() {
+  const columns: ColumnDef<CallProps>[] = [
     {
       accessorKey: "customer.company",
       header: "Şirkət",
@@ -75,17 +65,18 @@ export default function DailyCallSchedule() {
         return <div>{formatField(contactNumber)}</div>;
       },
     },
+
     {
-      accessorKey: "contactDate",
-      header: "Əlaqə tarixi",
+      accessorKey: "type",
+      header: "Tapşırıq tipi",
       cell: ({ row }) => {
         return <div>{formatDate(row.getValue("contactDate"))}</div>;
       },
     },
 
     {
-      accessorKey: "result",
-      header: "Nəticə",
+      accessorKey: "status",
+      header: "Status",
       cell: ({ row }) => {
         return (
           <Select
@@ -95,7 +86,7 @@ export default function DailyCallSchedule() {
                 value as CallResultType,
                 row.original.id,
               ).then((res) => {
-                refetch();
+                // refetch();
               });
             }}
           >
@@ -123,35 +114,50 @@ export default function DailyCallSchedule() {
         return <div>{formatField(row.getValue("notes"))}</div>;
       },
     },
-    // {
-    //   id: "actions",
-    //   enableHiding: false,
-    //   cell: ({ row }) => {
-    //     return (
-    //       <DropdownMenu>
-    //         <DropdownMenuTrigger asChild>
-    //           <Button variant="ghost" className="h-8 w-8 p-0">
-    //             <span className="sr-only">Open menu</span>
-    //             <DotsHorizontalIcon className="h-4 w-4" />
-    //           </Button>
-    //         </DropdownMenuTrigger>
-    //         <DropdownMenuContent align="end">
-    //           <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
-    //
-    //           {/*<DropdownMenuItem>Sil</DropdownMenuItem>*/}
-    //         </DropdownMenuContent>
-    //       </DropdownMenu>
-    //     );
-    //   },
-    // },
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const data = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <DotsHorizontalIcon className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Əməliyyatlar</DropdownMenuLabel>
+
+              <DropdownMenuItem
+                onClick={() => {
+                  // setDialogState({
+                  //   isOpen: true,
+                  //   confirmFunction() {
+                  //     CallScheduleApi.deleteCall(data.id).then(() => {
+                  //       refetch();
+                  //       toast.success("Zəng uğurla silindi!");
+                  //     });
+                  //   },
+                  // });
+                }}
+              >
+                Sil
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
   ];
 
   return (
     <div>
-      <div>
-        <PageTitle>Günlük zəng qrafiki</PageTitle>
-      </div>
-      <DataTable data={data?.data} columns={callColumns} />
+      <PageTitle>Günlük tapşırıqlar</PageTitle>
+
+      <DataTable data={[]} columns={columns} />
     </div>
   );
 }
